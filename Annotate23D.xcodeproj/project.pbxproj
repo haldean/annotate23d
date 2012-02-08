@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A99CBD5A14E30B4A00C40DAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5914E30B4A00C40DAC /* UIKit.framework */; };
 		A99CBD5C14E30B4A00C40DAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5B14E30B4A00C40DAC /* Foundation.framework */; };
 		A99CBD5E14E30B4A00C40DAC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5D14E30B4A00C40DAC /* CoreGraphics.framework */; };
@@ -15,22 +16,25 @@
 		A99CBD6A14E30B4B00C40DAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A99CBD6914E30B4B00C40DAC /* AppDelegate.m */; };
 		A99CBD6D14E30B4B00C40DAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A99CBD6C14E30B4B00C40DAC /* ViewController.m */; };
 		A99CBD7014E30B4B00C40DAC /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A99CBD6E14E30B4B00C40DAC /* ViewController.xib */; };
+		A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AAEBAC14E31E1E00F174E7 /* background.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A99CBD5514E30B4A00C40DAC /* Annotate23D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Annotate23D.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99CBD5914E30B4A00C40DAC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A99CBD5B14E30B4A00C40DAC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A99CBD5D14E30B4A00C40DAC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		A99CBD6114E30B4B00C40DAC /* Annotate23D-Info.plist */ = {isa = PBXFileReference; path = "Annotate23D-Info.plist"; sourceTree = "<group>"; };
+		A99CBD6114E30B4B00C40DAC /* Annotate23D-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Annotate23D-Info.plist"; sourceTree = "<group>"; };
 		A99CBD6314E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A99CBD6514E30B4B00C40DAC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A99CBD6714E30B4B00C40DAC /* Annotate23D-Prefix.pch */ = {isa = PBXFileReference; path = "Annotate23D-Prefix.pch"; sourceTree = "<group>"; };
-		A99CBD6814E30B4B00C40DAC /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		A99CBD6714E30B4B00C40DAC /* Annotate23D-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Annotate23D-Prefix.pch"; sourceTree = "<group>"; };
+		A99CBD6814E30B4B00C40DAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A99CBD6914E30B4B00C40DAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A99CBD6B14E30B4B00C40DAC /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		A99CBD6B14E30B4B00C40DAC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		A99CBD6C14E30B4B00C40DAC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		A99CBD6F14E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		A9AAEBAC14E31E1E00F174E7 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = resources/background.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,12 +94,22 @@
 		A99CBD6014E30B4B00C40DAC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A9AAEBA814E31D6C00F174E7 /* images */,
 				A99CBD6114E30B4B00C40DAC /* Annotate23D-Info.plist */,
 				A99CBD6214E30B4B00C40DAC /* InfoPlist.strings */,
 				A99CBD6514E30B4B00C40DAC /* main.m */,
 				A99CBD6714E30B4B00C40DAC /* Annotate23D-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A9AAEBA814E31D6C00F174E7 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				A9955ADE14E3209100B87DB9 /* bunny.png */,
+				A9AAEBAC14E31E1E00F174E7 /* background.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +164,8 @@
 			files = (
 				A99CBD6414E30B4B00C40DAC /* InfoPlist.strings in Resources */,
 				A99CBD7014E30B4B00C40DAC /* ViewController.xib in Resources */,
+				A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */,
+				A9955ADF14E3209100B87DB9 /* bunny.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +254,8 @@
 		A99CBD7414E30B4B00C40DAC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
@@ -249,6 +267,8 @@
 		A99CBD7514E30B4B00C40DAC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
@@ -276,6 +296,7 @@
 				A99CBD7514E30B4B00C40DAC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

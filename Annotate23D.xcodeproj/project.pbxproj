@@ -1,0 +1,283 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A99CBD5A14E30B4A00C40DAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5914E30B4A00C40DAC /* UIKit.framework */; };
+		A99CBD5C14E30B4A00C40DAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5B14E30B4A00C40DAC /* Foundation.framework */; };
+		A99CBD5E14E30B4A00C40DAC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5D14E30B4A00C40DAC /* CoreGraphics.framework */; };
+		A99CBD6414E30B4B00C40DAC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A99CBD6214E30B4B00C40DAC /* InfoPlist.strings */; };
+		A99CBD6614E30B4B00C40DAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A99CBD6514E30B4B00C40DAC /* main.m */; };
+		A99CBD6A14E30B4B00C40DAC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A99CBD6914E30B4B00C40DAC /* AppDelegate.m */; };
+		A99CBD6D14E30B4B00C40DAC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A99CBD6C14E30B4B00C40DAC /* ViewController.m */; };
+		A99CBD7014E30B4B00C40DAC /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A99CBD6E14E30B4B00C40DAC /* ViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A99CBD5514E30B4A00C40DAC /* Annotate23D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Annotate23D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A99CBD5914E30B4A00C40DAC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A99CBD5B14E30B4A00C40DAC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A99CBD5D14E30B4A00C40DAC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A99CBD6114E30B4B00C40DAC /* Annotate23D-Info.plist */ = {isa = PBXFileReference; path = "Annotate23D-Info.plist"; sourceTree = "<group>"; };
+		A99CBD6314E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A99CBD6514E30B4B00C40DAC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A99CBD6714E30B4B00C40DAC /* Annotate23D-Prefix.pch */ = {isa = PBXFileReference; path = "Annotate23D-Prefix.pch"; sourceTree = "<group>"; };
+		A99CBD6814E30B4B00C40DAC /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		A99CBD6914E30B4B00C40DAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A99CBD6B14E30B4B00C40DAC /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		A99CBD6C14E30B4B00C40DAC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A99CBD6F14E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A99CBD5214E30B4A00C40DAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A99CBD5A14E30B4A00C40DAC /* UIKit.framework in Frameworks */,
+				A99CBD5C14E30B4A00C40DAC /* Foundation.framework in Frameworks */,
+				A99CBD5E14E30B4A00C40DAC /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A99CBD4A14E30B4A00C40DAC = {
+			isa = PBXGroup;
+			children = (
+				A99CBD5F14E30B4A00C40DAC /* Annotate23D */,
+				A99CBD5814E30B4A00C40DAC /* Frameworks */,
+				A99CBD5614E30B4A00C40DAC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A99CBD5614E30B4A00C40DAC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A99CBD5514E30B4A00C40DAC /* Annotate23D.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A99CBD5814E30B4A00C40DAC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A99CBD5914E30B4A00C40DAC /* UIKit.framework */,
+				A99CBD5B14E30B4A00C40DAC /* Foundation.framework */,
+				A99CBD5D14E30B4A00C40DAC /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A99CBD5F14E30B4A00C40DAC /* Annotate23D */ = {
+			isa = PBXGroup;
+			children = (
+				A99CBD6814E30B4B00C40DAC /* AppDelegate.h */,
+				A99CBD6914E30B4B00C40DAC /* AppDelegate.m */,
+				A99CBD6B14E30B4B00C40DAC /* ViewController.h */,
+				A99CBD6C14E30B4B00C40DAC /* ViewController.m */,
+				A99CBD6E14E30B4B00C40DAC /* ViewController.xib */,
+				A99CBD6014E30B4B00C40DAC /* Supporting Files */,
+			);
+			path = Annotate23D;
+			sourceTree = "<group>";
+		};
+		A99CBD6014E30B4B00C40DAC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A99CBD6114E30B4B00C40DAC /* Annotate23D-Info.plist */,
+				A99CBD6214E30B4B00C40DAC /* InfoPlist.strings */,
+				A99CBD6514E30B4B00C40DAC /* main.m */,
+				A99CBD6714E30B4B00C40DAC /* Annotate23D-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A99CBD5414E30B4A00C40DAC /* Annotate23D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A99CBD7314E30B4B00C40DAC /* Build configuration list for PBXNativeTarget "Annotate23D" */;
+			buildPhases = (
+				A99CBD5114E30B4A00C40DAC /* Sources */,
+				A99CBD5214E30B4A00C40DAC /* Frameworks */,
+				A99CBD5314E30B4A00C40DAC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Annotate23D;
+			productName = Annotate23D;
+			productReference = A99CBD5514E30B4A00C40DAC /* Annotate23D.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A99CBD4C14E30B4A00C40DAC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = A99CBD4F14E30B4A00C40DAC /* Build configuration list for PBXProject "Annotate23D" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A99CBD4A14E30B4A00C40DAC;
+			productRefGroup = A99CBD5614E30B4A00C40DAC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A99CBD5414E30B4A00C40DAC /* Annotate23D */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A99CBD5314E30B4A00C40DAC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A99CBD6414E30B4B00C40DAC /* InfoPlist.strings in Resources */,
+				A99CBD7014E30B4B00C40DAC /* ViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A99CBD5114E30B4A00C40DAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A99CBD6614E30B4B00C40DAC /* main.m in Sources */,
+				A99CBD6A14E30B4B00C40DAC /* AppDelegate.m in Sources */,
+				A99CBD6D14E30B4B00C40DAC /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A99CBD6214E30B4B00C40DAC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A99CBD6314E30B4B00C40DAC /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A99CBD6E14E30B4B00C40DAC /* ViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A99CBD6F14E30B4B00C40DAC /* en */,
+			);
+			name = ViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A99CBD7114E30B4B00C40DAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		A99CBD7214E30B4B00C40DAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A99CBD7414E30B4B00C40DAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
+				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A99CBD7514E30B4B00C40DAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
+				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A99CBD4F14E30B4A00C40DAC /* Build configuration list for PBXProject "Annotate23D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A99CBD7114E30B4B00C40DAC /* Debug */,
+				A99CBD7214E30B4B00C40DAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A99CBD7314E30B4B00C40DAC /* Build configuration list for PBXNativeTarget "Annotate23D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A99CBD7414E30B4B00C40DAC /* Debug */,
+				A99CBD7514E30B4B00C40DAC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A99CBD4C14E30B4A00C40DAC /* Project object */;
+}

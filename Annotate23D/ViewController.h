@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
 #import "PopoverFileMenu.h"
+#import "GlkRenderer.h"
 
 @interface ViewController : UIViewController <
     UIImagePickerControllerDelegate,
     UINavigationControllerDelegate,
-    FileMenuDelegate>
+    FileMenuDelegate> {
+  GlkRenderer* renderer;
+}
 
 @property (weak, nonatomic) IBOutlet UIView *drawView;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
@@ -20,6 +24,8 @@
 @property (nonatomic, retain) PopoverFileMenu *fileMenu;
 @property (weak, nonatomic) UIButton *fileButton;
 @property (nonatomic, retain) UIImagePickerController *imagePickerController;
+@property (weak, nonatomic) IBOutlet GLKView *glkView;
+@property (strong, nonatomic) EAGLContext *context;
 
 -(IBAction)showFileMenu:(id)sender;
 -(IBAction)selectButton:(id)sender;

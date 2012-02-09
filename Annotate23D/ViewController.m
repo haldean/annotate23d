@@ -9,10 +9,9 @@
 #import "ViewController.h"
 
 @implementation ViewController
-@synthesize drawView;
-@synthesize backgroundImageView;
-@synthesize fileMenu, fileButton, popoverController;
-@synthesize imagePickerController;
+@synthesize drawView, backgroundImageView;
+@synthesize fileMenu, fileButton, popoverController, imagePickerController;
+@synthesize glkView, context;
 
 - (void)didReceiveMemoryWarning
 {
@@ -25,6 +24,13 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+  renderer = [[GlkRenderer alloc] init];
+  glkView.context = self.context;
+  glkView.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+  glkView.delegate = renderer;
+  glkView.backgroundColor = [UIColor greenColor];
   
   UIPanGestureRecognizer *panGestureRecognizer = 
       [[UIPanGestureRecognizer alloc]
@@ -41,6 +47,7 @@
 {
   [self setDrawView:nil];
   [self setBackgroundImageView:nil];
+  [self setGlkView:nil];
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
@@ -104,9 +111,8 @@
 }
 
 - (void)loadNewBackgroundImage {
-  NSLog(@"Load new background image");
+  // Hide file menu first.
   [popoverController dismissPopoverAnimated:YES];
-  
   popoverController = [[UIPopoverController alloc]
                        initWithContentViewController:imagePickerController];
   [popoverController

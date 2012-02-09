@@ -36,6 +36,12 @@
       [[UIPanGestureRecognizer alloc]
        initWithTarget:self action:@selector(handlePan:)];
   [drawView addGestureRecognizer:panGestureRecognizer];
+  
+  UIPinchGestureRecognizer *pinchGestureRecognizer =
+      [[UIPinchGestureRecognizer alloc]
+       initWithTarget:self action:@selector(handlePinch:)];
+  [drawView addGestureRecognizer:pinchGestureRecognizer];
+  
   [drawView setBackgroundColor:[UIColor clearColor]];
   
   self.imagePickerController = [[UIImagePickerController alloc] init];
@@ -89,6 +95,21 @@
                  view.center.y + translation.y)];
     [sender setTranslation:CGPointZero inView:view.superview];
   }
+}
+
+- (void)handlePinch:(UIPinchGestureRecognizer*)sender {
+  if ([(UIPinchGestureRecognizer*) sender state] == UIGestureRecognizerStateEnded) {
+		imageScale = 1.0;
+		return;
+	}
+  
+	CGFloat scale = 1.0 - (imageScale - [(UIPinchGestureRecognizer*)sender scale]);
+	CGAffineTransform currentTransform = [(UIPinchGestureRecognizer*)sender view].transform;
+	CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+  
+	[[(UIPinchGestureRecognizer*)sender view] setTransform:newTransform];
+  
+	imageScale = [(UIPinchGestureRecognizer*)sender scale];
 }
 
 - (void)showFileMenu:(id)sender {

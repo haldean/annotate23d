@@ -12,10 +12,9 @@
 #import "GlkRenderer.h"
 
 @interface ViewController : UIViewController <
-    UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate,
-    FileMenuDelegate> {
+UIImagePickerControllerDelegate, UINavigationControllerDelegate, FileMenuDelegate> {
   GlkRenderer* renderer;
+  CGFloat imageScale;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *drawView;

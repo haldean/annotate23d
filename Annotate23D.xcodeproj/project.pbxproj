@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
+		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
+		A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */; };
 		A99CBD5A14E30B4A00C40DAC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5914E30B4A00C40DAC /* UIKit.framework */; };
 		A99CBD5C14E30B4A00C40DAC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5B14E30B4A00C40DAC /* Foundation.framework */; };
 		A99CBD5E14E30B4A00C40DAC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5D14E30B4A00C40DAC /* CoreGraphics.framework */; };
@@ -21,6 +23,9 @@
 
 /* Begin PBXFileReference section */
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
+		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
+		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
+		A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopoverFileMenu.xib; sourceTree = "<group>"; };
 		A99CBD5514E30B4A00C40DAC /* Annotate23D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Annotate23D.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99CBD5914E30B4A00C40DAC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A99CBD5B14E30B4A00C40DAC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -86,6 +91,9 @@
 				A99CBD6B14E30B4B00C40DAC /* ViewController.h */,
 				A99CBD6C14E30B4B00C40DAC /* ViewController.m */,
 				A99CBD6E14E30B4B00C40DAC /* ViewController.xib */,
+				A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */,
+				A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */,
+				A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */,
 				A99CBD6014E30B4B00C40DAC /* Supporting Files */,
 			);
 			path = Annotate23D;
@@ -166,6 +174,7 @@
 				A99CBD7014E30B4B00C40DAC /* ViewController.xib in Resources */,
 				A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */,
 				A9955ADF14E3209100B87DB9 /* bunny.png in Resources */,
+				A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +188,7 @@
 				A99CBD6614E30B4B00C40DAC /* main.m in Sources */,
 				A99CBD6A14E30B4B00C40DAC /* AppDelegate.m in Sources */,
 				A99CBD6D14E30B4B00C40DAC /* ViewController.m in Sources */,
+				A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

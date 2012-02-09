@@ -9,6 +9,10 @@
 #import "ViewController.h"
 
 @implementation ViewController
+@synthesize drawView;
+@synthesize backgroundImageView;
+@synthesize fileMenu, fileButton, popoverController;
+@synthesize imagePickerController;
 
 - (void)didReceiveMemoryWarning
 {
@@ -21,13 +25,22 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
   UIPanGestureRecognizer *panGestureRecognizer = 
       [[UIPanGestureRecognizer alloc]
        initWithTarget:self action:@selector(handlePan:)];
+  [drawView addGestureRecognizer:panGestureRecognizer];
+  [drawView setBackgroundColor:[UIColor clearColor]];
+  
+  self.imagePickerController = [[UIImagePickerController alloc] init];
+  self.imagePickerController.delegate = self;
+  self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 }
 
 - (void)viewDidUnload
 {
+  [self setDrawView:nil];
+  [self setBackgroundImageView:nil];
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
@@ -59,14 +72,60 @@
   return YES;
 }
 
-- (void)handlePan:(UIGestureRecognizer *)sender {
-  NSLog(@"Detected pan gesture.");
+- (void)handlePan:(UIPanGestureRecognizer *)sender {
+  if (sender.state == UIGestureRecognizerStateBegan ||
+      sender.state == UIGestureRecognizerStateChanged) {
+    UIView *view = sender.view;
+    CGPoint translation = [sender translationInView:view.superview];
+    [view setCenter:
+     CGPointMake(view.center.x + translation.x,
+                 view.center.y + translation.y)];
+    [sender setTranslation:CGPointZero inView:view.superview];
+  }
 }
 
+- (void)showFileMenu:(id)sender {
+  if ([popoverController isPopoverVisible]){
+    [popoverController dismissPopoverAnimated:YES];
+  } else {
+		fileMenu = [[PopoverFileMenu alloc]
+                initWithNibName:@"PopoverFileMenu" bundle:nil];
+    fileMenu.delegate = self;
+    
+		popoverController = [[UIPopoverController alloc]
+                          initWithContentViewController:fileMenu];
+		[popoverController setPopoverContentSize:CGSizeMake(422.0, 44.0)];
+    [popoverController
+     presentPopoverFromRect:CGRectMake(20, 20, 101, 37)
+     inView:self.view
+     permittedArrowDirections:UIPopoverArrowDirectionAny
+     animated:YES];
+	}
+}
+
+- (void)loadNewBackgroundImage {
+  NSLog(@"Load new background image");
+  [popoverController dismissPopoverAnimated:YES];
+  
+  popoverController = [[UIPopoverController alloc]
+                       initWithContentViewController:imagePickerController];
+  [popoverController
+   presentPopoverFromRect:CGRectMake(20, 20, 101, 37)
+   inView:self.view
+   permittedArrowDirections:UIPopoverArrowDirectionLeft
+   animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+    didFinishPickingMediaWithInfo:(NSDictionary *)info {
+  UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+  [self.backgroundImageView setImage:image];
+}
+  
 - (void)buttonClick:(NSString*)toolName {
   UIAlertView *message =
   [[UIAlertView alloc]
-   initWithTitle:@"Tool clicked"
+   initWithTitle:@"Tool selected"
    message:[NSString stringWithFormat:@"You selected the %@ tool.", toolName]
    delegate:nil
    cancelButtonTitle:@"Thanks!"

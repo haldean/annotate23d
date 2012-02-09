@@ -7,9 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PopoverFileMenu.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate,
+    FileMenuDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *drawView;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, retain) PopoverFileMenu *fileMenu;
+@property (weak, nonatomic) UIButton *fileButton;
+@property (nonatomic, retain) UIImagePickerController *imagePickerController;
+
+-(IBAction)showFileMenu:(id)sender;
 -(IBAction)selectButton:(id)sender;
 -(IBAction)splineButton:(id)sender;
 -(IBAction)cuboidButton:(id)sender;
@@ -25,4 +37,8 @@
 -(void)buttonClick:(NSString*)toolName;
 
 -(void)handlePan:(UIGestureRecognizer*)sender;
+
+-(void)loadNewBackgroundImage;
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+
 @end

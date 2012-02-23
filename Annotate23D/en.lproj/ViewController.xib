@@ -61,7 +61,22 @@
 									<string key="NSResourceName">bunny.png</string>
 								</object>
 							</object>
-							<object class="IBUIView" id="251111707">
+							<object class="IBUIView" id="372038490">
+								<reference key="NSNextResponder" ref="937944219"/>
+								<int key="NSvFlags">274</int>
+								<string key="NSFrame">{{0, -29}, {768, 1062}}</string>
+								<reference key="NSSuperview" ref="937944219"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="1062244559"/>
+								<string key="NSReuseIdentifierKey">_NS:212</string>
+								<object class="NSColor" key="IBUIBackgroundColor" id="83174246">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
+								<float key="IBUIAlpha">0.80000001192092896</float>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+							</object>
+							<object class="IBUIView" id="1062244559">
 								<reference key="NSNextResponder" ref="937944219"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{768, 1062}</string>
@@ -69,10 +84,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="777177043"/>
 								<string key="NSReuseIdentifierKey">_NS:212</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="83174246"/>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -80,7 +92,7 @@
 						<string key="NSFrame">{{0, -58}, {768, 1004}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="251111707"/>
+						<reference key="NSNextKeyView" ref="372038490"/>
 						<string key="NSReuseIdentifierKey">_NS:212</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -138,7 +150,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Spline</string>
+						<string key="IBUINormalTitle">Cylinder</string>
 						<reference key="IBUIHighlightedTitleColor" ref="799512240"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -416,9 +428,17 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">drawPreview</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="251111707"/>
+						<reference key="destination" ref="1062244559"/>
 					</object>
 					<int key="connectionID">62</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">workspace</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="372038490"/>
+					</object>
+					<int key="connectionID">64</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -579,7 +599,8 @@
 						<reference key="object" ref="937944219"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="777177043"/>
-							<reference ref="251111707"/>
+							<reference ref="1062244559"/>
+							<reference ref="372038490"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -635,7 +656,13 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">61</int>
-						<reference key="object" ref="251111707"/>
+						<reference key="object" ref="1062244559"/>
+						<array class="NSMutableArray" key="children"/>
+						<reference key="parent" ref="937944219"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">63</int>
+						<reference key="object" ref="372038490"/>
 						<reference key="parent" ref="937944219"/>
 					</object>
 				</array>
@@ -668,6 +695,8 @@
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="61.CustomClassName">DrawPreviewUIView</string>
 				<string key="61.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="63.CustomClassName">WorkspaceUIView</string>
+				<string key="63.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -675,7 +704,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">62</int>
+			<int key="maxID">64</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -754,6 +783,7 @@
 						<string key="drawPreview">DrawPreviewUIView</string>
 						<string key="drawView">UIView</string>
 						<string key="glkView">GLKView</string>
+						<string key="workspace">WorkspaceUIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="backgroundImageView">
@@ -772,10 +802,22 @@
 							<string key="name">glkView</string>
 							<string key="candidateClassName">GLKView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="workspace">
+							<string key="name">workspace</string>
+							<string key="candidateClassName">WorkspaceUIView</string>
+						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/ViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WorkspaceUIView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WorkspaceUIView.h</string>
 					</object>
 				</object>
 			</array>

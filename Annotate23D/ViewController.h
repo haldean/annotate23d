@@ -11,6 +11,7 @@
 #import "PopoverFileMenu.h"
 #import "DrawPreviewUIView.h"
 #import "GlkRenderer.h"
+#import "WorkspaceUIView.h"
 
 typedef enum {
   SELECT,
@@ -26,7 +27,11 @@ typedef enum {
 } ToolMode;
 
 @interface ViewController : UIViewController <
-UIImagePickerControllerDelegate, UINavigationControllerDelegate, FileMenuDelegate> {
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate,
+FileMenuDelegate,
+ReceivesDrawEvents> {
+  
   GlkRenderer* renderer;
   CGFloat imageScale;
   UIPanGestureRecognizer *panGestureRecognizer;
@@ -43,6 +48,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, FileMenuDelegat
 @property (weak, nonatomic) IBOutlet GLKView *glkView;
 @property (strong, nonatomic) EAGLContext *context;
 @property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
+@property (weak, nonatomic) IBOutlet WorkspaceUIView *workspace;
 
 -(IBAction)showFileMenu:(id)sender;
 -(IBAction)selectButton:(id)sender;

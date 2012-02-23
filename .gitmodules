@@ -1,0 +1,3 @@
+[submodule "include/cocoa-linear"]
+	path = include/cocoa-linear
+	url = https://github.com/brow/cocoa-linear.git

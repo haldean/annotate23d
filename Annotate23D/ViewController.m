@@ -10,6 +10,7 @@
 
 @implementation ViewController
 @synthesize drawPreview;
+@synthesize workspace;
 @synthesize drawView, backgroundImageView;
 @synthesize fileMenu, fileButton, popoverController, imagePickerController;
 @synthesize glkView, context;
@@ -48,6 +49,9 @@
   self.imagePickerController = [[UIImagePickerController alloc] init];
   self.imagePickerController.delegate = self;
   self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+  
+  [drawPreview setDelegate:self];
+  [workspace setFrame:drawPreview.frame];
 }
 
 - (void)viewDidUnload
@@ -56,6 +60,7 @@
   [self setBackgroundImageView:nil];
   [self setGlkView:nil];
   [self setDrawPreview:nil];
+  [self setWorkspace:nil];
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
@@ -150,13 +155,21 @@
   UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
   [self.backgroundImageView setImage:image];
 }
-  
+
+- (void)onPathDraw:(NSMutableArray *)points {
+  if (currentTool == SPLINE) {
+    Cylinderoid* cyl = [Cylinderoid cylinderoidWithPoints:points];
+    [workspace addCylinderoid:cyl];
+  } else {
+    NSLog(@"You still need to implement ellipsoid adding in ViewController");
+  }
+}
+
 - (void)buttonClick:(ToolMode)tool {
   currentTool = tool;
   
   NSString* toolName;
   bool enableGestures;
-  NSLog(@"tool %d", tool);
   
   switch (tool) {
     case SELECT:

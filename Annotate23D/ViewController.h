@@ -34,9 +34,11 @@ ReceivesDrawEvents> {
   
   GlkRenderer* renderer;
   CGFloat imageScale;
+  CGFloat currentRotation;
   UIPanGestureRecognizer *panGestureRecognizer;
   UIPinchGestureRecognizer *pinchGestureRecognizer;
   UITapGestureRecognizer *tapGestureRecognizer;
+  UIRotationGestureRecognizer *rotationGestureRecognizer;
   ToolMode currentTool;
   bool shapeIsSelected;
 }
@@ -69,6 +71,7 @@ ReceivesDrawEvents> {
 -(void)handlePan:(UIGestureRecognizer*)sender;
 -(void)handleTap:(UIGestureRecognizer*)sender;
 -(void)handlePinch:(UIGestureRecognizer*)sender;
+-(void)handleRotate:(UIGestureRecognizer*)sender;
 
 -(void)newSketch;
 -(void)loadNewBackgroundImage;

@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Cylinderoid : NSObject 
+@interface Cylinderoid : NSObject {
+  CGPoint com;
+}
 
 @property (strong) NSMutableArray* spine;
 @property (strong) NSMutableArray* radii;
@@ -17,6 +19,8 @@
 - (void)calculateSurfacePoints;
 - (bool)pointInside:(CGPoint)point;
 - (void)translate:(CGPoint)translate;
+- (void)scaleBy:(CGFloat)factor;
+- (void)rotateBy:(CGFloat)angle;
 
 + (Cylinderoid*)cylinderoidWithPoints:(NSArray*)points;
 

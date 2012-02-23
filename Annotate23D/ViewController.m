@@ -49,6 +49,11 @@
        initWithTarget:self action:@selector(handleTap:)];
   [drawView addGestureRecognizer:tapGestureRecognizer];
   
+  rotationGestureRecognizer =
+      [[UIRotationGestureRecognizer alloc]
+       initWithTarget:self action:@selector(handleRotate:)];
+  [drawView addGestureRecognizer:rotationGestureRecognizer];
+  
   [drawView setBackgroundColor:[UIColor clearColor]];
   
   self.imagePickerController = [[UIImagePickerController alloc] init];
@@ -121,13 +126,31 @@
 		return;
 	}
   
-	CGFloat scale = 1.0 - (imageScale - [(UIPinchGestureRecognizer*)sender scale]);
-	CGAffineTransform currentTransform = [(UIPinchGestureRecognizer*)sender view].transform;
-	CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+  CGFloat raw = [(UIPinchGestureRecognizer*)sender scale];
+  CGFloat scale = 1.0 - (imageScale - raw);
   
-	[[(UIPinchGestureRecognizer*)sender view] setTransform:newTransform];
+  if (shapeIsSelected) {
+    [workspace scaleSelectedShape:scale];
+  } else {
+    CGAffineTransform currentTransform = [(UIPinchGestureRecognizer*)sender view].transform;
+    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+	  [[(UIPinchGestureRecognizer*)sender view] setTransform:newTransform];
+  }
   
-	imageScale = [(UIPinchGestureRecognizer*)sender scale];
+  imageScale = raw;
+}
+
+- (void)handleRotate:(UIGestureRecognizer *)sender {
+  if (!shapeIsSelected || 
+      [(UIRotationGestureRecognizer*) sender state] == UIGestureRecognizerStateEnded) {
+		currentRotation = 1.0;
+		return;
+	}
+  
+  CGFloat raw = [(UIRotationGestureRecognizer*)sender rotation];
+  CGFloat angle = raw - currentRotation;
+  [workspace rotateSelectedShape:angle];
+  currentRotation = raw;
 }
 
 - (void)handleTap:(UIGestureRecognizer *)sender {
@@ -218,6 +241,7 @@
   
   [panGestureRecognizer setEnabled:enableGestures];
   [pinchGestureRecognizer setEnabled:enableGestures];
+  [rotationGestureRecognizer setEnabled:enableGestures];
   [drawPreview setCanHandleClicks:!enableGestures];
   
   UIAlertView *message =

@@ -49,7 +49,20 @@
 }
 
 - (void)translateSelectedShape:(CGPoint)translation {
+  if (selectedIndex < 0) return;
   [[cylinderoids objectAtIndex:selectedIndex] translate:translation];
+  [self setNeedsDisplay];
+}
+
+- (void)scaleSelectedShape:(CGFloat)factor {
+  if (selectedIndex < 0) return;
+  [[cylinderoids objectAtIndex:selectedIndex] scaleBy:factor];
+  [self setNeedsDisplay];
+}
+
+- (void)rotateSelectedShape:(CGFloat)angle {
+  if (selectedIndex < 0) return;
+  [[cylinderoids objectAtIndex:selectedIndex] rotateBy:angle];
   [self setNeedsDisplay];
 }
 

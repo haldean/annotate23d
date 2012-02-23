@@ -18,6 +18,8 @@
 
 - (bool)selectAtPoint:(CGPoint)point;
 - (void)translateSelectedShape:(CGPoint)translation;
+- (void)scaleSelectedShape:(CGFloat)factor;
+- (void)rotateSelectedShape:(CGFloat)angle;
 - (void)addCylinderoid:(Cylinderoid*)cyl;
 //- (void)addEllipsoid:(Ellipsoid*)ell;
 

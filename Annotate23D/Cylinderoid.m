@@ -111,9 +111,21 @@
   }
 }
 
-- (void)translate:(CGPoint)translate {
-  NSLog(@"translate by %f, %f", translate.x, translate.y);
+- (void)calculateCoM {
+  com.x = 0; com.y = 0;
+  CGPoint a;
   
+  for (int i = 0; i < [spine count]; i++) {
+    a = [[spine objectAtIndex:i] CGPointValue];
+    com.x += a.x;
+    com.y += a.y;
+  }
+  
+  com.x /= [spine count];
+  com.y /= [spine count];
+}
+
+- (void)translate:(CGPoint)translate {
   for (int i = 0; i < [spine count]; i++) {
     CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
     cgpt.x += translate.x;
@@ -127,6 +139,50 @@
     cgpt.y += translate.y;
     [surfacePoints replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
   }
+  
+  com.x += translate.x;
+  com.y += translate.y;
+}
+
+- (void)scaleBy:(CGFloat)factor {
+  CGPoint trans = CGPointMake(-com.x, -com.y);
+  [self translate:trans];
+  
+  for (int i = 0; i < [spine count]; i++) {
+    CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
+    cgpt.x *= factor;
+    cgpt.y *= factor;
+    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
+  }
+  
+  for (int i = 0; i < [surfacePoints count]; i++) {
+    CGPoint cgpt = [[surfacePoints objectAtIndex:i] CGPointValue];
+    cgpt.x *= factor;
+    cgpt.y *= factor;
+    [surfacePoints replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
+  }
+  
+  [self translate:CGPointMake(-trans.x, -trans.y)];
+}
+
+- (void)rotateBy:(CGFloat)angle {
+  CGPoint trans = CGPointMake(-com.x, -com.y);
+  [self translate:trans];
+  
+  CGAffineTransform rotation = CGAffineTransformMakeRotation(angle);
+  for (int i = 0; i < [spine count]; i++) {
+    CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
+    cgpt = CGPointApplyAffineTransform(cgpt, rotation);
+    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
+  }
+  
+  for (int i = 0; i < [surfacePoints count]; i++) {
+    CGPoint cgpt = [[surfacePoints objectAtIndex:i] CGPointValue];
+    cgpt = CGPointApplyAffineTransform(cgpt, rotation);
+    [surfacePoints replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
+  }
+  
+  [self translate:CGPointMake(-trans.x, -trans.y)];
 }
 
 + (Cylinderoid*)cylinderoidWithPoints:(NSArray *)points {
@@ -140,6 +196,7 @@
   
   [cyl setSurfacePoints:[[NSMutableArray alloc] initWithCapacity:2*[points count]]];
   [cyl calculateSurfacePoints];
+  [cyl calculateCoM];
   
   return cyl;
 }

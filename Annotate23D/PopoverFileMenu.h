@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @protocol FileMenuDelegate
+-(void)newSketch;
 -(void)loadNewBackgroundImage;
 @end
 
 @interface PopoverFileMenu : UIViewController
 @property (nonatomic, assign) id<FileMenuDelegate> delegate;
--(IBAction)loadBackgroundImage:(id)sender;
+- (IBAction)loadBackgroundImage:(id)sender;
+- (IBAction)newSketch:(id)sender;
 @end
 
 

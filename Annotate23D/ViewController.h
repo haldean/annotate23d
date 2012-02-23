@@ -36,7 +36,9 @@ ReceivesDrawEvents> {
   CGFloat imageScale;
   UIPanGestureRecognizer *panGestureRecognizer;
   UIPinchGestureRecognizer *pinchGestureRecognizer;
+  UITapGestureRecognizer *tapGestureRecognizer;
   ToolMode currentTool;
+  bool shapeIsSelected;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *drawView;
@@ -65,7 +67,10 @@ ReceivesDrawEvents> {
 -(void)buttonClick:(ToolMode)tool;
 
 -(void)handlePan:(UIGestureRecognizer*)sender;
+-(void)handleTap:(UIGestureRecognizer*)sender;
+-(void)handlePinch:(UIGestureRecognizer*)sender;
 
+-(void)newSketch;
 -(void)loadNewBackgroundImage;
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 

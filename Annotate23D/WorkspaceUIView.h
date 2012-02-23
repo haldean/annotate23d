@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Cylinderoid.h"
 
-@interface WorkspaceUIView : UIView
+@interface WorkspaceUIView : UIView {
+  int selectedIndex;
+}
 
 @property (strong) NSMutableArray *cylinderoids;
 @property (strong) NSMutableArray *ellipsoids;
 
+- (bool)selectAtPoint:(CGPoint)point;
+- (void)translateSelectedShape:(CGPoint)translation;
 - (void)addCylinderoid:(Cylinderoid*)cyl;
 //- (void)addEllipsoid:(Ellipsoid*)ell;
 

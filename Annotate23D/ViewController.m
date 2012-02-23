@@ -44,6 +44,11 @@
        initWithTarget:self action:@selector(handlePinch:)];
   [drawView addGestureRecognizer:pinchGestureRecognizer];
   
+  tapGestureRecognizer =
+      [[UITapGestureRecognizer alloc]
+       initWithTarget:self action:@selector(handleTap:)];
+  [drawView addGestureRecognizer:tapGestureRecognizer];
+  
   [drawView setBackgroundColor:[UIColor clearColor]];
   
   self.imagePickerController = [[UIImagePickerController alloc] init];
@@ -97,9 +102,15 @@
       sender.state == UIGestureRecognizerStateChanged) {
     UIView *view = sender.view;
     CGPoint translation = [sender translationInView:view.superview];
-    [view setCenter:
-     CGPointMake(view.center.x + translation.x,
-                 view.center.y + translation.y)];
+    
+    if (shapeIsSelected) {
+      [workspace translateSelectedShape:translation];
+    } else {
+      [view setCenter:
+       CGPointMake(view.center.x + translation.x,
+                   view.center.y + translation.y)];
+    }
+    
     [sender setTranslation:CGPointZero inView:view.superview];
   }
 }
@@ -119,6 +130,12 @@
 	imageScale = [(UIPinchGestureRecognizer*)sender scale];
 }
 
+- (void)handleTap:(UIGestureRecognizer *)sender {
+  if (currentTool == SELECT) {
+    shapeIsSelected = [workspace selectAtPoint:[sender locationInView:sender.view]];
+  }
+}
+
 - (void)showFileMenu:(id)sender {
   if ([popoverController isPopoverVisible]){
     [popoverController dismissPopoverAnimated:YES];
@@ -136,6 +153,12 @@
      permittedArrowDirections:UIPopoverArrowDirectionAny
      animated:YES];
 	}
+}
+
+- (void)newSketch {
+  [[workspace ellipsoids] removeAllObjects];
+  [[workspace cylinderoids] removeAllObjects];
+  [workspace setNeedsDisplay];
 }
 
 - (void)loadNewBackgroundImage {

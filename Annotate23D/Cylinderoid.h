@@ -15,6 +15,8 @@
 @property (strong) NSMutableArray* surfacePoints;
 
 - (void)calculateSurfacePoints;
+- (bool)pointInside:(CGPoint)point;
+- (void)translate:(CGPoint)translate;
 
 + (Cylinderoid*)cylinderoidWithPoints:(NSArray*)points;
 

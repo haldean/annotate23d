@@ -54,4 +54,7 @@
   [self.delegate loadNewBackgroundImage];
 }
 
+- (IBAction)newSketch:(id)sender {
+  [self.delegate newSketch];
+}
 @end

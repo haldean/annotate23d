@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @implementation ViewController
+@synthesize drawPreview;
 @synthesize drawView, backgroundImageView;
 @synthesize fileMenu, fileButton, popoverController, imagePickerController;
 @synthesize glkView, context;
@@ -32,12 +33,12 @@
   glkView.delegate = renderer;
   glkView.backgroundColor = [UIColor greenColor];
   
-  UIPanGestureRecognizer *panGestureRecognizer = 
+  panGestureRecognizer = 
       [[UIPanGestureRecognizer alloc]
        initWithTarget:self action:@selector(handlePan:)];
   [drawView addGestureRecognizer:panGestureRecognizer];
   
-  UIPinchGestureRecognizer *pinchGestureRecognizer =
+  pinchGestureRecognizer =
       [[UIPinchGestureRecognizer alloc]
        initWithTarget:self action:@selector(handlePinch:)];
   [drawView addGestureRecognizer:pinchGestureRecognizer];
@@ -54,6 +55,7 @@
   [self setDrawView:nil];
   [self setBackgroundImageView:nil];
   [self setGlkView:nil];
+  [self setDrawPreview:nil];
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
@@ -149,7 +151,39 @@
   [self.backgroundImageView setImage:image];
 }
   
-- (void)buttonClick:(NSString*)toolName {
+- (void)buttonClick:(ToolMode)tool {
+  currentTool = tool;
+  
+  NSString* toolName;
+  bool enableGestures;
+  NSLog(@"tool %d", tool);
+  
+  switch (tool) {
+    case SELECT:
+      toolName = @"select";
+      enableGestures = true;
+      break;
+      
+    case SPLINE:
+      toolName = @"cylinder";
+      enableGestures = false;
+      break;
+      
+    case ELLIPSE:
+      toolName = @"ellipse";
+      enableGestures = false;
+      break;
+      
+    default:
+      toolName = @"[not implemented]";
+      enableGestures = true;
+      break;
+  }
+  
+  [panGestureRecognizer setEnabled:enableGestures];
+  [pinchGestureRecognizer setEnabled:enableGestures];
+  [drawPreview setCanHandleClicks:!enableGestures];
+  
   UIAlertView *message =
   [[UIAlertView alloc]
    initWithTitle:@"Tool selected"
@@ -161,47 +195,43 @@
 }
 
 - (IBAction)selectButton:(id)sender {
-  [self buttonClick:@"select"];
+  [self buttonClick:SELECT];
 }
 
 -(IBAction)splineButton:(id)sender {
-  [self buttonClick:@"spline"];
-}
-
--(IBAction)cuboidButton:(id)sender {
-  [self buttonClick:@"cuboid"];
+  [self buttonClick:SPLINE];
 }
 
 -(IBAction)ellipseButton:(id)sender {
-  [self buttonClick:@"ellipse"];
+  [self buttonClick:ELLIPSE];
 }
 
 -(IBAction)connectButton:(id)sender {
-  [self buttonClick:@"connection"];
+  [self buttonClick:CONNECT];
 }
 
 -(IBAction)sameTiltButton:(id)sender {
-  [self buttonClick:@"same-tilt annotation"];
+  [self buttonClick:SAME_TILT];
 }
 
 -(IBAction)sameSizeButton:(id)sender {
-  [self buttonClick:@"same-size annotation"];
+  [self buttonClick:SAME_SIZE];
 }
 
 -(IBAction)sameRadiusButton:(id)sender {
-  [self buttonClick:@"same-radius annotation"];
+  [self buttonClick:SAME_RADIUS];
 }
 
 -(IBAction)mirrorShapeButton:(id)sender {
-  [self buttonClick:@"mirror shape"];
+  [self buttonClick:MIRROR_SHAPE];
 }
 
 -(IBAction)alignShapeButton:(id)sender {
-  [self buttonClick:@"align shape"];
+  [self buttonClick:ALIGN_SHAPE];
 }
 
 -(IBAction)centerShapeButton:(id)sender {
-  [self buttonClick:@"center shape"];
+  [self buttonClick:CENTER_SHAPE];
 }
 
 @end

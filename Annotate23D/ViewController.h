@@ -9,12 +9,29 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 #import "PopoverFileMenu.h"
+#import "DrawPreviewUIView.h"
 #import "GlkRenderer.h"
+
+typedef enum {
+  SELECT,
+  SPLINE,
+  ELLIPSE,
+  CONNECT,
+  SAME_TILT,
+  SAME_SIZE,
+  SAME_RADIUS,
+  MIRROR_SHAPE,
+  ALIGN_SHAPE,
+  CENTER_SHAPE
+} ToolMode;
 
 @interface ViewController : UIViewController <
 UIImagePickerControllerDelegate, UINavigationControllerDelegate, FileMenuDelegate> {
   GlkRenderer* renderer;
   CGFloat imageScale;
+  UIPanGestureRecognizer *panGestureRecognizer;
+  UIPinchGestureRecognizer *pinchGestureRecognizer;
+  ToolMode currentTool;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *drawView;
@@ -25,11 +42,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, FileMenuDelegat
 @property (nonatomic, retain) UIImagePickerController *imagePickerController;
 @property (weak, nonatomic) IBOutlet GLKView *glkView;
 @property (strong, nonatomic) EAGLContext *context;
+@property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
 
 -(IBAction)showFileMenu:(id)sender;
 -(IBAction)selectButton:(id)sender;
 -(IBAction)splineButton:(id)sender;
--(IBAction)cuboidButton:(id)sender;
 -(IBAction)ellipseButton:(id)sender;
 -(IBAction)connectButton:(id)sender;
 -(IBAction)sameTiltButton:(id)sender;
@@ -39,7 +56,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, FileMenuDelegat
 -(IBAction)alignShapeButton:(id)sender;
 -(IBAction)centerShapeButton:(id)sender;
 
--(void)buttonClick:(NSString*)toolName;
+-(void)buttonClick:(ToolMode)tool;
 
 -(void)handlePan:(UIGestureRecognizer*)sender;
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9153FF314F57976001BAFDC /* DrawPreviewUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF214F57976001BAFDC /* DrawPreviewUIView.m */; };
+		A9153FF714F5AAFF001BAFDC /* Cylinderoid.m in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF614F5AAFF001BAFDC /* Cylinderoid.m */; };
 		A916CD0314E3BA3500F1D782 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A916CD0214E3BA3500F1D782 /* GLKit.framework */; };
 		A916CD0714E3BBE700F1D782 /* GlkRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = A916CD0614E3BBE700F1D782 /* GlkRenderer.m */; };
 		A916CD0B14E3BF5600F1D782 /* GlkRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A916CD0914E3BF5500F1D782 /* GlkRendererViewController.m */; };
@@ -28,6 +30,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A9153FF114F57976001BAFDC /* DrawPreviewUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawPreviewUIView.h; sourceTree = "<group>"; };
+		A9153FF214F57976001BAFDC /* DrawPreviewUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawPreviewUIView.m; sourceTree = "<group>"; };
+		A9153FF514F5AAFF001BAFDC /* Cylinderoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cylinderoid.h; sourceTree = "<group>"; };
+		A9153FF614F5AAFF001BAFDC /* Cylinderoid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cylinderoid.m; sourceTree = "<group>"; };
 		A916CD0214E3BA3500F1D782 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		A916CD0514E3BBE700F1D782 /* GlkRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlkRenderer.h; sourceTree = "<group>"; };
 		A916CD0614E3BBE700F1D782 /* GlkRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkRenderer.m; sourceTree = "<group>"; };
@@ -113,6 +119,10 @@
 				A99CBD6B14E30B4B00C40DAC /* ViewController.h */,
 				A99CBD6C14E30B4B00C40DAC /* ViewController.m */,
 				A99CBD6E14E30B4B00C40DAC /* ViewController.xib */,
+				A9153FF114F57976001BAFDC /* DrawPreviewUIView.h */,
+				A9153FF214F57976001BAFDC /* DrawPreviewUIView.m */,
+				A9153FF514F5AAFF001BAFDC /* Cylinderoid.h */,
+				A9153FF614F5AAFF001BAFDC /* Cylinderoid.m */,
 				A916CD0814E3BF5500F1D782 /* GlkRendererViewController.h */,
 				A916CD0914E3BF5500F1D782 /* GlkRendererViewController.m */,
 				A916CD0A14E3BF5500F1D782 /* GlkRendererViewController.xib */,
@@ -217,6 +227,8 @@
 				A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */,
 				A916CD0714E3BBE700F1D782 /* GlkRenderer.m in Sources */,
 				A916CD0B14E3BF5600F1D782 /* GlkRendererViewController.m in Sources */,
+				A9153FF314F57976001BAFDC /* DrawPreviewUIView.m in Sources */,
+				A9153FF714F5AAFF001BAFDC /* Cylinderoid.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,12 +304,14 @@
 		A99CBD7414E30B4B00C40DAC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -305,12 +319,14 @@
 		A99CBD7514E30B4B00C40DAC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

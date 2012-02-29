@@ -143,7 +143,7 @@
 - (void)handleRotate:(UIGestureRecognizer *)sender {
   if (!shapeIsSelected || 
       [(UIRotationGestureRecognizer*) sender state] == UIGestureRecognizerStateEnded) {
-		currentRotation = 1.0;
+		currentRotation = 0.0;
 		return;
 	}
   

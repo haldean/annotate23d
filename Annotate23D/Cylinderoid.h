@@ -14,5 +14,6 @@
 @property (strong) NSMutableArray* radii;
 
 - (void)calculateSurfacePoints;
+- (void)smoothSpine:(int)factor;
 
 @end

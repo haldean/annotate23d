@@ -38,8 +38,10 @@ ReceivesDrawEvents> {
   UIPanGestureRecognizer *panGestureRecognizer;
   UIPinchGestureRecognizer *pinchGestureRecognizer;
   UITapGestureRecognizer *tapGestureRecognizer;
+  UITapGestureRecognizer *doubleTapGestureRecognizer;
   UIRotationGestureRecognizer *rotationGestureRecognizer;
   ToolMode currentTool;
+  CGRect startView;
   bool shapeIsSelected;
 }
 
@@ -74,6 +76,7 @@ ReceivesDrawEvents> {
 -(void)handleRotate:(UIGestureRecognizer*)sender;
 
 -(void)newSketch;
+-(void)resetView;
 -(void)loadNewBackgroundImage;
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 

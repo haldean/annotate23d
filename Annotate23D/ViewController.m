@@ -49,6 +49,12 @@
        initWithTarget:self action:@selector(handleTap:)];
   [drawView addGestureRecognizer:tapGestureRecognizer];
   
+  doubleTapGestureRecognizer =
+  [[UITapGestureRecognizer alloc]
+   initWithTarget:self action:@selector(handleDoubleTap:)];
+  [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+  [drawView addGestureRecognizer:doubleTapGestureRecognizer];
+  
   rotationGestureRecognizer =
       [[UIRotationGestureRecognizer alloc]
        initWithTarget:self action:@selector(handleRotate:)];
@@ -59,6 +65,17 @@
   self.imagePickerController = [[UIImagePickerController alloc] init];
   self.imagePickerController.delegate = self;
   self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+  
+  startView = [drawPreview frame];
+  CGPoint center = [drawPreview center];
+  startView.size.width *= 5;
+  startView.size.height *= 5;
+  
+  [drawView setFrame:startView];
+  [drawView setCenter:center];
+  startView = [drawView frame];
+  [self resetView];
+  
   
   [drawPreview setDelegate:self];
   [workspace setFrame:drawPreview.frame];
@@ -100,6 +117,16 @@
 {
   // Return YES for supported orientations
   return YES;
+}
+
+- (void)resetView {
+  [drawView setFrame:startView];
+  [drawPreview setFrame:startView];
+  [workspace setFrame:startView];
+}
+
+- (void)handleDoubleTap:(UITapGestureRecognizer*)sender {
+  [self resetView];
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)sender {
@@ -241,14 +268,16 @@
   [rotationGestureRecognizer setEnabled:enableGestures];
   [drawPreview setCanHandleClicks:!enableGestures];
   
-  UIAlertView *message =
-  [[UIAlertView alloc]
-   initWithTitle:@"Not implemented"
-   message:@"Sorry, that tool hasn't been implemented yet."
-   delegate:nil
-   cancelButtonTitle:@"Thanks!"
-   otherButtonTitles:nil];
-  [message show];
+  if (!impl) {
+    UIAlertView *message =
+    [[UIAlertView alloc]
+     initWithTitle:@"Not implemented"
+     message:@"Sorry, that tool hasn't been implemented yet."
+     delegate:nil
+     cancelButtonTitle:@"Thanks!"
+     otherButtonTitles:nil];
+    [message show];
+  }
 }
 
 - (IBAction)selectButton:(id)sender {

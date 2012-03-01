@@ -146,6 +146,25 @@
   [super rotateBy:angle];
 }
 
+- (void)smoothSpine:(int)factor {
+  for (int iteration = factor; iteration >= 0; iteration--) {
+    NSMutableArray* newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+    
+    [newSpine addObject:[spine objectAtIndex:0]];
+    for (int i = 1; i < [spine count] - 1; i++) {
+      Vec2 p = VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
+      Vec2 p0 = VectorForPoint([[spine objectAtIndex:i-1] CGPointValue]);
+      Vec2 p1 = VectorForPoint([[spine objectAtIndex:i+1] CGPointValue]);
+      
+      p += ((p0 - p) + (p1 - p)) * 1e-2;
+      [newSpine addObject:[NSValue valueWithCGPoint:CGPointMake(p[0], p[1])]];
+    }
+    [newSpine addObject:[spine objectAtIndex:[spine count]-1]];
+    
+    spine = newSpine;
+  }
+}
+
 + (Cylinderoid*)withPoints:(NSArray *)points {
   Cylinderoid* cyl = [[Cylinderoid alloc] init];
   [cyl setSpine:[NSMutableArray arrayWithArray:points]];
@@ -155,6 +174,7 @@
     [[cyl radii] insertObject:[NSNumber numberWithDouble:DEFAULT_RADIUS] atIndex:i];
   }
   
+  [cyl smoothSpine:1000];
   [cyl calculateSurfacePoints];
   [cyl calculateCoM];
   

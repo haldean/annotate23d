@@ -53,7 +53,7 @@
   [[UITapGestureRecognizer alloc]
    initWithTarget:self action:@selector(handleDoubleTap:)];
   [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
-  [drawView addGestureRecognizer:doubleTapGestureRecognizer];
+  [[self view] addGestureRecognizer:doubleTapGestureRecognizer];
   
   rotationGestureRecognizer =
       [[UIRotationGestureRecognizer alloc]
@@ -67,15 +67,6 @@
   self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
   
   startView = [drawPreview frame];
-  CGPoint center = [drawPreview center];
-  startView.size.width *= 5;
-  startView.size.height *= 5;
-  
-  [drawView setFrame:startView];
-  [drawView setCenter:center];
-  startView = [drawView frame];
-  [self resetView];
-  
   
   [drawPreview setDelegate:self];
   [workspace setFrame:drawPreview.frame];
@@ -182,7 +173,9 @@
 
 - (void)handleTap:(UIGestureRecognizer *)sender {
   if (currentTool == SELECT) {
-    shapeIsSelected = [workspace selectAtPoint:[sender locationInView:sender.view]];
+    CGPoint loc = [sender locationInView:sender.view];
+    NSLog(@"Click at %f %f", loc.x, loc.y);
+    shapeIsSelected = [workspace selectAtPoint:loc];
   }
 }
 

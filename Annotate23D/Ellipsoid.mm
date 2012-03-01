@@ -11,6 +11,17 @@
 
 @implementation Ellipsoid
 
+- (void)scaleBy:(CGFloat)factor {
+  [super scaleBy:factor];
+  a *= factor;
+  b *= factor;
+}
+
+- (void)rotateBy:(CGFloat)angle {
+  [super rotateBy:angle];
+  phi += angle;
+}
+
 - (void)calculatePath {
   path = CGPathCreateMutable();
   
@@ -118,6 +129,8 @@
   el->a = a_len;
   el->b = b_len;
   el->phi = phi;
+  
+  NSLog(@"el center = %f, %f", com.x, com.y);
   
   [el calculatePath];
   return el;

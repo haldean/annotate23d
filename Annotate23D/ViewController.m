@@ -244,15 +244,13 @@
   bool enableGestures;
   bool impl = true;
   
-  switch (tool) {
+  switch (currentTool) {
     case SELECT:
+    case PAN:
       enableGestures = true;
       break;
       
     case SPLINE:
-      enableGestures = false;
-      break;
-      
     case ELLIPSE:
       enableGestures = false;
       break;
@@ -269,18 +267,15 @@
   [drawPreview setCanHandleClicks:!enableGestures];
   
   if (!impl) {
-    UIAlertView *message =
-    [[UIAlertView alloc]
-     initWithTitle:@"Not implemented"
-     message:@"Sorry, that tool hasn't been implemented yet."
-     delegate:nil
-     cancelButtonTitle:@"Thanks!"
-     otherButtonTitles:nil];
-    [message show];
+    NSLog(@"Selected unimplemented tool %d", currentTool);
   }
 }
 
-- (IBAction)selectButton:(id)sender {
+- (IBAction)viewButton:(id)sender {
+  [self buttonClick:PAN];
+}
+
+-(IBAction)selectButton:(id)sender {
   [self buttonClick:SELECT];
 }
 

@@ -23,7 +23,8 @@ typedef enum {
   SAME_RADIUS,
   MIRROR_SHAPE,
   ALIGN_SHAPE,
-  CENTER_SHAPE
+  CENTER_SHAPE,
+  PAN
 } ToolMode;
 
 @interface ViewController : UIViewController <
@@ -56,6 +57,7 @@ ReceivesDrawEvents> {
 @property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
 @property (weak, nonatomic) IBOutlet WorkspaceUIView *workspace;
 
+-(IBAction)viewButton:(id)sender;
 -(IBAction)showFileMenu:(id)sender;
 -(IBAction)selectButton:(id)sender;
 -(IBAction)splineButton:(id)sender;

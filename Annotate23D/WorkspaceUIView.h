@@ -8,19 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "Cylinderoid.h"
+#import "Ellipsoid.h"
+#import "Drawable.h"
 
 @interface WorkspaceUIView : UIView {
   int selectedIndex;
 }
 
-@property (strong) NSMutableArray *cylinderoids;
-@property (strong) NSMutableArray *ellipsoids;
+@property (strong) NSMutableArray *drawables;
 
 - (bool)selectAtPoint:(CGPoint)point;
 - (void)translateSelectedShape:(CGPoint)translation;
 - (void)scaleSelectedShape:(CGFloat)factor;
 - (void)rotateSelectedShape:(CGFloat)angle;
-- (void)addCylinderoid:(Cylinderoid*)cyl;
-//- (void)addEllipsoid:(Ellipsoid*)ell;
+- (void)addDrawable:(Drawable*)draw;
 
 @end

@@ -9,17 +9,17 @@
 #ifndef Annotate23D_MathDefs_h
 #define Annotate23D_MathDefs_h
 
-#import "Eigen/Core"
+#import "Eigen/Eigen"
 using namespace Eigen;
 
 // In case we want to switch precision later
 typedef Vector2f Vec2;
 typedef Vector3f Vec3;
+typedef VectorXf VecX;
+typedef Matrix3f Mat3;
+typedef MatrixXf MatX;
 
-// Signature repeated to silence (otherwise useful) warnings
 Vec2 VectorForPoint(CGPoint point);
-Vec2 VectorForPoint(CGPoint point) {
-  return Vec2(point.x, point.y);
-}
+NSString* VecToStr(VecX vec);
 
 #endif

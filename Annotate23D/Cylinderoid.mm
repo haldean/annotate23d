@@ -9,39 +9,10 @@
 #define DEFAULT_RADIUS 40.0
 
 @implementation Cylinderoid
-@synthesize spine, radii, surfacePoints;
-
-// From http://paulbourke.net/geometry/insidepoly/. Must ask permission for use.
-- (bool)pointInside:(CGPoint)p {
-  int N = [surfacePoints count], counter = 0, i;
-  double xinters;
-  CGPoint p1, p2;
-  
-  p1 = [[surfacePoints objectAtIndex:0] CGPointValue];
-  for (i=1;i<=N;i++) {
-    p2 = [[surfacePoints objectAtIndex:i % N] CGPointValue];
-    if (p.y > MIN(p1.y,p2.y)) {
-      if (p.y <= MAX(p1.y,p2.y)) {
-        if (p.x <= MAX(p1.x,p2.x)) {
-          if (p1.y != p2.y) {
-            xinters = (p.y-p1.y)*(p2.x-p1.x)/(p2.y-p1.y)+p1.x;
-            if (p1.x == p2.x || p.x <= xinters)
-              counter++;
-          }
-        }
-      }
-    }
-    p1 = p2;
-  }
-  
-  if (counter % 2 == 0)
-    return NO;
-  else
-    return YES;
-}
+@synthesize spine, radii;
 
 - (void)calculateSurfacePoints {
-  [surfacePoints removeAllObjects];
+  path = CGPathCreateMutable();
   if ([spine count] < 2) return;
   
   NSMutableArray* back = [[NSMutableArray alloc] initWithCapacity:[spine count]];
@@ -62,8 +33,12 @@
       radius2.x() = cos(i) * radius1.x() - sin(i) * radius1.y();
       radius2.y() = sin(i) * radius1.x() + cos(i) * radius1.y();
       radius2 += v0;
-      CGPoint rp = CGPointMake(radius2.x(), radius2.y());
-      [surfacePoints addObject:[NSValue valueWithCGPoint:rp]];
+      
+      if (i == 0) {
+        CGPathMoveToPoint(path, NULL, radius2.x(), radius2.y());
+      } else {
+        CGPathAddLineToPoint(path, NULL, radius2.x(), radius2.y());
+      }
     }
   }
   
@@ -81,13 +56,12 @@
     radius2 *= [[radii objectAtIndex:i] floatValue];
     
     radius1 += VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
-    CGPoint rp1 = CGPointMake(radius1.x(), radius1.y());
-    
     radius2 += VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
+
     CGPoint rp2 = CGPointMake(radius2.x(), radius2.y());
-    
-    [surfacePoints addObject:[NSValue valueWithCGPoint:rp1]];
     [back addObject:[NSValue valueWithCGPoint:rp2]];
+    
+    CGPathAddLineToPoint(path, NULL, radius1.x(), radius1.y());
   }
   
   { // Second endcap
@@ -103,14 +77,17 @@
       radius2.x() = cos(i) * radius1.x() - sin(i) * radius1.y();
       radius2.y() = sin(i) * radius1.x() + cos(i) * radius1.y();
       radius2 += v0;
-      CGPoint rp = CGPointMake(radius2.x(), radius2.y());
-      [surfacePoints addObject:[NSValue valueWithCGPoint:rp]];
+      
+      CGPathAddLineToPoint(path, NULL, radius2.x(), radius2.y());
     }
   }
   
   for (int i = [back count] - 1; i >= 0; i--) {
-    [surfacePoints addObject:[back objectAtIndex:i]];
+    CGPoint pt = [[back objectAtIndex:i] CGPointValue];
+    CGPathAddLineToPoint(path, NULL, pt.x, pt.y);
   }
+  
+  CGPathCloseSubpath(path);
 }
 
 - (void)calculateCoM {
@@ -128,66 +105,48 @@
 }
 
 - (void)translate:(CGPoint)translate {
+  CGAffineTransform translation =
+    CGAffineTransformMakeTranslation(translate.x, translate.y);
   for (int i = 0; i < [spine count]; i++) {
     CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    cgpt.x += translate.x;
-    cgpt.y += translate.y;
+    CGPointApplyAffineTransform(cgpt, translation);
     [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
   }
   
-  for (int i = 0; i < [surfacePoints count]; i++) {
-    CGPoint cgpt = [[surfacePoints objectAtIndex:i] CGPointValue];
-    cgpt.x += translate.x;
-    cgpt.y += translate.y;
-    [surfacePoints replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
-  }
-  
-  com.x += translate.x;
-  com.y += translate.y;
+  [super translate:translate];
 }
 
 - (void)scaleBy:(CGFloat)factor {
-  CGPoint trans = CGPointMake(-com.x, -com.y);
-  [self translate:trans];
+  CGAffineTransform scale =
+    CGAffineTransformMakeTranslation(-com.x, -com.y);
+  CGAffineTransformScale(scale, factor, factor);
+  CGAffineTransformMakeTranslation(com.x, com.y);
   
   for (int i = 0; i < [spine count]; i++) {
     CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    cgpt.x *= factor;
-    cgpt.y *= factor;
+    CGPointApplyAffineTransform(cgpt, scale);
     [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
   }
   
-  for (int i = 0; i < [surfacePoints count]; i++) {
-    CGPoint cgpt = [[surfacePoints objectAtIndex:i] CGPointValue];
-    cgpt.x *= factor;
-    cgpt.y *= factor;
-    [surfacePoints replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
-  }
-  
-  [self translate:CGPointMake(-trans.x, -trans.y)];
+  [super scaleBy:factor];
 }
 
 - (void)rotateBy:(CGFloat)angle {
-  CGPoint trans = CGPointMake(-com.x, -com.y);
-  [self translate:trans];
+  CGAffineTransform rotation =
+    CGAffineTransformMakeTranslation(-com.x, -com.y);
+  CGAffineTransformRotate(rotation, angle);
+  CGAffineTransformTranslate(rotation, com.x, com.y);
   
-  CGAffineTransform rotation = CGAffineTransformMakeRotation(angle);
   for (int i = 0; i < [spine count]; i++) {
     CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
     cgpt = CGPointApplyAffineTransform(cgpt, rotation);
     [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
   }
   
-  for (int i = 0; i < [surfacePoints count]; i++) {
-    CGPoint cgpt = [[surfacePoints objectAtIndex:i] CGPointValue];
-    cgpt = CGPointApplyAffineTransform(cgpt, rotation);
-    [surfacePoints replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
-  }
-  
-  [self translate:CGPointMake(-trans.x, -trans.y)];
+  [super rotateBy:angle];
 }
 
-+ (Cylinderoid*)cylinderoidWithPoints:(NSArray *)points {
++ (Cylinderoid*)withPoints:(NSArray *)points {
   Cylinderoid* cyl = [[Cylinderoid alloc] init];
   [cyl setSpine:[NSMutableArray arrayWithArray:points]];
   
@@ -196,7 +155,6 @@
     [[cyl radii] insertObject:[NSNumber numberWithDouble:DEFAULT_RADIUS] atIndex:i];
   }
   
-  [cyl setSurfacePoints:[[NSMutableArray alloc] initWithCapacity:2*[points count]]];
   [cyl calculateSurfacePoints];
   [cyl calculateCoM];
   

@@ -9,11 +9,10 @@
 #import "WorkspaceUIView.h"
 
 @implementation WorkspaceUIView
-@synthesize cylinderoids, ellipsoids;
+@synthesize drawables;
 
 - (void)initArrays {
-  self.cylinderoids = [[NSMutableArray alloc] init];
-  self.ellipsoids = [[NSMutableArray alloc] init];
+  self.drawables = [[NSMutableArray alloc] init];
   selectedIndex = -1;
 }
 
@@ -34,8 +33,10 @@
 
 - (bool)selectAtPoint:(CGPoint)point {
   bool selected = NO;
-  for (int i = [cylinderoids count] - 1; i >= 0; i--) {
-    if ([[cylinderoids objectAtIndex:i] pointInside:point]) {
+  for (int i = [drawables count] - 1; i >= 0; i--) {
+    Drawable* shape = [drawables objectAtIndex:i];
+    if ([shape getPath] != NULL && 
+        CGPathContainsPoint([shape getPath], NULL, point, false)) {
       if (i == selectedIndex) break;
       
       selectedIndex = i;
@@ -50,56 +51,25 @@
 
 - (void)translateSelectedShape:(CGPoint)translation {
   if (selectedIndex < 0) return;
-  [[cylinderoids objectAtIndex:selectedIndex] translate:translation];
+  [[drawables objectAtIndex:selectedIndex] translate:translation];
   [self setNeedsDisplay];
 }
 
 - (void)scaleSelectedShape:(CGFloat)factor {
   if (selectedIndex < 0) return;
-  [[cylinderoids objectAtIndex:selectedIndex] scaleBy:factor];
+  [[drawables objectAtIndex:selectedIndex] scaleBy:factor];
   [self setNeedsDisplay];
 }
 
 - (void)rotateSelectedShape:(CGFloat)angle {
   if (selectedIndex < 0) return;
-  [[cylinderoids objectAtIndex:selectedIndex] rotateBy:angle];
+  [[drawables objectAtIndex:selectedIndex] rotateBy:angle];
   [self setNeedsDisplay];
 }
 
-- (void)addCylinderoid:(Cylinderoid *)cyl {
-  [cylinderoids addObject:cyl];
+- (void)addDrawable:(Drawable*)draw {
+  [drawables addObject:draw];
   [self setNeedsDisplay];
-}
-
-- (void)drawCylinderoid:(Cylinderoid *)cyl onContext:(CGContextRef)context {
-  if ([[cyl surfacePoints] count] == 0) return;
-  
-  CGContextBeginPath(context);
-  for (int i = 0; i < [[cyl surfacePoints] count]; i++) {
-    CGPoint point = [[[cyl surfacePoints] objectAtIndex:i] CGPointValue];
-    if (i == 0) {
-      CGContextMoveToPoint(context, point.x, point.y);
-    } else {
-      CGContextAddLineToPoint(context, point.x, point.y);
-    }
-  }
-  CGContextClosePath(context);
-  CGContextDrawPath(context, kCGPathFillStroke);
-  
-  /*
-   Uncomment this to draw spines.
-   
-  CGContextBeginPath(context);
-  for (int i = 0; i < [[cyl spine] count]; i++) {
-    CGPoint point = [[[cyl spine] objectAtIndex:i] CGPointValue];
-    if (i == 0) {
-      CGContextMoveToPoint(context, point.x, point.y);
-    } else {
-      CGContextAddLineToPoint(context, point.x, point.y);
-    }
-  }
-  CGContextStrokePath(context);
-   */
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -108,14 +78,16 @@
   CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
   CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
   
-  for (int i = 0; i < [self.cylinderoids count]; i++) {
+  for (int i = 0; i < [self.drawables count]; i++) {
     if (i == selectedIndex) {
       CGContextSetFillColorWithColor(context, [UIColor orangeColor].CGColor);
     } else {
       CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     }
-    Cylinderoid* cyl = [self.cylinderoids objectAtIndex:i];
-    [self drawCylinderoid:cyl onContext:context];
+    
+    CGContextBeginPath(context);
+    CGContextAddPath(context, [[drawables objectAtIndex:i] getPath]);
+    CGContextDrawPath(context, kCGPathFillStroke);
   }
 }
 

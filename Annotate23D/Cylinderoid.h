@@ -7,21 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Drawable.h"
 
-@interface Cylinderoid : NSObject {
-  CGPoint com;
-}
-
+@interface Cylinderoid : Drawable
 @property (strong) NSMutableArray* spine;
 @property (strong) NSMutableArray* radii;
-@property (strong) NSMutableArray* surfacePoints;
 
 - (void)calculateSurfacePoints;
-- (bool)pointInside:(CGPoint)point;
-- (void)translate:(CGPoint)translate;
-- (void)scaleBy:(CGFloat)factor;
-- (void)rotateBy:(CGFloat)angle;
-
-+ (Cylinderoid*)cylinderoidWithPoints:(NSArray*)points;
 
 @end

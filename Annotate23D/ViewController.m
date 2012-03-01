@@ -179,8 +179,7 @@
 }
 
 - (void)newSketch {
-  [[workspace ellipsoids] removeAllObjects];
-  [[workspace cylinderoids] removeAllObjects];
+  [[workspace drawables] removeAllObjects];
   [workspace setNeedsDisplay];
 }
 
@@ -204,37 +203,35 @@
 
 - (void)onPathDraw:(NSMutableArray *)points {
   if (currentTool == SPLINE) {
-    Cylinderoid* cyl = [Cylinderoid cylinderoidWithPoints:points];
-    [workspace addCylinderoid:cyl];
-  } else {
-    NSLog(@"You still need to implement ellipsoid adding in ViewController");
+    Drawable* cyl = [Cylinderoid withPoints:points];
+    [workspace addDrawable:cyl];
+  } else if (currentTool == ELLIPSE) {
+    Drawable* el = [Ellipsoid withPoints:points];
+    [workspace addDrawable:el];
   }
 }
 
 - (void)buttonClick:(ToolMode)tool {
   currentTool = tool;
   
-  NSString* toolName;
   bool enableGestures;
+  bool impl = true;
   
   switch (tool) {
     case SELECT:
-      toolName = @"select";
       enableGestures = true;
       break;
       
     case SPLINE:
-      toolName = @"cylinder";
       enableGestures = false;
       break;
       
     case ELLIPSE:
-      toolName = @"ellipse";
       enableGestures = false;
       break;
       
     default:
-      toolName = @"[not implemented]";
+      impl = false;
       enableGestures = true;
       break;
   }
@@ -246,8 +243,8 @@
   
   UIAlertView *message =
   [[UIAlertView alloc]
-   initWithTitle:@"Tool selected"
-   message:[NSString stringWithFormat:@"You selected the %@ tool.", toolName]
+   initWithTitle:@"Not implemented"
+   message:@"Sorry, that tool hasn't been implemented yet."
    delegate:nil
    cancelButtonTitle:@"Thanks!"
    otherButtonTitles:nil];

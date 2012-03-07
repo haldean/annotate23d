@@ -20,8 +20,6 @@
 		A915445F14F5E859001BAFDC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A915445E14F5E859001BAFDC /* Accelerate.framework */; };
 		A916CD0314E3BA3500F1D782 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A916CD0214E3BA3500F1D782 /* GLKit.framework */; };
 		A916CD0714E3BBE700F1D782 /* GlkRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = A916CD0614E3BBE700F1D782 /* GlkRenderer.m */; };
-		A916CD0B14E3BF5600F1D782 /* GlkRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A916CD0914E3BF5500F1D782 /* GlkRendererViewController.m */; };
-		A916CD0C14E3BF5600F1D782 /* GlkRendererViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A916CD0A14E3BF5500F1D782 /* GlkRendererViewController.xib */; };
 		A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A91D695D14FEE24B006788CC /* Ellipsoid.mm */; };
 		A98D272D1507443400954803 /* RenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98D272C1507443400954803 /* RenderViewController.m */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
@@ -61,9 +59,6 @@
 		A916CD0214E3BA3500F1D782 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		A916CD0514E3BBE700F1D782 /* GlkRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlkRenderer.h; sourceTree = "<group>"; };
 		A916CD0614E3BBE700F1D782 /* GlkRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkRenderer.m; sourceTree = "<group>"; };
-		A916CD0814E3BF5500F1D782 /* GlkRendererViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlkRendererViewController.h; sourceTree = "<group>"; };
-		A916CD0914E3BF5500F1D782 /* GlkRendererViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkRendererViewController.m; sourceTree = "<group>"; };
-		A916CD0A14E3BF5500F1D782 /* GlkRendererViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GlkRendererViewController.xib; sourceTree = "<group>"; };
 		A91D695B14FEC955006788CC /* MathDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathDefs.h; sourceTree = "<group>"; };
 		A91D695C14FEE24B006788CC /* Ellipsoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ellipsoid.h; sourceTree = "<group>"; };
 		A91D695D14FEE24B006788CC /* Ellipsoid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ellipsoid.mm; sourceTree = "<group>"; };
@@ -191,9 +186,6 @@
 				A91D695D14FEE24B006788CC /* Ellipsoid.mm */,
 				A916CD0514E3BBE700F1D782 /* GlkRenderer.h */,
 				A916CD0614E3BBE700F1D782 /* GlkRenderer.m */,
-				A916CD0814E3BF5500F1D782 /* GlkRendererViewController.h */,
-				A916CD0914E3BF5500F1D782 /* GlkRendererViewController.m */,
-				A916CD0A14E3BF5500F1D782 /* GlkRendererViewController.xib */,
 				A91D695B14FEC955006788CC /* MathDefs.h */,
 				A90E498014FEF387005329D9 /* MathDefs.mm */,
 				A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */,
@@ -314,7 +306,6 @@
 				A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */,
 				A9955ADF14E3209100B87DB9 /* bunny.png in Resources */,
 				A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */,
-				A916CD0C14E3BF5600F1D782 /* GlkRendererViewController.xib in Resources */,
 				A9AF5A1D14F69D430023BDC3 /* Eigen in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,7 +346,6 @@
 				A99CBD6D14E30B4B00C40DAC /* WorkspaceViewController.m in Sources */,
 				A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */,
 				A916CD0714E3BBE700F1D782 /* GlkRenderer.m in Sources */,
-				A916CD0B14E3BF5600F1D782 /* GlkRendererViewController.m in Sources */,
 				A9153FF314F57976001BAFDC /* DrawPreviewUIView.m in Sources */,
 				A9153FF714F5AAFF001BAFDC /* Cylinderoid.mm in Sources */,
 				A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.m in Sources */,

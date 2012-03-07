@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
-@interface GlkRenderer : NSObject <GLKViewDelegate>
--(void)glkView:(GLKView *)view drawInRect:(CGRect)rect;
+@interface GlkRenderer : NSObject <GLKViewDelegate> {
+  GLuint vertexArray, vertexBuffer;
+}
+
+@property (strong, nonatomic) GLKBaseEffect* effect;
+
+- (void)setupViewMatrix:(GLKView *)view;
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect;
+
 @end

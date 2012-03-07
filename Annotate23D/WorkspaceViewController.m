@@ -308,4 +308,10 @@
   [self buttonClick:CENTER_SHAPE];
 }
 
+- (IBAction)renderButton:(id)sender {
+  RenderViewController* renderview = [[RenderViewController alloc] init];
+  [self setModalPresentationStyle:UIModalPresentationFullScreen];
+  [self presentViewController:renderview animated:TRUE completion:nil];
+}
+
 @end

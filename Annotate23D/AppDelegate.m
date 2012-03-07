@@ -20,7 +20,7 @@
 {
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   // Override point for customization after application launch.
-  self.viewController = [[WorkspaceViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+  self.viewController = [[WorkspaceViewController alloc] initWithNibName:@"WorkspaceViewController" bundle:nil];
   self.glkRendererController = [[GlkRendererViewController alloc] initWithNibName:@"GlkRendererViewController" bundle:nil];
   self.window.rootViewController = self.viewController;
   [self.window makeKeyAndVisible];

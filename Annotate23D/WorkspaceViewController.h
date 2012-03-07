@@ -12,6 +12,7 @@
 #import "DrawPreviewUIView.h"
 #import "GlkRenderer.h"
 #import "WorkspaceUIView.h"
+#import "RenderViewController.h"
 
 typedef enum {
   SELECT,
@@ -57,29 +58,30 @@ ReceivesDrawEvents> {
 @property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
 @property (weak, nonatomic) IBOutlet WorkspaceUIView *workspace;
 
--(IBAction)viewButton:(id)sender;
--(IBAction)showFileMenu:(id)sender;
--(IBAction)selectButton:(id)sender;
--(IBAction)splineButton:(id)sender;
--(IBAction)ellipseButton:(id)sender;
--(IBAction)connectButton:(id)sender;
--(IBAction)sameTiltButton:(id)sender;
--(IBAction)sameSizeButton:(id)sender;
--(IBAction)sameRadiusButton:(id)sender;
--(IBAction)mirrorShapeButton:(id)sender;
--(IBAction)alignShapeButton:(id)sender;
--(IBAction)centerShapeButton:(id)sender;
+- (IBAction)viewButton:(id)sender;
+- (IBAction)showFileMenu:(id)sender;
+- (IBAction)selectButton:(id)sender;
+- (IBAction)splineButton:(id)sender;
+- (IBAction)ellipseButton:(id)sender;
+- (IBAction)connectButton:(id)sender;
+- (IBAction)sameTiltButton:(id)sender;
+- (IBAction)sameSizeButton:(id)sender;
+- (IBAction)sameRadiusButton:(id)sender;
+- (IBAction)mirrorShapeButton:(id)sender;
+- (IBAction)alignShapeButton:(id)sender;
+- (IBAction)centerShapeButton:(id)sender;
+- (IBAction)renderButton:(id)sender;
 
--(void)buttonClick:(ToolMode)tool;
+- (void)buttonClick:(ToolMode)tool;
 
--(void)handlePan:(UIGestureRecognizer*)sender;
--(void)handleTap:(UIGestureRecognizer*)sender;
--(void)handlePinch:(UIGestureRecognizer*)sender;
--(void)handleRotate:(UIGestureRecognizer*)sender;
+- (void)handlePan:(UIGestureRecognizer*)sender;
+- (void)handleTap:(UIGestureRecognizer*)sender;
+- (void)handlePinch:(UIGestureRecognizer*)sender;
+- (void)handleRotate:(UIGestureRecognizer*)sender;
 
--(void)newSketch;
--(void)resetView;
--(void)loadNewBackgroundImage;
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)newSketch;
+- (void)resetView;
+- (void)loadNewBackgroundImage;
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 
 @end

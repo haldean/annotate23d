@@ -23,6 +23,7 @@
 		A916CD0B14E3BF5600F1D782 /* GlkRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A916CD0914E3BF5500F1D782 /* GlkRendererViewController.m */; };
 		A916CD0C14E3BF5600F1D782 /* GlkRendererViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A916CD0A14E3BF5500F1D782 /* GlkRendererViewController.xib */; };
 		A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A91D695D14FEE24B006788CC /* Ellipsoid.mm */; };
+		A98D272D1507443400954803 /* RenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98D272C1507443400954803 /* RenderViewController.m */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
 		A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */; };
@@ -67,6 +68,8 @@
 		A91D695C14FEE24B006788CC /* Ellipsoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ellipsoid.h; sourceTree = "<group>"; };
 		A91D695D14FEE24B006788CC /* Ellipsoid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ellipsoid.mm; sourceTree = "<group>"; };
 		A91D695F14FEE325006788CC /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
+		A98D272B1507443400954803 /* RenderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderViewController.h; sourceTree = "<group>"; };
+		A98D272C1507443400954803 /* RenderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderViewController.m; sourceTree = "<group>"; };
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
 		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
@@ -81,9 +84,9 @@
 		A99CBD6714E30B4B00C40DAC /* Annotate23D-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Annotate23D-Prefix.pch"; sourceTree = "<group>"; };
 		A99CBD6814E30B4B00C40DAC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A99CBD6914E30B4B00C40DAC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A99CBD6B14E30B4B00C40DAC /* WorkspaceViewController.h */ = {isa = PBXFileReference; path = WorkspaceViewController.h; sourceTree = "<group>"; };
+		A99CBD6B14E30B4B00C40DAC /* WorkspaceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkspaceViewController.h; sourceTree = "<group>"; };
 		A99CBD6C14E30B4B00C40DAC /* WorkspaceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkspaceViewController.m; sourceTree = "<group>"; };
-		A99CBD6F14E30B4B00C40DAC /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/WorkspaceViewController.xib; sourceTree = "<group>"; };
+		A99CBD6F14E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WorkspaceViewController.xib; sourceTree = "<group>"; };
 		A9AAEBAC14E31E1E00F174E7 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = resources/background.png; sourceTree = SOURCE_ROOT; };
 		A9AF5A1C14F69D430023BDC3 /* Eigen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Eigen; sourceTree = "<group>"; };
 		A9EBB46814E3A33700F04FB8 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -197,11 +200,13 @@
 				A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */,
 				A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */,
 				A99CBD6014E30B4B00C40DAC /* Supporting Files */,
+				A9153FF814F5BE23001BAFDC /* WorkspaceUIView.h */,
+				A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */,
 				A99CBD6B14E30B4B00C40DAC /* WorkspaceViewController.h */,
 				A99CBD6C14E30B4B00C40DAC /* WorkspaceViewController.m */,
 				A99CBD6E14E30B4B00C40DAC /* WorkspaceViewController.xib */,
-				A9153FF814F5BE23001BAFDC /* WorkspaceUIView.h */,
-				A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */,
+				A98D272B1507443400954803 /* RenderViewController.h */,
+				A98D272C1507443400954803 /* RenderViewController.m */,
 			);
 			path = Annotate23D;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */,
 				A90E498114FEF387005329D9 /* MathDefs.mm in Sources */,
 				A90E498314FEF46F005329D9 /* Drawable.m in Sources */,
+				A98D272D1507443400954803 /* RenderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,7 +11,8 @@
 @implementation GlkRenderer
 
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-  glClearColor(1.0, 0.0, 0.0, 1.0);
+  NSLog(@"GlkRenderer drawInRect");
+  glClearColor(1.0, 0.0, 0.0, 0.5);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 

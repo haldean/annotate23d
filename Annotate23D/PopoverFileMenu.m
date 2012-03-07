@@ -7,7 +7,7 @@
 //
 
 #import "PopoverFileMenu.h"
-#import "ViewController.h"
+#import "WorkspaceViewController.h"
 
 @implementation PopoverFileMenu
 @synthesize delegate;

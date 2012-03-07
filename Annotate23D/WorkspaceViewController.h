@@ -10,9 +10,8 @@
 #import <GLKit/GLKit.h>
 #import "PopoverFileMenu.h"
 #import "DrawPreviewUIView.h"
-#import "GlkRenderer.h"
+#import "GlkRenderViewController.h"
 #import "WorkspaceUIView.h"
-#import "RenderViewController.h"
 
 typedef enum {
   SELECT,
@@ -33,8 +32,6 @@ UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
 FileMenuDelegate,
 ReceivesDrawEvents> {
-  
-  GlkRenderer* renderer;
   CGFloat imageScale;
   CGFloat currentRotation;
   UIPanGestureRecognizer *panGestureRecognizer;
@@ -53,8 +50,6 @@ ReceivesDrawEvents> {
 @property (nonatomic, retain) PopoverFileMenu *fileMenu;
 @property (weak, nonatomic) UIButton *fileButton;
 @property (nonatomic, retain) UIImagePickerController *imagePickerController;
-@property (weak, nonatomic) IBOutlet GLKView *glkView;
-@property (strong, nonatomic) EAGLContext *context;
 @property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
 @property (weak, nonatomic) IBOutlet WorkspaceUIView *workspace;
 

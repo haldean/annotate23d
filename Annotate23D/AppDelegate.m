@@ -14,14 +14,12 @@
 
 @synthesize window = _window;
 @synthesize viewController = _viewController;
-@synthesize glkRendererController = _glkRendererController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   // Override point for customization after application launch.
   self.viewController = [[WorkspaceViewController alloc] initWithNibName:@"WorkspaceViewController" bundle:nil];
-  self.glkRendererController = [[GlkRendererViewController alloc] initWithNibName:@"GlkRendererViewController" bundle:nil];
   self.window.rootViewController = self.viewController;
   [self.window makeKeyAndVisible];
   return YES;

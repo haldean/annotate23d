@@ -1,5 +1,5 @@
 //
-//  RenderViewController.h
+//  GlkRenderViewController.h
 //  Annotate23D
 //
 //  Created by William Brown on 2012/03/07.
@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
-#import "GlkRenderer.h"
 
-@interface RenderViewController : UIViewController
-@property (strong) GlkRenderer* renderer;
+GLfloat gCubeVertexData[216];
+
+@interface GlkRenderViewController : GLKViewController
+
+- (id)initWithMesh:(GLfloat[])mesh ofSize:(GLuint)size;
+
 @end

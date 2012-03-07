@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GlkRendererViewController.h"
 
 @class WorkspaceViewController;
 
@@ -15,6 +14,5 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) WorkspaceViewController *viewController;
-@property (strong, nonatomic) GlkRendererViewController *glkRendererController;
 
 @end

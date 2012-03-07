@@ -13,7 +13,6 @@
 @synthesize workspace;
 @synthesize drawView, backgroundImageView;
 @synthesize fileMenu, fileButton, popoverController, imagePickerController;
-@synthesize glkView, context;
 
 - (void)didReceiveMemoryWarning
 {
@@ -26,13 +25,6 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
-  self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-  renderer = [[GlkRenderer alloc] init];
-  glkView.context = self.context;
-  glkView.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-  glkView.delegate = renderer;
-  glkView.backgroundColor = [UIColor greenColor];
   
   panGestureRecognizer = 
       [[UIPanGestureRecognizer alloc]
@@ -76,7 +68,6 @@
 {
   [self setDrawView:nil];
   [self setBackgroundImageView:nil];
-  [self setGlkView:nil];
   [self setDrawPreview:nil];
   [self setWorkspace:nil];
   [super viewDidUnload];
@@ -309,7 +300,8 @@
 }
 
 - (IBAction)renderButton:(id)sender {
-  RenderViewController* renderview = [[RenderViewController alloc] init];
+  GlkRenderViewController* renderview =
+      [[GlkRenderViewController alloc] initWithMesh:gCubeVertexData ofSize:36];
   [self setModalPresentationStyle:UIModalPresentationFullScreen];
   [self presentViewController:renderview animated:TRUE completion:nil];
 }

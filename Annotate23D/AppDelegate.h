@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "GlkRendererViewController.h"
 
-@class ViewController;
+@class WorkspaceViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) ViewController *viewController;
+@property (strong, nonatomic) WorkspaceViewController *viewController;
 @property (strong, nonatomic) GlkRendererViewController *glkRendererController;
 
 @end

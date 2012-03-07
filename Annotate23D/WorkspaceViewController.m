@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "WorkspaceViewController.h"
 
-@implementation ViewController
+@implementation WorkspaceViewController
 @synthesize drawPreview;
 @synthesize workspace;
 @synthesize drawView, backgroundImageView;

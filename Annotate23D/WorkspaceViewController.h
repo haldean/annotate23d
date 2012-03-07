@@ -27,7 +27,7 @@ typedef enum {
   PAN
 } ToolMode;
 
-@interface ViewController : UIViewController <
+@interface WorkspaceViewController : UIViewController <
 UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
 FileMenuDelegate,

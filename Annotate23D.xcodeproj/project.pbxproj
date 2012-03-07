@@ -19,9 +19,7 @@
 		A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */; };
 		A915445F14F5E859001BAFDC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A915445E14F5E859001BAFDC /* Accelerate.framework */; };
 		A916CD0314E3BA3500F1D782 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A916CD0214E3BA3500F1D782 /* GLKit.framework */; };
-		A916CD0714E3BBE700F1D782 /* GlkRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = A916CD0614E3BBE700F1D782 /* GlkRenderer.m */; };
 		A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A91D695D14FEE24B006788CC /* Ellipsoid.mm */; };
-		A98D272D1507443400954803 /* RenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98D272C1507443400954803 /* RenderViewController.m */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
 		A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */; };
@@ -35,6 +33,9 @@
 		A99CBD7014E30B4B00C40DAC /* WorkspaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A99CBD6E14E30B4B00C40DAC /* WorkspaceViewController.xib */; };
 		A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AAEBAC14E31E1E00F174E7 /* background.png */; };
 		A9AF5A1D14F69D430023BDC3 /* Eigen in Resources */ = {isa = PBXBuildFile; fileRef = A9AF5A1C14F69D430023BDC3 /* Eigen */; };
+		A9D848191507F289006FEA8B /* GlkRenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D848181507F289006FEA8B /* GlkRenderViewController.m */; };
+		A9D8485D15081927006FEA8B /* Shader.fragment in Resources */ = {isa = PBXBuildFile; fileRef = A9D8485B15081927006FEA8B /* Shader.fragment */; };
+		A9D8485E15081927006FEA8B /* Shader.vertex in Resources */ = {isa = PBXBuildFile; fileRef = A9D8485C15081927006FEA8B /* Shader.vertex */; };
 		A9EBB46C14E3A35200F04FB8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EBB46A14E3A34300F04FB8 /* QuartzCore.framework */; };
 		A9EBB46D14E3A35500F04FB8 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EBB46814E3A33700F04FB8 /* OpenGLES.framework */; };
 /* End PBXBuildFile section */
@@ -57,14 +58,10 @@
 		A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkspaceUIView.m; sourceTree = "<group>"; };
 		A915445E14F5E859001BAFDC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A916CD0214E3BA3500F1D782 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		A916CD0514E3BBE700F1D782 /* GlkRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlkRenderer.h; sourceTree = "<group>"; };
-		A916CD0614E3BBE700F1D782 /* GlkRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkRenderer.m; sourceTree = "<group>"; };
 		A91D695B14FEC955006788CC /* MathDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathDefs.h; sourceTree = "<group>"; };
 		A91D695C14FEE24B006788CC /* Ellipsoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ellipsoid.h; sourceTree = "<group>"; };
 		A91D695D14FEE24B006788CC /* Ellipsoid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ellipsoid.mm; sourceTree = "<group>"; };
 		A91D695F14FEE325006788CC /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
-		A98D272B1507443400954803 /* RenderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderViewController.h; sourceTree = "<group>"; };
-		A98D272C1507443400954803 /* RenderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderViewController.m; sourceTree = "<group>"; };
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
 		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
@@ -84,6 +81,10 @@
 		A99CBD6F14E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WorkspaceViewController.xib; sourceTree = "<group>"; };
 		A9AAEBAC14E31E1E00F174E7 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = resources/background.png; sourceTree = SOURCE_ROOT; };
 		A9AF5A1C14F69D430023BDC3 /* Eigen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Eigen; sourceTree = "<group>"; };
+		A9D848171507F289006FEA8B /* GlkRenderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlkRenderViewController.h; sourceTree = "<group>"; };
+		A9D848181507F289006FEA8B /* GlkRenderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkRenderViewController.m; sourceTree = "<group>"; };
+		A9D8485B15081927006FEA8B /* Shader.fragment */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fragment; path = Annotate23D/Shaders/Shader.fragment; sourceTree = "<group>"; };
+		A9D8485C15081927006FEA8B /* Shader.vertex */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vertex; path = Annotate23D/Shaders/Shader.vertex; sourceTree = "<group>"; };
 		A9EBB46814E3A33700F04FB8 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		A9EBB46A14E3A34300F04FB8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -139,6 +140,7 @@
 		A99CBD4A14E30B4A00C40DAC = {
 			isa = PBXGroup;
 			children = (
+				A9D8485F15081955006FEA8B /* Shaders */,
 				A99CBD5F14E30B4A00C40DAC /* Annotate23D */,
 				A90E499214FF0128005329D9 /* Annotate23dUnitTests */,
 				A99CBD5814E30B4A00C40DAC /* Frameworks */,
@@ -184,8 +186,8 @@
 				A9AF5A1C14F69D430023BDC3 /* Eigen */,
 				A91D695C14FEE24B006788CC /* Ellipsoid.h */,
 				A91D695D14FEE24B006788CC /* Ellipsoid.mm */,
-				A916CD0514E3BBE700F1D782 /* GlkRenderer.h */,
-				A916CD0614E3BBE700F1D782 /* GlkRenderer.m */,
+				A9D848171507F289006FEA8B /* GlkRenderViewController.h */,
+				A9D848181507F289006FEA8B /* GlkRenderViewController.m */,
 				A91D695B14FEC955006788CC /* MathDefs.h */,
 				A90E498014FEF387005329D9 /* MathDefs.mm */,
 				A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */,
@@ -197,8 +199,6 @@
 				A99CBD6B14E30B4B00C40DAC /* WorkspaceViewController.h */,
 				A99CBD6C14E30B4B00C40DAC /* WorkspaceViewController.m */,
 				A99CBD6E14E30B4B00C40DAC /* WorkspaceViewController.xib */,
-				A98D272B1507443400954803 /* RenderViewController.h */,
-				A98D272C1507443400954803 /* RenderViewController.m */,
 			);
 			path = Annotate23D;
 			sourceTree = "<group>";
@@ -222,6 +222,15 @@
 				A9AAEBAC14E31E1E00F174E7 /* background.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		A9D8485F15081955006FEA8B /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				A9D8485B15081927006FEA8B /* Shader.fragment */,
+				A9D8485C15081927006FEA8B /* Shader.vertex */,
+			);
+			name = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,6 +310,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9D8485D15081927006FEA8B /* Shader.fragment in Resources */,
+				A9D8485E15081927006FEA8B /* Shader.vertex in Resources */,
 				A99CBD6414E30B4B00C40DAC /* InfoPlist.strings in Resources */,
 				A99CBD7014E30B4B00C40DAC /* WorkspaceViewController.xib in Resources */,
 				A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */,
@@ -345,14 +356,13 @@
 				A99CBD6A14E30B4B00C40DAC /* AppDelegate.m in Sources */,
 				A99CBD6D14E30B4B00C40DAC /* WorkspaceViewController.m in Sources */,
 				A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */,
-				A916CD0714E3BBE700F1D782 /* GlkRenderer.m in Sources */,
 				A9153FF314F57976001BAFDC /* DrawPreviewUIView.m in Sources */,
 				A9153FF714F5AAFF001BAFDC /* Cylinderoid.mm in Sources */,
 				A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.m in Sources */,
 				A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */,
 				A90E498114FEF387005329D9 /* MathDefs.mm in Sources */,
 				A90E498314FEF46F005329D9 /* Drawable.m in Sources */,
-				A98D272D1507443400954803 /* RenderViewController.m in Sources */,
+				A9D848191507F289006FEA8B /* GlkRenderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,12 +480,12 @@
 		A99CBD7414E30B4B00C40DAC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
-				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";
@@ -487,13 +497,13 @@
 		A99CBD7514E30B4B00C40DAC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yotam Gingold (Z7W766X9JY)";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
-				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";

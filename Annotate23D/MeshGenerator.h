@@ -13,6 +13,8 @@
 
 @interface MeshGenerator : NSObject
 
-- (GlkRenderViewController*) rendererForObjects:(WorkspaceUIView*)workspace;
+@property (strong) GlkRenderViewController* renderer;
+
+- (id) initWithObjects:(WorkspaceUIView*)workspace;
 
 @end

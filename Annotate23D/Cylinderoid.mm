@@ -5,13 +5,15 @@
 
 #import "Cylinderoid.h"
 #import "MathDefs.h"
+#import <vector>
 
+#define RINGS_IN_CAP 0
 #define DEFAULT_RADIUS 40.0
 #define DISTANCE_BETWEEN_RINGS 20.0
 #define SEGMENTS_IN_CIRCLE 8
 
 @implementation Cylinderoid
-@synthesize spine, radii;
+@synthesize spine, radii, com, capRadius1, capRadius2;
 
 - (double)integrateOverSpine {
   if ([spine count] == 0) return 0;
@@ -48,18 +50,23 @@
 }
 
 - (Mesh)generateMesh {
-  /*
-  double spineLength = [self integrateOverSpine];
-  int numRings = ceil(spineLength / DISTANCE_BETWEEN_RINGS);
-   */
-  int numRings = [spine count];
-  int triCount = 2 * (numRings - 1) * SEGMENTS_IN_CIRCLE;
+  int i, j, k;
+  int tubeRingCount = [spine count];
+  int numRings = tubeRingCount + 2 * RINGS_IN_CAP;
   
-  Mesh result;
+  /* Triangles in the cylinder */
+  int triCount = 2 * (numRings - 1) * SEGMENTS_IN_CIRCLE;
+  /* Triangles in flat end cap (m - 2 triangles required for an m-gon) */
+  triCount += 2 * SEGMENTS_IN_CIRCLE - 4;
+  
   /* 3 verteces for each triangle */
-  result.size = triCount * 3;
+  int vertexCount = triCount * 3;
   /* 6 floats for each triangle (3 for position, 3 for normal) */
-  result.data = (GLfloat*) malloc(result.size * 6);
+  int dataSize = vertexCount * 6;
+  
+  //std::vector<GLfloat> data(dataSize, 0.f);
+  GLfloat *data = (GLfloat *) malloc(dataSize * sizeof(GLfloat));
+  NSLog(@"data size: %d", dataSize);
   
   int dataidx = 0;
   
@@ -70,17 +77,44 @@
     normals[i] = (Vec3*) malloc((SEGMENTS_IN_CIRCLE) * sizeof(Vec3));
   }
   
-  NSLog(@"verts 2: %d", result.size);
-
-  for (int i = 0; i < numRings; i++) {
-    CGPoint cgSpinePoint = [[spine objectAtIndex:i] CGPointValue];
-    Vec2 derivative2d = [self derivativeAtSpineIndex:i];
-    Vec3 spinePoint(cgSpinePoint.x, cgSpinePoint.y, 0),
-         derivative(derivative2d.x(), derivative2d.y(), 0),
-         radius(-derivative2d.y(), derivative2d.x(), 0);
+  for (int ringIndex = 0; ringIndex < numRings; ringIndex++) {
+    i = ringIndex - RINGS_IN_CAP;
+    Vec3 spinePoint, radius, derivative;
     
-    radius *= [[radii objectAtIndex:i] doubleValue];
-    for (int j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
+    if (i < 0 || i >= tubeRingCount) {
+      CGPoint cgSpinePoint;
+      Vec2 d2d;
+      float r, t;
+      
+      if (ringIndex < RINGS_IN_CAP) {
+        cgSpinePoint = [[spine objectAtIndex:0] CGPointValue];
+        d2d = [self derivativeAtSpineIndex:0];
+        r = capRadius1;
+        t = (float) ringIndex / (float) RINGS_IN_CAP;
+        
+      } else {
+        cgSpinePoint = [[spine objectAtIndex:[spine count]-1] CGPointValue];
+        d2d = [self derivativeAtSpineIndex:[spine count]-1];
+        r = capRadius2;
+        t = (float) (ringIndex - numRings + 1 + RINGS_IN_CAP) / (float) RINGS_IN_CAP;
+      }
+      
+      Vec3 capOrigin(cgSpinePoint.x, cgSpinePoint.y, 0);
+      derivative = Vec3(d2d.x(), d2d.y(), 0);
+      spinePoint = capOrigin - t * derivative;
+      radius = Vec3(-d2d.y(), d2d.x(), 0);
+      radius *= sqrt(pow(r, 2) * (1 - pow(t, 2)));
+    } else {
+      CGPoint cgSpinePoint = [[spine objectAtIndex:i] CGPointValue];
+      Vec2 d2d = [self derivativeAtSpineIndex:i];
+      
+      spinePoint = Vec3(cgSpinePoint.x, cgSpinePoint.y, 0);
+      derivative = Vec3(d2d.x(), d2d.y(), 0);
+      radius = Vec3(-d2d.y(), d2d.x(), 0);
+      radius *= [[radii objectAtIndex:i] doubleValue];
+    }
+    
+    for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
       Vec3 surfacePoint;
       if (j == 0) surfacePoint = radius;
       else {
@@ -88,60 +122,72 @@
         AngleAxis<float> rot(theta, derivative);
         surfacePoint = rot * radius;
       }
-      points[i][j] = surfacePoint + spinePoint;
-      normals[i][j] = surfacePoint;
-      normals[i][j].normalize();
+      points[ringIndex][j] = surfacePoint + spinePoint;
+      normals[ringIndex][j] = surfacePoint;
+      normals[ringIndex][j].normalize();
     }
   }
   
-  NSLog(@"verts 3: %d", result.size);
+  /* Flat end caps. This for loop is a bit hacky -- k will be either 0 or
+   * numRings - 1, and therefore will act on the first and last ring. */
+  for (k = 0; k < numRings; k += numRings - 1) {
+    NSLog(@"k = %d", k);
+    Vec3 *ring = points[k], *norm = normals[k];
+    for (int t = 1; t < SEGMENTS_IN_CIRCLE - 1; t++) {
+      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = ring[0][i];
+      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = norm[0][i];
+      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = ring[t][i];
+      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = norm[t][i];
+      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = ring[t+1][i];
+      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = norm[t+1][i];
+      NSLog(@"dataidx = %d", dataidx);
+    }
+  }
   
-  for (int i = 0; i < numRings - 1; i++) {
-    Vec3 *ring1 = points[i];
-    Vec3 *norms1 = normals[i];
-    Vec3 *ring2 = points[i+1];
-    Vec3 *norms2 = normals[i+1];
-    
-    NSLog(@"verts 3.%d: %d", i, result.size);
-    
-    for (int j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
+  /* Generate tube */
+  for (i = 0; i < numRings - 1; i++) {
+    for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
       VecX v1(6), v2(6), v3(6), v4(6);
       
-      v1.segment(0, 3) = ring1[j]; v1.segment(3, 3) = norms1[j];
-      v2.segment(0, 3) = ring2[j]; v2.segment(3, 3) = norms2[j];
+      v1.segment(0, 3) = points[i][j]; v1.segment(3, 3) = normals[i][j];
+      v2.segment(0, 3) = points[i+1][j]; v2.segment(3, 3) = normals[i+1][j];
       
       int adjacent = j == 0 ? SEGMENTS_IN_CIRCLE - 1 : j - 1;
-      v3.segment(0, 3) = ring1[adjacent]; v3.segment(3, 3) = norms1[adjacent];
-      v4.segment(0, 3) = ring2[adjacent]; v4.segment(3, 3) = norms2[adjacent];
+      v3.segment(0, 3) = points[i][adjacent]; v3.segment(3, 3) = normals[i][adjacent];
+      v4.segment(0, 3) = points[i+1][adjacent]; v4.segment(3, 3) = normals[i+1][adjacent];
       
       /* triangle 123 */
-      for (int i = 0; i < 6; i++, dataidx++) result.data[dataidx] = v1[i];
-      for (int i = 0; i < 6; i++, dataidx++) result.data[dataidx] = v2[i];
-      for (int i = 0; i < 6; i++, dataidx++) result.data[dataidx] = v3[i];
+      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v1[k];
+      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v2[k];
+      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v3[k];
       
       /* triangle 234 */
-      for (int i = 0; i < 6; i++, dataidx++) result.data[dataidx] = v2[i];
-      for (int i = 0; i < 6; i++, dataidx++) result.data[dataidx] = v3[i];
-      for (int i = 0; i < 6; i++, dataidx++) result.data[dataidx] = v4[i];
+      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v2[k];
+      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v3[k];
+      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v4[k];
+      NSLog(@"dataidx = %d", dataidx);
     }
   }
   
-  for (int i = 0; i < numRings; i++) {
+  
+  for (i = 0; i < numRings; i++) {
     free(points[i]); free(normals[i]);
   }
   free(points); free(normals);
   
-  NSLog(@"verts 4: %d", result.size);
-  
-  NSLog(@"dataidx should be %d, dataidx is %d", result.size * 6, dataidx);
+  vertexCount = dataidx / 6;
+  NSLog(@"dataidx should be %d, dataidx is %d", vertexCount * 6, dataidx);
   NSLog(@"Points:");
-  for (int i = 0; i < 4; i++) {
+  for (i = 0; i < 36; i++) {
     NSLog(@"v %f %f %f, n %f %f %f",
-          result.data[i*6+0], result.data[i*6+1], result.data[i*6+2],
-          result.data[i*6+3], result.data[i*6+4], result.data[i*6+5]);
+          data[i*6+0], data[i*6+1], data[i*6+2],
+          data[i*6+3], data[i*6+4], data[i*6+5]);
   }
   NSLog(@"...");
   
+  Mesh result;
+  result.size = vertexCount;
+  result.data = data;
   return result;
 }
 
@@ -302,15 +348,17 @@
 + (Cylinderoid*)withPoints:(NSArray *)points {
   Cylinderoid* cyl = [[Cylinderoid alloc] init];
   [cyl setSpine:[NSMutableArray arrayWithArray:points]];
+  [cyl calculateCoM];
   
   [cyl setRadii:[NSMutableArray arrayWithCapacity:[points count]]];
   for (int i = 0; i < [points count]; i++) {
     [[cyl radii] insertObject:[NSNumber numberWithDouble:DEFAULT_RADIUS] atIndex:i];
   }
+  [cyl setCapRadius1:DEFAULT_RADIUS];
+  [cyl setCapRadius2:DEFAULT_RADIUS];
   
   [cyl smoothSpine:1000];
   [cyl calculateSurfacePoints];
-  [cyl calculateCoM];
   
   return cyl;
 }

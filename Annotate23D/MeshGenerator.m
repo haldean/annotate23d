@@ -9,8 +9,17 @@
 #import "MeshGenerator.h"
 
 @implementation MeshGenerator
+@synthesize renderer;
 
-- (GlkRenderViewController*) rendererForObjects:(WorkspaceUIView*)workspace {
+- (id)init {
+  self = [super init];
+  NSLog(@"init MG");
+  return self;
+}
+
+- (id) initWithObjects:(WorkspaceUIView *)workspace {
+  self = [super init];
+  
   Mesh mesh;
   if ([[workspace drawables] count] > 0) {
     mesh = [[[workspace drawables] objectAtIndex:0] generateMesh];
@@ -35,14 +44,15 @@
   float xc = minx + (maxx - minx) / 2,
         yc = miny + (maxy - miny) / 2,
         zc = minz + (maxz - minz) / 2;
-  NSLog(@"Midpoint: %f %f %f", xc, yc, zc);
   for (int i = 0; i < mesh.size; i++) {
     mesh.data[6*i+0] -= xc;
     mesh.data[6*i+1] -= yc;
     mesh.data[6*i+2] -= zc;
   }
   
-  return [[GlkRenderViewController alloc] initWithMesh:mesh.data ofSize:mesh.size];
+  renderer = [[GlkRenderViewController alloc]
+              initWithMesh:mesh.data ofSize:mesh.size];
+  return self;
 }
 
 @end

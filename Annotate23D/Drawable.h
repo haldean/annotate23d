@@ -10,14 +10,15 @@
 #import <GLKit/GLKit.h>
 
 struct mesh_struct {
+  uint size;
   GLfloat* data;
-  GLuint size;
 } typedef Mesh;
 
 @interface Drawable : NSObject {
   CGMutablePathRef path;
-  CGPoint com;
 }
+
+@property (assign) CGPoint com;
 
 - (Mesh)generateMesh;
 - (CGMutablePathRef)getPath;

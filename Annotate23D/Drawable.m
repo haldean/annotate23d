@@ -9,6 +9,7 @@
 #import "Drawable.h"
 
 @implementation Drawable
+@synthesize com;
 
 - (Mesh)generateMesh {
   [NSException raise:@"Drawable is abstract" format:@"Cannot create mesh for Drawable directly."];

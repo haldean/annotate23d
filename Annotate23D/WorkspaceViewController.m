@@ -13,6 +13,7 @@
 @synthesize workspace;
 @synthesize drawView, backgroundImageView;
 @synthesize fileMenu, fileButton, popoverController, imagePickerController;
+@synthesize meshGenerator;
 
 - (void)didReceiveMemoryWarning
 {
@@ -300,10 +301,12 @@
 }
 
 - (IBAction)renderButton:(id)sender {
-  MeshGenerator* generator = [[MeshGenerator alloc] init];
-  GlkRenderViewController* renderview = [generator rendererForObjects:workspace];
+  meshGenerator = [MeshGenerator alloc];
+  NSLog(@"MG: %@", meshGenerator);
+  meshGenerator = [meshGenerator initWithObjects:workspace];
   [self setModalPresentationStyle:UIModalPresentationFullScreen];
-  [self presentViewController:renderview animated:TRUE completion:nil];
+  GlkRenderViewController *renderer = [meshGenerator renderer];
+  [self presentViewController:renderer animated:TRUE completion:nil];
 }
 
 @end

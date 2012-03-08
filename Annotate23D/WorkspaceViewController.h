@@ -53,6 +53,7 @@ ReceivesDrawEvents> {
 @property (nonatomic, retain) UIImagePickerController *imagePickerController;
 @property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
 @property (weak, nonatomic) IBOutlet WorkspaceUIView *workspace;
+@property (strong) MeshGenerator *meshGenerator;
 
 - (IBAction)viewButton:(id)sender;
 - (IBAction)showFileMenu:(id)sender;

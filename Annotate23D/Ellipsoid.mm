@@ -10,6 +10,7 @@
 #import "MathDefs.h"
 
 @implementation Ellipsoid
+@synthesize com;
 
 - (Mesh)generateMesh {
   Mesh result;

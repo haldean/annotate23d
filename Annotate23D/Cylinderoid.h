@@ -12,6 +12,7 @@
 @interface Cylinderoid : Drawable
 @property (strong) NSMutableArray* spine;
 @property (strong) NSMutableArray* radii;
+@property (assign) float capRadius1, capRadius2;
 
 - (void)calculateSurfacePoints;
 - (void)smoothSpine:(int)factor;

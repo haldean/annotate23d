@@ -301,12 +301,9 @@
 }
 
 - (IBAction)renderButton:(id)sender {
-  meshGenerator = [MeshGenerator alloc];
-  NSLog(@"MG: %@", meshGenerator);
-  meshGenerator = [meshGenerator initWithObjects:workspace];
+  meshGenerator = [[MeshGenerator alloc] initWithObjects:workspace];
   [self setModalPresentationStyle:UIModalPresentationFullScreen];
-  GlkRenderViewController *renderer = [meshGenerator renderer];
-  [self presentViewController:renderer animated:TRUE completion:nil];
+  [self presentViewController:[meshGenerator renderer] animated:TRUE completion:nil];
 }
 
 @end

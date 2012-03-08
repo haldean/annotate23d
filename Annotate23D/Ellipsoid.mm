@@ -9,11 +9,121 @@
 #import "Ellipsoid.h"
 #import "MathDefs.h"
 
+#define MAJOR_AXIS_RINGS 20
+#define SEGMENTS_IN_CIRCLE 16
+
 @implementation Ellipsoid
 @synthesize com;
 
 - (Mesh*)generateMesh {
-  return NULL;
+  int i, j, k;
+  int triCount = 2 * MAJOR_AXIS_RINGS * SEGMENTS_IN_CIRCLE;
+  int vertexCount = triCount * 3;
+  
+  Mesh* mesh = [[Mesh alloc] initWithSize:vertexCount];
+  int dataidx = 0;
+  
+  Vec3 **points = (Vec3**) malloc(MAJOR_AXIS_RINGS * sizeof(Vec3*));
+  Vec3 **normals = (Vec3**) malloc(MAJOR_AXIS_RINGS * sizeof(Vec3*));
+  for (i = 0; i < MAJOR_AXIS_RINGS; i++) {
+    points[i] = (Vec3*) malloc((SEGMENTS_IN_CIRCLE) * sizeof(Vec3));
+    normals[i] = (Vec3*) malloc((SEGMENTS_IN_CIRCLE) * sizeof(Vec3));
+  }
+  
+  Vec3 center(com.x, com.y, 0);
+  Vec3 majorAxis(a, 0, 0), minorAxis(0, b, 0), derivative(1, 0, 0);
+  
+  AngleAxisf phiRot(phi, Vec3(0, 0, 1));
+  majorAxis = phiRot * majorAxis;
+  minorAxis = phiRot * minorAxis;
+  derivative = phiRot * derivative;
+  
+  for (i = 0; i < MAJOR_AXIS_RINGS; i++) {
+    Vec3 spinePoint, radius;
+    /* t varies from -1 to 1 */
+    float t = (2.0 * i) / (float) MAJOR_AXIS_RINGS - 1.0;
+    spinePoint = center + t * majorAxis;
+    radius = minorAxis * sqrt(1 - pow(t, 2));
+    
+    NSLog(@"t: %f, spine: %@, radius: %@", t, VecToStr(spinePoint), VecToStr(radius));
+    
+    for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
+      Vec3 surfacePoint;
+      if (j == 0) surfacePoint = radius;
+      else {
+        float theta = (float) j * 2 * M_PI / (float) SEGMENTS_IN_CIRCLE;
+        AngleAxisf rot(theta, derivative);
+        surfacePoint = rot * radius;
+      }
+      
+      points[i][j] = surfacePoint + spinePoint;
+      normals[i][j] = surfacePoint;
+      normals[i][j].normalize();
+    }
+  }
+  
+  /* Generate rings */
+  for (i = 0; i < MAJOR_AXIS_RINGS - 1; i++) {
+    for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
+      VecX v1(6), v2(6), v3(6), v4(6);
+      
+      v1.segment(0, 3) = points[i][j];   v1.segment(3, 3) = normals[i][j];
+      v2.segment(0, 3) = points[i+1][j]; v2.segment(3, 3) = normals[i+1][j];
+      
+      int adjacent = j == 0 ? SEGMENTS_IN_CIRCLE - 1 : j - 1;
+      v3.segment(0, 3) = points[i][adjacent];   v3.segment(3, 3) = normals[i][adjacent];
+      v4.segment(0, 3) = points[i+1][adjacent]; v4.segment(3, 3) = normals[i+1][adjacent];
+      
+      /* triangle 123 */
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v1[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v2[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v3[k] at:dataidx];
+      
+      /* triangle 234 */
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v2[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v3[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v4[k] at:dataidx];
+    }
+  }
+  
+  /* Generate end caps */
+  for (int cap = 0; cap < 2; cap++) {
+    Vec3 centerPoint;
+    Vec3 centerNormal;
+    
+    if (cap == 0) {
+      j = 0;
+      centerPoint = center - majorAxis;
+      centerNormal = -majorAxis;
+    } else {
+      j = MAJOR_AXIS_RINGS - 1;
+      centerPoint = center + majorAxis;
+      centerNormal = majorAxis;
+    }
+    centerNormal.normalize();
+    
+    VecX v0(6);
+    v0.segment(0, 3) = centerPoint; v0.segment(3, 3) = centerNormal;
+    
+    Vec3 *ring = points[j];
+    Vec3 *norm = normals[j];
+    for (i = 0; i < SEGMENTS_IN_CIRCLE; i++) {
+      int adjacent = i == 0 ? SEGMENTS_IN_CIRCLE - 1 : i - 1;
+      VecX v1(6), v2(6);
+      v1.segment(0, 3) = ring[i]; v1.segment(3, 3) = norm[i];
+      v2.segment(0, 3) = ring[adjacent]; v2.segment(3, 3) = norm[adjacent];
+      
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v0[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v1[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v2[k] at:dataidx];
+    }
+  }
+  
+  for (i = 0; i < MAJOR_AXIS_RINGS; i++) {
+    free(points[i]); free(normals[i]);
+  }
+  free(points); free(normals);
+  return mesh;
 }
 
 - (void)scaleBy:(CGFloat)factor {
@@ -131,11 +241,16 @@
   
   Ellipsoid* el = [[Ellipsoid alloc] init];
   el->com = com;
-  el->a = a_len;
-  el->b = b_len;
+  if (a_len > b_len) {
+    el->a = a_len;
+    el->b = b_len;
+  } else {
+    el->a = b_len;
+    el->b = a_len;
+  }
   el->phi = phi;
   
-  NSLog(@"el center = %f, %f", com.x, com.y);
+  NSLog(@"el center = %f, %f, a = %f, b = %f", com.x, com.y, el->a, el->b);
   
   [el calculatePath];
   return el;

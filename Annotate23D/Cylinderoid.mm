@@ -5,12 +5,11 @@
 
 #import "Cylinderoid.h"
 #import "MathDefs.h"
-#import <vector>
 
-#define RINGS_IN_CAP 0
+#define RINGS_IN_CAP 10
 #define DEFAULT_RADIUS 40.0
 #define DISTANCE_BETWEEN_RINGS 20.0
-#define SEGMENTS_IN_CIRCLE 8
+#define SEGMENTS_IN_CIRCLE 16
 
 @implementation Cylinderoid
 @synthesize spine, radii, com, capRadius1, capRadius2;
@@ -86,7 +85,7 @@
         cgSpinePoint = [[spine objectAtIndex:0] CGPointValue];
         d2d = [self derivativeAtSpineIndex:0];
         r = capRadius1;
-        t = (float) ringIndex / (float) RINGS_IN_CAP;
+        t = (float) -ringIndex / (float) RINGS_IN_CAP;
         
       } else {
         cgSpinePoint = [[spine objectAtIndex:[spine count]-1] CGPointValue];
@@ -97,9 +96,10 @@
       
       Vec3 capOrigin(cgSpinePoint.x, cgSpinePoint.y, 0);
       derivative = Vec3(d2d.x(), d2d.y(), 0);
-      spinePoint = capOrigin - t * derivative;
+      spinePoint = capOrigin + t * r * derivative;
       radius = Vec3(-d2d.y(), d2d.x(), 0);
       radius *= sqrt(pow(r, 2) * (1 - pow(t, 2)));
+      
     } else {
       CGPoint cgSpinePoint = [[spine objectAtIndex:i] CGPointValue];
       Vec2 d2d = [self derivativeAtSpineIndex:i];
@@ -126,7 +126,7 @@
   
   /* Flat end caps. This for loop is a bit hacky -- k will be either 0 or
    * numRings - 1, and therefore will act on the first and last ring. */
-  for (k = 0; k < numRings; k += numRings - 1) {
+  for (k = 1; k < numRings; k += numRings - 2) {
     Vec3 *ring = points[k], *norm = normals[k];
     for (int t = 1; t < SEGMENTS_IN_CIRCLE - 1; t++) {
       for (i = 0; i < 3; i++, dataidx++) [mesh put:ring[0][i] at:dataidx];

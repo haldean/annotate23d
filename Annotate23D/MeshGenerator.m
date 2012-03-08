@@ -62,6 +62,9 @@
   for (i = 0; i < size / VALUES_PER_VERT; i++) {
     cdata[VALUES_PER_VERT * i + 0] -= xc;
     cdata[VALUES_PER_VERT * i + 1] -= yc;
+    /* Quartz Graphics and OpenGL disagree as to where the origin is, so
+     * correct that here. */
+    cdata[VALUES_PER_VERT * i + 1] *= -1.f;
     cdata[VALUES_PER_VERT * i + 2] -= zc;
   }
   

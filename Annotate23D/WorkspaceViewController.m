@@ -118,7 +118,7 @@
     UIView *view = sender.view;
     CGPoint translation = [sender translationInView:view.superview];
     
-    if (shapeIsSelected) {
+    if (shapeIsSelected && currentTool == SELECT) {
       [workspace translateSelectedShape:translation];
     } else {
       [view setCenter:

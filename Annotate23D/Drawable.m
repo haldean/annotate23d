@@ -10,6 +10,12 @@
 
 @implementation Drawable
 
+- (Mesh)generateMesh {
+  [NSException raise:@"Drawable is abstract" format:@"Cannot create mesh for Drawable directly."];
+  Mesh mesh;
+  return mesh;
+}
+
 - (CGMutablePathRef)getPath {
   return path;
 }

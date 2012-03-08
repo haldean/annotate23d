@@ -98,6 +98,7 @@ GLfloat gCubeVertexData[216] = {
   self = [super init];
   _mesh = mesh;
   _meshSize = size;
+  
   return self;
 }
 
@@ -114,7 +115,16 @@ GLfloat gCubeVertexData[216] = {
   view.context = self.context;
   view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
   
+  UITapGestureRecognizer *tapRecognizer =
+      [[UITapGestureRecognizer alloc]
+       initWithTarget:self action:@selector(dismiss:)];
+  [self.view addGestureRecognizer:tapRecognizer];
+  
   [self setupGL];
+}
+
+- (void) dismiss:(UIGestureRecognizer *)sender {
+  [self dismissModalViewControllerAnimated:true];
 }
 
 - (void)viewDidUnload {
@@ -180,27 +190,14 @@ GLfloat gCubeVertexData[216] = {
 
 - (void)update {
   float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-  GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+  GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 10000.0f);
   
-  self.effect.transform.projectionMatrix = projectionMatrix;
-  
-  GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -4.0f);
-  baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _rotation, 0.0f, 1.0f, 0.0f);
-  
-  // Compute the model view matrix for the object rendered with GLKit
-  GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
-  modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
-  modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
-  
-  self.effect.transform.modelviewMatrix = modelViewMatrix;
-  
-  // Compute the model view matrix for the object rendered with ES2
-  modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
-  modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
+  GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1000.0f);
+  GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
+  modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 0.0f, 1.0f, 0.0f);
   modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
   
   _normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-  
   _modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
   
   _rotation += self.timeSinceLastUpdate * 0.5f;

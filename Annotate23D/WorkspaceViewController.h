@@ -12,6 +12,7 @@
 #import "DrawPreviewUIView.h"
 #import "GlkRenderViewController.h"
 #import "WorkspaceUIView.h"
+#import "MeshGenerator.h"
 
 typedef enum {
   SELECT,

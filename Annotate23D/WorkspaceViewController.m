@@ -300,8 +300,8 @@
 }
 
 - (IBAction)renderButton:(id)sender {
-  GlkRenderViewController* renderview =
-      [[GlkRenderViewController alloc] initWithMesh:gCubeVertexData ofSize:36];
+  MeshGenerator* generator = [[MeshGenerator alloc] init];
+  GlkRenderViewController* renderview = [generator rendererForObjects:workspace];
   [self setModalPresentationStyle:UIModalPresentationFullScreen];
   [self presentViewController:renderview animated:TRUE completion:nil];
 }

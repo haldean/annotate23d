@@ -7,12 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GLKit/GLKit.h>
+
+struct mesh_struct {
+  GLfloat* data;
+  GLuint size;
+} typedef Mesh;
 
 @interface Drawable : NSObject {
   CGMutablePathRef path;
   CGPoint com;
 }
 
+- (Mesh)generateMesh;
 - (CGMutablePathRef)getPath;
 - (void)translate:(CGPoint)translate;
 - (void)scaleBy:(CGFloat)factor;

@@ -15,7 +15,7 @@
   CGFloat phi, a, b;
 }
 
-- (Mesh)generateMesh;
+- (Mesh*)generateMesh;
 - (void)calculatePath;
 
 @end

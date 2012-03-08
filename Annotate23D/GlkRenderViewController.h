@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-GLfloat gCubeVertexData[216];
-
 @interface GlkRenderViewController : GLKViewController
 
 - (id)initWithMesh:(GLfloat[])mesh ofSize:(GLuint)size;

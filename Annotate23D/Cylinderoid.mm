@@ -49,7 +49,7 @@
   return derivative;
 }
 
-- (Mesh)generateMesh {
+- (Mesh*)generateMesh {
   int i, j, k;
   int tubeRingCount = [spine count];
   int numRings = tubeRingCount + 2 * RINGS_IN_CAP;
@@ -62,17 +62,13 @@
   /* 3 verteces for each triangle */
   int vertexCount = triCount * 3;
   /* 6 floats for each triangle (3 for position, 3 for normal) */
-  int dataSize = vertexCount * 6;
   
-  //std::vector<GLfloat> data(dataSize, 0.f);
-  GLfloat *data = (GLfloat *) malloc(dataSize * sizeof(GLfloat));
-  NSLog(@"data size: %d", dataSize);
-  
+  Mesh* mesh = [[Mesh alloc] initWithSize:vertexCount];
   int dataidx = 0;
   
   Vec3 **points = (Vec3**) malloc(numRings * sizeof(Vec3*));
   Vec3 **normals = (Vec3**) malloc(numRings * sizeof(Vec3*));
-  for (int i = 0; i < numRings; i++) {
+  for (i = 0; i < numRings; i++) {
     points[i] = (Vec3*) malloc((SEGMENTS_IN_CIRCLE) * sizeof(Vec3));
     normals[i] = (Vec3*) malloc((SEGMENTS_IN_CIRCLE) * sizeof(Vec3));
   }
@@ -131,16 +127,14 @@
   /* Flat end caps. This for loop is a bit hacky -- k will be either 0 or
    * numRings - 1, and therefore will act on the first and last ring. */
   for (k = 0; k < numRings; k += numRings - 1) {
-    NSLog(@"k = %d", k);
     Vec3 *ring = points[k], *norm = normals[k];
     for (int t = 1; t < SEGMENTS_IN_CIRCLE - 1; t++) {
-      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = ring[0][i];
-      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = norm[0][i];
-      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = ring[t][i];
-      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = norm[t][i];
-      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = ring[t+1][i];
-      for (i = 0; i < 3; i++, dataidx++) data[dataidx] = norm[t+1][i];
-      NSLog(@"dataidx = %d", dataidx);
+      for (i = 0; i < 3; i++, dataidx++) [mesh put:ring[0][i] at:dataidx];
+      for (i = 0; i < 3; i++, dataidx++) [mesh put:norm[0][i] at:dataidx];
+      for (i = 0; i < 3; i++, dataidx++) [mesh put:ring[t][i] at:dataidx];
+      for (i = 0; i < 3; i++, dataidx++) [mesh put:norm[t][i] at:dataidx];
+      for (i = 0; i < 3; i++, dataidx++) [mesh put:ring[t+1][i] at:dataidx];
+      for (i = 0; i < 3; i++, dataidx++) [mesh put:norm[t+1][i] at:dataidx];
     }
   }
   
@@ -149,23 +143,22 @@
     for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
       VecX v1(6), v2(6), v3(6), v4(6);
       
-      v1.segment(0, 3) = points[i][j]; v1.segment(3, 3) = normals[i][j];
+      v1.segment(0, 3) = points[i][j];   v1.segment(3, 3) = normals[i][j];
       v2.segment(0, 3) = points[i+1][j]; v2.segment(3, 3) = normals[i+1][j];
       
       int adjacent = j == 0 ? SEGMENTS_IN_CIRCLE - 1 : j - 1;
-      v3.segment(0, 3) = points[i][adjacent]; v3.segment(3, 3) = normals[i][adjacent];
+      v3.segment(0, 3) = points[i][adjacent];   v3.segment(3, 3) = normals[i][adjacent];
       v4.segment(0, 3) = points[i+1][adjacent]; v4.segment(3, 3) = normals[i+1][adjacent];
       
       /* triangle 123 */
-      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v1[k];
-      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v2[k];
-      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v3[k];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v1[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v2[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v3[k] at:dataidx];
       
       /* triangle 234 */
-      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v2[k];
-      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v3[k];
-      for (k = 0; k < 6; k++, dataidx++) data[dataidx] = v4[k];
-      NSLog(@"dataidx = %d", dataidx);
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v2[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v3[k] at:dataidx];
+      for (k = 0; k < 6; k++, dataidx++) [mesh put:v4[k] at:dataidx];
     }
   }
   
@@ -174,21 +167,7 @@
     free(points[i]); free(normals[i]);
   }
   free(points); free(normals);
-  
-  vertexCount = dataidx / 6;
-  NSLog(@"dataidx should be %d, dataidx is %d", vertexCount * 6, dataidx);
-  NSLog(@"Points:");
-  for (i = 0; i < 36; i++) {
-    NSLog(@"v %f %f %f, n %f %f %f",
-          data[i*6+0], data[i*6+1], data[i*6+2],
-          data[i*6+3], data[i*6+4], data[i*6+5]);
-  }
-  NSLog(@"...");
-  
-  Mesh result;
-  result.size = vertexCount;
-  result.data = data;
-  return result;
+  return mesh;
 }
 
 - (void)calculateSurfacePoints {

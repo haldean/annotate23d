@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A90E498114FEF387005329D9 /* MathDefs.mm in Sources */ = {isa = PBXBuildFile; fileRef = A90E498014FEF387005329D9 /* MathDefs.mm */; };
-		A90E498314FEF46F005329D9 /* Drawable.m in Sources */ = {isa = PBXBuildFile; fileRef = A90E498214FEF46F005329D9 /* Drawable.m */; };
+		A90E498314FEF46F005329D9 /* Drawable.mm in Sources */ = {isa = PBXBuildFile; fileRef = A90E498214FEF46F005329D9 /* Drawable.mm */; };
 		A90E498F14FF0128005329D9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A90E498E14FF0128005329D9 /* SenTestingKit.framework */; };
 		A90E499014FF0128005329D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5914E30B4A00C40DAC /* UIKit.framework */; };
 		A90E499114FF0128005329D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99CBD5B14E30B4A00C40DAC /* Foundation.framework */; };
@@ -16,7 +16,7 @@
 		A90E499A14FF0128005329D9 /* Annotate23dUnitTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = A90E499914FF0128005329D9 /* Annotate23dUnitTests.mm */; };
 		A9153FF314F57976001BAFDC /* DrawPreviewUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF214F57976001BAFDC /* DrawPreviewUIView.m */; };
 		A9153FF714F5AAFF001BAFDC /* Cylinderoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF614F5AAFF001BAFDC /* Cylinderoid.mm */; };
-		A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */; };
+		A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9153FF914F5BE23001BAFDC /* WorkspaceUIView.mm */; };
 		A915445F14F5E859001BAFDC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A915445E14F5E859001BAFDC /* Accelerate.framework */; };
 		A916CD0314E3BA3500F1D782 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A916CD0214E3BA3500F1D782 /* GLKit.framework */; };
 		A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A91D695D14FEE24B006788CC /* Ellipsoid.mm */; };
@@ -33,6 +33,7 @@
 		A99CBD7014E30B4B00C40DAC /* WorkspaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A99CBD6E14E30B4B00C40DAC /* WorkspaceViewController.xib */; };
 		A9AAEBAD14E31E1E00F174E7 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = A9AAEBAC14E31E1E00F174E7 /* background.png */; };
 		A9AF5A1D14F69D430023BDC3 /* Eigen in Resources */ = {isa = PBXBuildFile; fileRef = A9AF5A1C14F69D430023BDC3 /* Eigen */; };
+		A9C21F841508AC7B001F1BDB /* Mesh.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C21F831508AC7B001F1BDB /* Mesh.m */; };
 		A9D848191507F289006FEA8B /* GlkRenderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D848181507F289006FEA8B /* GlkRenderViewController.m */; };
 		A9D8485D15081927006FEA8B /* Shader.fragment in Resources */ = {isa = PBXBuildFile; fileRef = A9D8485B15081927006FEA8B /* Shader.fragment */; };
 		A9D8485E15081927006FEA8B /* Shader.vertex in Resources */ = {isa = PBXBuildFile; fileRef = A9D8485C15081927006FEA8B /* Shader.vertex */; };
@@ -43,7 +44,7 @@
 
 /* Begin PBXFileReference section */
 		A90E498014FEF387005329D9 /* MathDefs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MathDefs.mm; sourceTree = "<group>"; };
-		A90E498214FEF46F005329D9 /* Drawable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Drawable.m; sourceTree = "<group>"; };
+		A90E498214FEF46F005329D9 /* Drawable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Drawable.mm; sourceTree = "<group>"; };
 		A90E498D14FF0128005329D9 /* Annotate23dUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Annotate23dUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A90E498E14FF0128005329D9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		A90E499414FF0128005329D9 /* Annotate23dUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Annotate23dUnitTests-Info.plist"; sourceTree = "<group>"; };
@@ -56,7 +57,7 @@
 		A9153FF514F5AAFF001BAFDC /* Cylinderoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cylinderoid.h; sourceTree = "<group>"; };
 		A9153FF614F5AAFF001BAFDC /* Cylinderoid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Cylinderoid.mm; sourceTree = "<group>"; };
 		A9153FF814F5BE23001BAFDC /* WorkspaceUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkspaceUIView.h; sourceTree = "<group>"; };
-		A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkspaceUIView.m; sourceTree = "<group>"; };
+		A9153FF914F5BE23001BAFDC /* WorkspaceUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WorkspaceUIView.mm; sourceTree = "<group>"; };
 		A915445E14F5E859001BAFDC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A916CD0214E3BA3500F1D782 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		A91D695B14FEC955006788CC /* MathDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathDefs.h; sourceTree = "<group>"; };
@@ -82,6 +83,8 @@
 		A99CBD6F14E30B4B00C40DAC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WorkspaceViewController.xib; sourceTree = "<group>"; };
 		A9AAEBAC14E31E1E00F174E7 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = resources/background.png; sourceTree = SOURCE_ROOT; };
 		A9AF5A1C14F69D430023BDC3 /* Eigen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Eigen; sourceTree = "<group>"; };
+		A9C21F821508AC7B001F1BDB /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
+		A9C21F831508AC7B001F1BDB /* Mesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mesh.m; sourceTree = "<group>"; };
 		A9D848171507F289006FEA8B /* GlkRenderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlkRenderViewController.h; sourceTree = "<group>"; };
 		A9D848181507F289006FEA8B /* GlkRenderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlkRenderViewController.m; sourceTree = "<group>"; };
 		A9D8485B15081927006FEA8B /* Shader.fragment */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fragment; path = Annotate23D/Shaders/Shader.fragment; sourceTree = "<group>"; };
@@ -183,7 +186,7 @@
 				A9153FF514F5AAFF001BAFDC /* Cylinderoid.h */,
 				A9153FF614F5AAFF001BAFDC /* Cylinderoid.mm */,
 				A91D695F14FEE325006788CC /* Drawable.h */,
-				A90E498214FEF46F005329D9 /* Drawable.m */,
+				A90E498214FEF46F005329D9 /* Drawable.mm */,
 				A9153FF114F57976001BAFDC /* DrawPreviewUIView.h */,
 				A9153FF214F57976001BAFDC /* DrawPreviewUIView.m */,
 				A9AF5A1C14F69D430023BDC3 /* Eigen */,
@@ -200,10 +203,12 @@
 				A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */,
 				A99CBD6014E30B4B00C40DAC /* Supporting Files */,
 				A9153FF814F5BE23001BAFDC /* WorkspaceUIView.h */,
-				A9153FF914F5BE23001BAFDC /* WorkspaceUIView.m */,
+				A9153FF914F5BE23001BAFDC /* WorkspaceUIView.mm */,
 				A99CBD6B14E30B4B00C40DAC /* WorkspaceViewController.h */,
 				A99CBD6C14E30B4B00C40DAC /* WorkspaceViewController.m */,
 				A99CBD6E14E30B4B00C40DAC /* WorkspaceViewController.xib */,
+				A9C21F821508AC7B001F1BDB /* Mesh.h */,
+				A9C21F831508AC7B001F1BDB /* Mesh.m */,
 			);
 			path = Annotate23D;
 			sourceTree = "<group>";
@@ -363,12 +368,13 @@
 				A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */,
 				A9153FF314F57976001BAFDC /* DrawPreviewUIView.m in Sources */,
 				A9153FF714F5AAFF001BAFDC /* Cylinderoid.mm in Sources */,
-				A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.m in Sources */,
+				A9153FFA14F5BE23001BAFDC /* WorkspaceUIView.mm in Sources */,
 				A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */,
 				A90E498114FEF387005329D9 /* MathDefs.mm in Sources */,
-				A90E498314FEF46F005329D9 /* Drawable.m in Sources */,
+				A90E498314FEF46F005329D9 /* Drawable.mm in Sources */,
 				A9D848191507F289006FEA8B /* GlkRenderViewController.m in Sources */,
 				A9D848621508222F006FEA8B /* MeshGenerator.m in Sources */,
+				A9C21F841508AC7B001F1BDB /* Mesh.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

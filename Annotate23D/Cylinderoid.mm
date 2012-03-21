@@ -333,7 +333,8 @@
       double r0 = i > 0 ? [[radii objectAtIndex:i-1] floatValue] : r;
       double r1 = i < [radii count] - 1 ? [[radii objectAtIndex:i+1] floatValue] : r;
       
-      r += ((r0 - r) + (r1 - r)) * 1e-2;
+      double scale = pow(10., -pow((lock - i) / 1.5, 2));
+      r += ((r0 - r) + (r1 - r)) * scale;
       [newRadii addObject:[NSNumber numberWithDouble:r]];
     }
     radii = newRadii;

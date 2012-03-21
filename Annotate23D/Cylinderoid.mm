@@ -8,23 +8,13 @@
 
 #define RINGS_IN_CAP 10
 #define DEFAULT_RADIUS 40.0
-#define DISTANCE_BETWEEN_RINGS 20.0
 #define SEGMENTS_IN_CIRCLE 16
+#define MIN_DISTANCE_BETWEEN_RINGS 30
+#define SMOOTHING_STEPS 100
 
 @implementation Cylinderoid
 @synthesize spine, radii, com, capRadius1, capRadius2;
 
-- (double)integrateOverSpine {
-  if ([spine count] == 0) return 0;
-  
-  double sum = 0;
-  CGPoint current, last = [[spine objectAtIndex:0] CGPointValue];
-  for (int i = 1; i < [spine count]; i++) {
-    current = [[spine objectAtIndex:i] CGPointValue];
-    sum += sqrt(pow(current.x - last.x, 2) + pow(current.y - last.y, 2));
-  }
-  return sum;
-}
 
 - (Vector2f) derivativeAtSpineIndex:(int)i {
   if ([spine count] < 2) {
@@ -186,7 +176,7 @@
     derivative.normalize();
     
     radius1.x() = -derivative.y(); radius1.y() = derivative.x();
-    radius1 *= [[radii objectAtIndex:0] floatValue];
+    radius1 *= [[radii objectAtIndex:0] doubleValue];
     
     for (float i = 0; i < M_PI; i += M_PI / 10) {
       radius2.x() = cos(i) * radius1.x() - sin(i) * radius1.y();
@@ -211,8 +201,8 @@
     radius1.x() = derivative.y(); radius1.y() = -derivative.x();
     radius2.x() = -derivative.y(); radius2.y() = derivative.x();
     
-    radius1 *= [[radii objectAtIndex:i] floatValue];
-    radius2 *= [[radii objectAtIndex:i] floatValue];
+    radius1 *= [[radii objectAtIndex:i] doubleValue];
+    radius2 *= [[radii objectAtIndex:i] doubleValue];
     
     radius1 += VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
     radius2 += VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
@@ -230,7 +220,7 @@
     derivative.normalize();
     
     radius1.x() = -derivative.y(); radius1.y() = derivative.x();
-    radius1 *= [[radii objectAtIndex:0] floatValue];
+    radius1 *= [[radii objectAtIndex:0] doubleValue];
     
     for (float i = 0; i < M_PI; i += M_PI / 10) {
       radius2.x() = cos(i) * radius1.x() - sin(i) * radius1.y();
@@ -264,30 +254,31 @@
 }
 
 - (void)translate:(CGPoint)translate {
-  CGAffineTransform translation =
-    CGAffineTransformMakeTranslation(translate.x, translate.y);
+  NSLog(@"translate by %f, %f", translate.x, translate.y);
   for (int i = 0; i < [spine count]; i++) {
     CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    CGPointApplyAffineTransform(cgpt, translation);
-    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
+    CGPoint newpt = CGPointMake(cgpt.x + translate.x, cgpt.y + translate.y);
+    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:newpt]];
   }
   
-  [super translate:translate];
+  com.x += translate.x;
+  com.y += translate.y;
+  
+  [self calculateSurfacePoints];
 }
 
 - (void)scaleBy:(CGFloat)factor {
-  CGAffineTransform scale =
-    CGAffineTransformMakeTranslation(-com.x, -com.y);
-  CGAffineTransformScale(scale, factor, factor);
-  CGAffineTransformMakeTranslation(com.x, com.y);
-  
   for (int i = 0; i < [spine count]; i++) {
     CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    CGPointApplyAffineTransform(cgpt, scale);
-    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
+    CGPoint newpt = CGPointMake(factor * (cgpt.x - com.x) + com.x, 
+                              factor * (cgpt.y - com.y) + com.y);
+    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:newpt]];
+    
+    float radius = [[radii objectAtIndex:i] doubleValue];
+    [radii replaceObjectAtIndex:i withObject:[NSNumber numberWithDouble:radius * factor]];
   }
-  
-  [super scaleBy:factor];
+
+  [self calculateSurfacePoints];
 }
 
 - (void)rotateBy:(CGFloat)angle {
@@ -305,12 +296,17 @@
   [super rotateBy:angle];
 }
 
-- (void)smoothSpine:(int)factor {
+- (void)smoothSpine:(int)factor lockPoint:(int)lock {
   for (int iteration = factor; iteration >= 0; iteration--) {
     NSMutableArray* newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
     
     [newSpine addObject:[spine objectAtIndex:0]];
     for (int i = 1; i < [spine count] - 1; i++) {
+      if (i == lock) {
+        [newSpine addObject:[spine objectAtIndex:i]];
+        continue;
+      }
+      
       Vec2 p = VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
       Vec2 p0 = VectorForPoint([[spine objectAtIndex:i-1] CGPointValue]);
       Vec2 p1 = VectorForPoint([[spine objectAtIndex:i+1] CGPointValue]);
@@ -324,9 +320,61 @@
   }
 }
 
+- (void)smoothRadii:(int)factor lockPoint:(int)lock {
+  for (; factor >= 0; factor--) {
+    NSMutableArray* newRadii = [[NSMutableArray alloc] initWithCapacity:[radii count]];
+    for (int i = 0; i < [radii count]; i++) {
+      if (i == lock) {
+        [newRadii addObject:[radii objectAtIndex:i]];
+        continue;
+      }
+      
+      double r = [[radii objectAtIndex:i] floatValue];
+      double r0 = i > 0 ? [[radii objectAtIndex:i-1] floatValue] : r;
+      double r1 = i < [radii count] - 1 ? [[radii objectAtIndex:i+1] floatValue] : r;
+      
+      r += ((r0 - r) + (r1 - r)) * 1e-2;
+      [newRadii addObject:[NSNumber numberWithDouble:r]];
+    }
+    radii = newRadii;
+  }
+}
+
+- (void) resampleSpine {
+  NSMutableArray* newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+  
+  Vec2 lastLoc = VectorForPoint([[spine objectAtIndex:0] CGPointValue]);
+  [newSpine addObject:[spine objectAtIndex:0]];
+  
+  for (int i = 1; i < [spine count]; i++) {
+    NSValue* thisPoint = [spine objectAtIndex:i];
+    Vec2 thisLoc = VectorForPoint([thisPoint CGPointValue]);
+    if ((thisLoc - lastLoc).norm() > MIN_DISTANCE_BETWEEN_RINGS) {
+      [newSpine addObject:thisPoint];
+      lastLoc = thisLoc;
+    }
+  }
+  
+  spine = newSpine;
+}
+
++ (double)integrateOverSpine:(NSArray*)spine {
+  if ([spine count] == 0) return 0;
+  
+  double sum = 0;
+  CGPoint current, last = [[spine objectAtIndex:0] CGPointValue];
+  for (int i = 1; i < [spine count]; i++) {
+    current = [[spine objectAtIndex:i] CGPointValue];
+    sum += sqrt(pow(current.x - last.x, 2) + pow(current.y - last.y, 2));
+  }
+  return sum;
+}
+
 + (Cylinderoid*)withPoints:(NSArray *)points {
   Cylinderoid* cyl = [[Cylinderoid alloc] init];
+  
   [cyl setSpine:[NSMutableArray arrayWithArray:points]];
+  [cyl resampleSpine];
   [cyl calculateCoM];
   
   [cyl setRadii:[NSMutableArray arrayWithCapacity:[points count]]];
@@ -336,7 +384,7 @@
   [cyl setCapRadius1:DEFAULT_RADIUS];
   [cyl setCapRadius2:DEFAULT_RADIUS];
   
-  [cyl smoothSpine:1000];
+  [cyl smoothSpine:SMOOTHING_STEPS lockPoint:-1];
   [cyl calculateSurfacePoints];
   
   return cyl;

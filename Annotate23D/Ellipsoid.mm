@@ -9,7 +9,7 @@
 #import "Ellipsoid.h"
 #import "MathDefs.h"
 
-#define MAJOR_AXIS_RINGS 20
+#define MAJOR_AXIS_RINGS 40
 #define SEGMENTS_IN_CIRCLE 16
 
 @implementation Ellipsoid
@@ -38,14 +38,13 @@
   minorAxis = phiRot * minorAxis;
   derivative = phiRot * derivative;
   
+  /* Calculate points and normals */
   for (i = 0; i < MAJOR_AXIS_RINGS; i++) {
     Vec3 spinePoint, radius;
     /* t varies from -1 to 1 */
     float t = (2.0 * i) / (float) MAJOR_AXIS_RINGS - 1.0;
     spinePoint = center + t * majorAxis;
     radius = minorAxis * sqrt(1 - pow(t, 2));
-    
-    NSLog(@"t: %f, spine: %@, radius: %@", t, VecToStr(spinePoint), VecToStr(radius));
     
     for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
       Vec3 surfacePoint;
@@ -62,7 +61,7 @@
     }
   }
   
-  /* Generate rings */
+  /* Generate rings for mesh */
   for (i = 0; i < MAJOR_AXIS_RINGS - 1; i++) {
     for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
       VecX v1(6), v2(6), v3(6), v4(6);
@@ -91,16 +90,16 @@
     Vec3 centerPoint;
     Vec3 centerNormal;
     
+    float scaleForSmoothing = 1.0 - (2.0 / MAJOR_AXIS_RINGS);
     if (cap == 0) {
       j = 0;
-      centerPoint = center - majorAxis;
-      centerNormal = -majorAxis;
+      centerPoint = center - majorAxis * scaleForSmoothing;
+      centerNormal = -majorAxis / a;
     } else {
       j = MAJOR_AXIS_RINGS - 1;
-      centerPoint = center + majorAxis;
-      centerNormal = majorAxis;
+      centerPoint = center + majorAxis * scaleForSmoothing;
+      centerNormal = majorAxis / a;
     }
-    centerNormal.normalize();
     
     VecX v0(6);
     v0.segment(0, 3) = centerPoint; v0.segment(3, 3) = centerNormal;
@@ -249,8 +248,6 @@
     el->b = a_len;
   }
   el->phi = phi;
-  
-  NSLog(@"el center = %f, %f, a = %f, b = %f", com.x, com.y, el->a, el->b);
   
   [el calculatePath];
   return el;

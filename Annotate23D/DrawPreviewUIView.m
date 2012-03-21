@@ -24,7 +24,10 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (!canHandleClicks) return;
+  if (!canHandleClicks) {
+    [super touchesBegan:touches withEvent:event];
+    return;
+  }
   
   [points removeAllObjects];
   lastPoint = [[touches anyObject] locationInView:self];
@@ -32,7 +35,10 @@
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (!canHandleClicks) return;
+  if (!canHandleClicks) {
+    [super touchesMoved:touches withEvent:event];
+    return;
+  }
   
   CGPoint currentPoint = [[touches anyObject] locationInView:self];
   [points addObject:[NSValue valueWithCGPoint:currentPoint]];
@@ -40,7 +46,10 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-  if (!canHandleClicks) return;
+  if (!canHandleClicks) {
+    [super touchesEnded:touches withEvent:event];
+    return;
+  }
   
   if (delegate != NULL) {
     [delegate onPathDraw:points];

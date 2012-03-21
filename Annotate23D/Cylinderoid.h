@@ -15,6 +15,8 @@
 @property (assign) float capRadius1, capRadius2;
 
 - (void)calculateSurfacePoints;
-- (void)smoothSpine:(int)factor;
+- (void)smoothRadii:(int)factor lockPoint:(int)point;
+- (void)smoothSpine:(int)factor lockPoint:(int)point;
+- (void)resampleSpine;
 
 @end

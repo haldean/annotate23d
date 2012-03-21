@@ -27,6 +27,7 @@
 {
   [super viewDidLoad];
   
+  /*
   panGestureRecognizer = 
       [[UIPanGestureRecognizer alloc]
        initWithTarget:self action:@selector(handlePan:)];
@@ -36,6 +37,7 @@
       [[UIPinchGestureRecognizer alloc]
        initWithTarget:self action:@selector(handlePinch:)];
   [drawView addGestureRecognizer:pinchGestureRecognizer];
+   */
   
   tapGestureRecognizer =
       [[UITapGestureRecognizer alloc]
@@ -48,10 +50,17 @@
   [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
   [[self view] addGestureRecognizer:doubleTapGestureRecognizer];
   
+  /*
   rotationGestureRecognizer =
       [[UIRotationGestureRecognizer alloc]
        initWithTarget:self action:@selector(handleRotate:)];
   [drawView addGestureRecognizer:rotationGestureRecognizer];
+   */
+  
+  UILongPressGestureRecognizer* longPressGestureRecognizer =
+      [[UILongPressGestureRecognizer alloc]
+       initWithTarget:workspace action:@selector(handleLongPress:)];
+  [drawView addGestureRecognizer:longPressGestureRecognizer];
   
   [drawView setBackgroundColor:[UIColor clearColor]];
   
@@ -63,6 +72,18 @@
   
   [drawPreview setDelegate:self];
   [workspace setFrame:drawPreview.frame];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  [workspace touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+  [workspace touchesMoved:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+  [workspace touchesEnded:touches withEvent:event];
 }
 
 - (void)viewDidUnload
@@ -166,8 +187,7 @@
 - (void)handleTap:(UIGestureRecognizer *)sender {
   if (currentTool == SELECT) {
     CGPoint loc = [sender locationInView:sender.view];
-    NSLog(@"Click at %f %f", loc.x, loc.y);
-    shapeIsSelected = [workspace selectAtPoint:loc];
+    shapeIsSelected = [workspace tapAtPoint:loc];
   }
 }
 

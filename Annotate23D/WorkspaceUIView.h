@@ -10,17 +10,30 @@
 #import "Cylinderoid.h"
 #import "Ellipsoid.h"
 #import "Drawable.h"
+#import "ShapeTransformer.h"
 
-@interface WorkspaceUIView : UIView {
+@interface WorkspaceUIView : UIView <UIActionSheetDelegate> {
   int selectedIndex;
+  ShapeTransformer* selectedShape;
+  bool shapeWantsTouching;
 }
 
 @property (strong) NSMutableArray *drawables;
 
+/* Returns YES if a shape is currently selected, and false otherwise. */
+- (bool)tapAtPoint:(CGPoint)point;
+- (void)handleLongPress:(UIGestureRecognizer*)sender;
+
+/* Returns YES if a shape is currently selected, and false otherwise. */
 - (bool)selectAtPoint:(CGPoint)point;
+
 - (void)translateSelectedShape:(CGPoint)translation;
 - (void)scaleSelectedShape:(CGFloat)factor;
 - (void)rotateSelectedShape:(CGFloat)angle;
+- (void)deleteSelectedShape;
+
 - (void)addDrawable:(Drawable*)draw;
+
+- (void)actionSheet:(UIActionSheet*)sheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 @end

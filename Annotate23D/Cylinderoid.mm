@@ -356,7 +356,9 @@
     }
   }
   
-  spine = newSpine;
+  /* If the resampled spine results in a spine of length 2 or less,
+   * keep the old spine. It's too short to reasonably resample. */
+  if ([newSpine count] > 2) spine = newSpine;
 }
 
 + (double)integrateOverSpine:(NSArray*)spine {
@@ -372,6 +374,8 @@
 }
 
 + (Cylinderoid*)withPoints:(NSArray *)points {
+  if ([points count] <= 2) return nil;
+  
   Cylinderoid* cyl = [[Cylinderoid alloc] init];
   
   [cyl setSpine:[NSMutableArray arrayWithArray:points]];

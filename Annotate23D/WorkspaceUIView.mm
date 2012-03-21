@@ -163,12 +163,14 @@
   [self setNeedsDisplay];
 }
 
+#pragma mark Drawing methods
+
 - (void)addDrawable:(Drawable*)draw {
+  if (draw == nil) return;
+  
   [drawables addObject:draw];
   [self setNeedsDisplay];
 }
-
-#pragma mark Drawing methods
 
 - (void)drawRect:(CGRect)rect {
   CGContextRef context = UIGraphicsGetCurrentContext();

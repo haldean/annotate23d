@@ -10,6 +10,7 @@
 #define Annotate23D_MathDefs_h
 
 #import "Eigen/Eigen"
+#import "Eigen/Geometry"
 using namespace Eigen;
 
 // In case we want to switch precision later

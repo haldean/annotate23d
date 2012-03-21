@@ -23,7 +23,8 @@
 #define ALL_SPINE_POINTS int i = 0; i < [[cylinderoid spine] count]; i++
 #define SPINE_POINT(x) [[[cylinderoid spine] objectAtIndex:x] CGPointValue]
 #define SET_SPINE_POINT(i, pt) [[cylinderoid spine] replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:pt]]
-
+#define RADIUS(x) [[[cylinderoid radii] objectAtIndex:x] floatValue]
+#define SET_RADIUS(i, r) [[cylinderoid radii] replaceObjectAtIndex:i withObject:[NSNumber numberWithFloat:r]]
 
 @implementation CylinderoidTransformer
 @synthesize cylinderoid;
@@ -50,11 +51,68 @@
 }
 
 - (bool) touchesBegan:(NSSet *) touches inView:(UIView*) view {
-  return selectedHandle != NO_SELECTION;
+  /* If we're selected, we're always responsive to input. */
+  return YES;
 }
 
 - (void) touchesMoved:(NSSet *) touches inView:(UIView*) view {
-  if (selectedHandle != NO_SELECTION && selectedHandleType == SPINE) {
+  if (selectedHandle == NO_SELECTION) {
+    if ([touches count] == 1) {
+      /* Translate cylinderoid */
+      UITouch* touch = [[touches objectEnumerator] nextObject];
+      CGPoint start = [touch previousLocationInView:view];
+      CGPoint end = [touch locationInView:view];
+      
+      float dx = end.x - start.x, dy = end.y - start.y;
+      for (ALL_SPINE_POINTS) {
+        CGPoint spine_pt = SPINE_POINT(i);
+        spine_pt.x += dx; spine_pt.y += dy;
+        SET_SPINE_POINT(i, spine_pt);
+      }
+    } else if ([touches count] == 2) {
+      NSEnumerator* touchEnumerator = [touches objectEnumerator];
+      UITouch* touch1 = [touchEnumerator nextObject];
+      UITouch* touch2 = [touchEnumerator nextObject];
+      
+      Vec2 touch1_start = VectorForPoint([touch1 previousLocationInView:view]);
+      Vec2 touch2_start = VectorForPoint([touch2 previousLocationInView:view]);
+      
+      Vec2 touch1_end = VectorForPoint([touch1 locationInView:view]);
+      Vec2 touch2_end = VectorForPoint([touch2 locationInView:view]);
+      
+      
+      Vec2 line_start = touch1_start - touch2_start;
+      double start_length = line_start.norm();
+      line_start /= start_length;
+      
+      Vec2 line_end = touch1_end - touch2_end;
+      double end_length = line_end.norm();
+      line_end /= end_length;
+      
+      Vec2 translate = touch1_end - touch1_start;
+      double rotate = (atan2(line_end[1], line_end[0])
+                       - atan2(line_start[1], line_start[0]));
+      double scale = end_length / start_length;
+      
+      /* Translate to origin, then scale, then rotate, then translate out of
+       * origin, then translate by required amount. */
+      Vec2 com = VectorForPoint([cylinderoid com]);
+      Transform<float, 2, Affine> trs;
+      trs.setIdentity();
+      trs.translate(touch1_end);
+      trs.rotate(rotate);
+      trs.scale(scale);
+      trs.translate(-touch1_start);
+      
+      for (ALL_SPINE_POINTS) {
+        Vec2 spine_pt = VectorForPoint(SPINE_POINT(i));
+        spine_pt = trs * spine_pt;
+        SET_SPINE_POINT(i, CGPointMake(spine_pt[0], spine_pt[1]));
+        SET_RADIUS(i, scale * RADIUS(i));
+      }
+    }
+    
+  } else if (selectedHandleType == SPINE) {
     if ([touches count] == 1) {
       /* Move spine point */
       UITouch* touch = [[touches objectEnumerator] nextObject];
@@ -68,17 +126,16 @@
       
       /* TODO: better smoothing here */
       [cylinderoid smoothSpine:100 lockPoint:selectedHandle];
-      [cylinderoid calculateSurfacePoints];
       
     } else if ([touches count] == 2) {
       /* Scale radii */
-      
       NSEnumerator* touchEnumerator = [touches objectEnumerator];
       UITouch* touch1 = [touchEnumerator nextObject];
       UITouch* touch2 = [touchEnumerator nextObject];
       
       Vec2 touch1_start = VectorForPoint([touch1 previousLocationInView:view]);
       Vec2 touch2_start = VectorForPoint([touch2 previousLocationInView:view]);
+      
       Vec2 touch1_end = VectorForPoint([touch1 locationInView:view]);
       Vec2 touch2_end = VectorForPoint([touch2 locationInView:view]);
       
@@ -93,9 +150,10 @@
       
       /* TODO: better smoothing here */
       [cylinderoid smoothRadii:50 lockPoint:selectedHandle];
-      [cylinderoid calculateSurfacePoints];
     }
   }
+  
+  [cylinderoid calculateSurfacePoints];
 }
 
 - (void) touchesEnded:(NSSet *) touches inView:(UIView*) view {}

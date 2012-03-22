@@ -6,7 +6,7 @@
 #import "Cylinderoid.h"
 #import "MathDefs.h"
 
-#define RINGS_IN_CAP 10
+#define RINGS_IN_CAP 30
 #define DEFAULT_RADIUS 40.0
 #define SEGMENTS_IN_CIRCLE 16
 #define MIN_DISTANCE_BETWEEN_RINGS 30
@@ -69,26 +69,28 @@
     if (i < 0 || i >= tubeRingCount) {
       CGPoint cgSpinePoint;
       Vec2 d2d;
-      float r, t;
+      float r_maj, r_min, t;
       
       if (ringIndex < RINGS_IN_CAP) {
         cgSpinePoint = [[spine objectAtIndex:0] CGPointValue];
         d2d = [self derivativeAtSpineIndex:0];
-        r = capRadius1;
+        r_min = [[radii objectAtIndex:0] floatValue];
+        r_maj = capRadius1;
         t = (float) -ringIndex / (float) RINGS_IN_CAP;
         
       } else {
         cgSpinePoint = [[spine objectAtIndex:[spine count]-1] CGPointValue];
         d2d = [self derivativeAtSpineIndex:[spine count]-1];
-        r = capRadius2;
+        r_min = [[radii objectAtIndex:[radii count]-1] floatValue];
+        r_maj = capRadius2;
         t = (float) (ringIndex - numRings + 1 + RINGS_IN_CAP) / (float) RINGS_IN_CAP;
       }
       
       Vec3 capOrigin(cgSpinePoint.x, cgSpinePoint.y, 0);
       derivative = Vec3(d2d.x(), d2d.y(), 0);
-      spinePoint = capOrigin + t * r * derivative;
+      spinePoint = capOrigin + t * r_maj * derivative;
       radius = Vec3(-d2d.y(), d2d.x(), 0);
-      radius *= sqrt(pow(r, 2) * (1 - pow(t, 2)));
+      radius *= sqrt(pow(r_min, 2) * (1 - pow(t, 2)));
       
     } else {
       CGPoint cgSpinePoint = [[spine objectAtIndex:i] CGPointValue];
@@ -109,7 +111,11 @@
         surfacePoint = rot * radius;
       }
       points[ringIndex][j] = surfacePoint + spinePoint;
-      normals[ringIndex][j] = surfacePoint;
+      if (surfacePoint.norm() > 0) {
+        normals[ringIndex][j] = surfacePoint;
+      } else {
+        normals[ringIndex][j] = derivative;
+      }
       normals[ringIndex][j].normalize();
     }
   }

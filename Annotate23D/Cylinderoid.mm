@@ -284,49 +284,6 @@
   com.y /= [spine count];
 }
 
-- (void)translate:(CGPoint)translate {
-  NSLog(@"translate by %f, %f", translate.x, translate.y);
-  for (int i = 0; i < [spine count]; i++) {
-    CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    CGPoint newpt = CGPointMake(cgpt.x + translate.x, cgpt.y + translate.y);
-    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:newpt]];
-  }
-  
-  com.x += translate.x;
-  com.y += translate.y;
-  
-  [self calculateSurfacePoints];
-}
-
-- (void)scaleBy:(CGFloat)factor {
-  for (int i = 0; i < [spine count]; i++) {
-    CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    CGPoint newpt = CGPointMake(factor * (cgpt.x - com.x) + com.x, 
-                              factor * (cgpt.y - com.y) + com.y);
-    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:newpt]];
-    
-    float radius = [[radii objectAtIndex:i] doubleValue];
-    [radii replaceObjectAtIndex:i withObject:[NSNumber numberWithDouble:radius * factor]];
-  }
-
-  [self calculateSurfacePoints];
-}
-
-- (void)rotateBy:(CGFloat)angle {
-  CGAffineTransform rotation =
-    CGAffineTransformMakeTranslation(-com.x, -com.y);
-  CGAffineTransformRotate(rotation, angle);
-  CGAffineTransformTranslate(rotation, com.x, com.y);
-  
-  for (int i = 0; i < [spine count]; i++) {
-    CGPoint cgpt = [[spine objectAtIndex:i] CGPointValue];
-    cgpt = CGPointApplyAffineTransform(cgpt, rotation);
-    [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:cgpt]];
-  }
-  
-  [super rotateBy:angle];
-}
-
 - (void)smoothSpine:(int)factor lockPoint:(int)lock {
   for (int iteration = factor; iteration >= 0; iteration--) {
     NSMutableArray* newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
@@ -413,8 +370,8 @@
   [cyl resampleSpine];
   [cyl calculateCoM];
   
-  [cyl setRadii:[NSMutableArray arrayWithCapacity:[points count]]];
-  for (int i = 0; i < [points count]; i++) {
+  [cyl setRadii:[NSMutableArray arrayWithCapacity:[[cyl spine] count]]];
+  for (int i = 0; i < [[cyl spine] count]; i++) {
     [[cyl radii] insertObject:[NSNumber numberWithDouble:DEFAULT_RADIUS] atIndex:i];
   }
   [cyl setCapRadius1:DEFAULT_RADIUS];

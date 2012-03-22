@@ -122,6 +122,8 @@
     SET_SPINE_POINT(i, CGPointMake(spine_pt[0], spine_pt[1]));
     SET_RADIUS(i, scale * RADIUS(i));
   }
+  [cylinderoid setCapRadius1:[cylinderoid capRadius1]*scale];
+  [cylinderoid setCapRadius2:[cylinderoid capRadius2]*scale];
 }
 
 #pragma mark Point manipulation
@@ -133,7 +135,7 @@
   SET_SPINE_POINT(selectedHandle, spine_pt);
   
   /* TODO: better smoothing here */
-  [cylinderoid smoothSpine:100 lockPoint:selectedHandle];
+  [cylinderoid smoothSpine:10 lockPoint:selectedHandle];
 }
 
 - (void) scaleRadiusFor:(UITouch*) touch1 to:(UITouch*) touch2 inView:(UIView*) view {
@@ -261,7 +263,7 @@
 - (void) drawShapeWithHandles:(CGContextRef)context {
   CGContextSetLineWidth(context, 5);
   CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
-  CGContextSetFillColor(context, (CGFloat[]) {0., 0.8, 1., 1.});
+  CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0 green:0.8 blue:1. alpha:1.].CGColor);
   CGContextAddPath(context, [cylinderoid getPath]);
   CGContextDrawPath(context, kCGPathFillStroke);
   

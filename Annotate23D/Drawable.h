@@ -18,9 +18,6 @@
 
 - (Mesh*)generateMesh;
 - (CGMutablePathRef)getPath;
-- (void)translate:(CGPoint)translate;
-- (void)scaleBy:(CGFloat)factor;
-- (void)rotateBy:(CGFloat)angle;
 
 + (Drawable*)withPoints:(NSArray*)points;
 

@@ -34,12 +34,6 @@ UINavigationControllerDelegate,
 FileMenuDelegate,
 ReceivesDrawEvents> {
   CGFloat imageScale;
-  CGFloat currentRotation;
-  UIPanGestureRecognizer *panGestureRecognizer;
-  UIPinchGestureRecognizer *pinchGestureRecognizer;
-  UITapGestureRecognizer *tapGestureRecognizer;
-  UITapGestureRecognizer *doubleTapGestureRecognizer;
-  UIRotationGestureRecognizer *rotationGestureRecognizer;
   ToolMode currentTool;
   CGRect startView;
   bool shapeIsSelected;
@@ -70,11 +64,7 @@ ReceivesDrawEvents> {
 - (IBAction)renderButton:(id)sender;
 
 - (void)buttonClick:(ToolMode)tool;
-
-- (void)handlePan:(UIGestureRecognizer*)sender;
 - (void)handleTap:(UIGestureRecognizer*)sender;
-- (void)handlePinch:(UIGestureRecognizer*)sender;
-- (void)handleRotate:(UIGestureRecognizer*)sender;
 
 - (void)newSketch;
 - (void)resetView;

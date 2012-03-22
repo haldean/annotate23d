@@ -27,12 +27,12 @@
 {
   [super viewDidLoad];
   
-  tapGestureRecognizer =
+  UITapGestureRecognizer *tapGestureRecognizer =
       [[UITapGestureRecognizer alloc]
        initWithTarget:self action:@selector(handleTap:)];
   [drawView addGestureRecognizer:tapGestureRecognizer];
   
-  doubleTapGestureRecognizer =
+  UITapGestureRecognizer *doubleTapGestureRecognizer =
   [[UITapGestureRecognizer alloc]
    initWithTarget:self action:@selector(handleDoubleTap:)];
   [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
@@ -149,57 +149,6 @@
   [self resetView];
 }
 
-- (void)handlePan:(UIPanGestureRecognizer *)sender {
-  if (sender.state == UIGestureRecognizerStateBegan ||
-      sender.state == UIGestureRecognizerStateChanged) {
-    UIView *view = sender.view;
-    CGPoint translation = [sender translationInView:view.superview];
-    
-    if (shapeIsSelected && currentTool == SELECT) {
-      [workspace translateSelectedShape:translation];
-    } else {
-      [view setCenter:
-       CGPointMake(view.center.x + translation.x,
-                   view.center.y + translation.y)];
-    }
-    
-    [sender setTranslation:CGPointZero inView:view.superview];
-  }
-}
-
-- (void)handlePinch:(UIPinchGestureRecognizer*)sender {
-  if ([(UIPinchGestureRecognizer*) sender state] == UIGestureRecognizerStateEnded) {
-		imageScale = 1.0;
-		return;
-	}
-  
-  CGFloat raw = [(UIPinchGestureRecognizer*)sender scale];
-  CGFloat scale = 1.0 - (imageScale - raw);
-  
-  if (shapeIsSelected) {
-    [workspace scaleSelectedShape:scale];
-  } else {
-    CGAffineTransform currentTransform = [(UIPinchGestureRecognizer*)sender view].transform;
-    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-	  [[(UIPinchGestureRecognizer*)sender view] setTransform:newTransform];
-  }
-  
-  imageScale = raw;
-}
-
-- (void)handleRotate:(UIGestureRecognizer *)sender {
-  if (!shapeIsSelected || 
-      [(UIRotationGestureRecognizer*) sender state] == UIGestureRecognizerStateEnded) {
-		currentRotation = 0.0;
-		return;
-	}
-  
-  CGFloat raw = [(UIRotationGestureRecognizer*)sender rotation];
-  CGFloat angle = raw - currentRotation;
-  [workspace rotateSelectedShape:angle];
-  currentRotation = raw;
-}
-
 - (void)handleTap:(UIGestureRecognizer *)sender {
   if (currentTool == SELECT) {
     CGPoint loc = [sender locationInView:sender.view];
@@ -282,9 +231,6 @@
       break;
   }
   
-  [panGestureRecognizer setEnabled:enableGestures];
-  [pinchGestureRecognizer setEnabled:enableGestures];
-  [rotationGestureRecognizer setEnabled:enableGestures];
   [drawPreview setCanHandleClicks:!enableGestures];
   
   if (!impl) {

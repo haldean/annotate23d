@@ -129,17 +129,6 @@
   return mesh;
 }
 
-- (void)scaleBy:(CGFloat)factor {
-  [super scaleBy:factor];
-  a *= factor;
-  b *= factor;
-}
-
-- (void)rotateBy:(CGFloat)angle {
-  [super rotateBy:angle];
-  phi += angle;
-}
-
 - (void)calculatePath {
   path = CGPathCreateMutable();
   

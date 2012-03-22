@@ -143,26 +143,6 @@
   }
 }
 
-#pragma mark Shape transformation
-
-- (void)translateSelectedShape:(CGPoint)translation {
-  if (selectedIndex == NO_SELECTION) return;
-  [[drawables objectAtIndex:selectedIndex] translate:translation];
-  [self setNeedsDisplay];
-}
-
-- (void)scaleSelectedShape:(CGFloat)factor {
-  if (selectedIndex == NO_SELECTION) return;
-  [[drawables objectAtIndex:selectedIndex] scaleBy:factor];
-  [self setNeedsDisplay];
-}
-
-- (void)rotateSelectedShape:(CGFloat)angle {
-  if (selectedIndex == NO_SELECTION) return;
-  [[drawables objectAtIndex:selectedIndex] rotateBy:angle];
-  [self setNeedsDisplay];
-}
-
 #pragma mark Drawing methods
 
 - (void)addDrawable:(Drawable*)draw {

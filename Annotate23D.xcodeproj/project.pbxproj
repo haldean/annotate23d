@@ -22,6 +22,7 @@
 		A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A91D695D14FEE24B006788CC /* Ellipsoid.mm */; };
 		A92D3810150FD35D00535CCD /* CylinderoidTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A92D380F150FD35D00535CCD /* CylinderoidTransformer.mm */; };
 		A92D3813150FD3BA00535CCD /* ShapeTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = A92D3812150FD3BA00535CCD /* ShapeTransformer.m */; };
+		A9702383151AD54200E9BC72 /* EllipsoidTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
 		A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */; };
@@ -70,6 +71,8 @@
 		A92D380F150FD35D00535CCD /* CylinderoidTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CylinderoidTransformer.mm; sourceTree = "<group>"; };
 		A92D3811150FD3B900535CCD /* ShapeTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeTransformer.h; sourceTree = "<group>"; };
 		A92D3812150FD3BA00535CCD /* ShapeTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeTransformer.m; sourceTree = "<group>"; };
+		A9702381151AD54100E9BC72 /* EllipsoidTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EllipsoidTransformer.h; sourceTree = "<group>"; };
+		A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EllipsoidTransformer.mm; sourceTree = "<group>"; };
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
 		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				A9AF5A1C14F69D430023BDC3 /* Eigen */,
 				A91D695C14FEE24B006788CC /* Ellipsoid.h */,
 				A91D695D14FEE24B006788CC /* Ellipsoid.mm */,
+				A9702381151AD54100E9BC72 /* EllipsoidTransformer.h */,
+				A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */,
 				A9D848171507F289006FEA8B /* GlkRenderViewController.h */,
 				A9D848181507F289006FEA8B /* GlkRenderViewController.m */,
 				A91D695B14FEC955006788CC /* MathDefs.h */,
@@ -387,6 +392,7 @@
 				A9C21F841508AC7B001F1BDB /* Mesh.m in Sources */,
 				A92D3810150FD35D00535CCD /* CylinderoidTransformer.mm in Sources */,
 				A92D3813150FD3BA00535CCD /* ShapeTransformer.m in Sources */,
+				A9702383151AD54200E9BC72 /* EllipsoidTransformer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

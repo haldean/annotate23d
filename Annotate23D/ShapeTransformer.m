@@ -10,6 +10,7 @@
 #import "Cylinderoid.h"
 #import "CylinderoidTransformer.h"
 #import "Ellipsoid.h"
+#import "EllipsoidTransformer.h"
 
 @implementation ShapeTransformer
 
@@ -27,6 +28,8 @@
 + (ShapeTransformer*) transformerForShape:(Drawable *)shape {
   if ([[shape class] isSubclassOfClass:[Cylinderoid class]]) {
     return [[CylinderoidTransformer alloc] initWithCylinderoid:(Cylinderoid*)shape];
+  } else {
+    return [[EllipsoidTransformer alloc] initWithEllipsoid:(Ellipsoid*)shape];
   }
   return nil;
 }

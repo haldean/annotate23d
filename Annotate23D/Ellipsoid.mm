@@ -13,7 +13,7 @@
 #define SEGMENTS_IN_CIRCLE 16
 
 @implementation Ellipsoid
-@synthesize com;
+@synthesize com, phi, a, b;
 
 - (Mesh*)generateMesh {
   int i, j, k;
@@ -56,7 +56,11 @@
       }
       
       points[i][j] = surfacePoint + spinePoint;
-      normals[i][j] = surfacePoint;
+      if (surfacePoint.norm() > 0) {
+        normals[i][j] = surfacePoint;
+      } else {
+        normals[i][j] = (t > 0 ? 1 : -1) * majorAxis;
+      }
       normals[i][j].normalize();
     }
   }

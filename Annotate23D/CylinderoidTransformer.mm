@@ -64,7 +64,7 @@
   
   if (closest_squared_dist > HANDLE_TOUCH_RADIUS_SQUARED) {
     selectedHandle = NO_SELECTION;
-    return NO;
+    return CGPathContainsPoint([cylinderoid getPath], NULL, pt, false);
   }
   
   return YES;

@@ -11,9 +11,11 @@
 
 #define ANGULAR_RESOLUTION 360
 
-@interface Ellipsoid : Drawable {
-  CGFloat phi, a, b;
-}
+@interface Ellipsoid : Drawable
+
+@property (assign) CGFloat phi;
+@property (assign) CGFloat a;
+@property (assign) CGFloat b;
 
 - (Mesh*)generateMesh;
 - (void)calculatePath;

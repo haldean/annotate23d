@@ -160,6 +160,24 @@
   return mesh;
 }
 
+- (CGPoint)getEndpoint1 {
+  Vec2 v0 = VectorForPoint([[spine objectAtIndex:0] CGPointValue]);
+  Vec2 v1 = VectorForPoint([[spine objectAtIndex:2] CGPointValue]);
+  Vec2 pt = v1 - v0;
+  pt *= capRadius1 / pt.norm();
+  pt = v0 - pt;
+  return CGPointMake(pt[0], pt[1]);
+}
+
+- (CGPoint)getEndpoint2 {
+  Vec2 v0 = VectorForPoint([[spine objectAtIndex:[spine count] - 1] CGPointValue]);
+  Vec2 v1 = VectorForPoint([[spine objectAtIndex:[spine count] - 3] CGPointValue]);
+  Vec2 pt = v1 - v0;
+  pt *= capRadius2 / pt.norm();
+  pt = v0 - pt;
+  return CGPointMake(pt[0], pt[1]);
+}
+
 - (void)calculateSurfacePoints {
   path = CGPathCreateMutable();
   if ([spine count] < 2) return;
@@ -169,24 +187,29 @@
   Vector2f v0, v1 = VectorForPoint([[spine objectAtIndex:0] CGPointValue]);
   Vector2f derivative, radius1, radius2;
   
-  { // First endcap
+  { // First endcap (elliptical)
     v0 = VectorForPoint([[spine objectAtIndex:0] CGPointValue]);
     v1 = VectorForPoint([[spine objectAtIndex:2] CGPointValue]);
+    
     derivative = v1 - v0;
     derivative.normalize();
     
-    radius1.x() = -derivative.y(); radius1.y() = derivative.x();
-    radius1 *= [[radii objectAtIndex:0] doubleValue];
+    float phi = atan2(derivative[1], derivative[0]);
     
-    for (float i = 0; i < M_PI; i += M_PI / 10) {
-      radius2.x() = cos(i) * radius1.x() - sin(i) * radius1.y();
-      radius2.y() = sin(i) * radius1.x() + cos(i) * radius1.y();
-      radius2 += v0;
+    Vec2 cs(cosf(phi), sinf(phi)), sc(sinf(phi), -cosf(phi));
+    cs *= capRadius1;
+    sc *= [[radii objectAtIndex:0] floatValue];
+    
+    bool first_iter = YES;
+    float start_t = M_PI_2;
+    for (float t = start_t; t <= start_t + M_PI; t += M_PI / 12) {
+      Vec2 x = v0 + cosf(t) * cs - sinf(t) * sc;
       
-      if (i == 0) {
-        CGPathMoveToPoint(path, NULL, radius2.x(), radius2.y());
+      if (first_iter) {
+        first_iter = NO;
+        CGPathMoveToPoint(path, NULL, x.x(), x.y());
       } else {
-        CGPathAddLineToPoint(path, NULL, radius2.x(), radius2.y());
+        CGPathAddLineToPoint(path, NULL, x.x(), x.y());
       }
     }
   }
@@ -213,21 +236,23 @@
     CGPathAddLineToPoint(path, NULL, radius1.x(), radius1.y());
   }
   
-  { // Second endcap
+  { // Second endcap (elliptical)
     v0 = VectorForPoint([[spine objectAtIndex:[spine count] - 1] CGPointValue]);
     v1 = VectorForPoint([[spine objectAtIndex:[spine count] - 3] CGPointValue]);
+    
     derivative = v1 - v0;
     derivative.normalize();
     
-    radius1.x() = -derivative.y(); radius1.y() = derivative.x();
-    radius1 *= [[radii objectAtIndex:0] doubleValue];
+    float phi = atan2(derivative[1], derivative[0]);
     
-    for (float i = 0; i < M_PI; i += M_PI / 10) {
-      radius2.x() = cos(i) * radius1.x() - sin(i) * radius1.y();
-      radius2.y() = sin(i) * radius1.x() + cos(i) * radius1.y();
-      radius2 += v0;
-      
-      CGPathAddLineToPoint(path, NULL, radius2.x(), radius2.y());
+    Vec2 cs(cosf(phi), sinf(phi)), sc(sinf(phi), -cosf(phi));
+    cs *= capRadius2;
+    sc *= [[radii objectAtIndex:[radii count] - 1] floatValue];
+    
+    float start_t = M_PI_2;
+    for (float t = start_t; t <= start_t + M_PI; t += M_PI / 12) {
+      Vec2 x = v0 + cosf(t) * cs - sinf(t) * sc;
+      CGPathAddLineToPoint(path, NULL, x.x(), x.y());
     }
   }
   

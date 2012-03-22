@@ -22,5 +22,6 @@ typedef MatrixXf MatX;
 
 Vec2 VectorForPoint(CGPoint point);
 NSString* VecToStr(VecX vec);
+float squareDistance(CGPoint p1, CGPoint p2);
 
 #endif

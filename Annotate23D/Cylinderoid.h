@@ -14,9 +14,11 @@
 @property (strong) NSMutableArray* radii;
 @property (assign) float capRadius1, capRadius2;
 
-- (void)calculateSurfacePoints;
-- (void)smoothRadii:(int)factor lockPoint:(int)point;
-- (void)smoothSpine:(int)factor lockPoint:(int)point;
-- (void)resampleSpine;
+- (CGPoint) getEndpoint1;
+- (CGPoint) getEndpoint2;
+- (void) calculateSurfacePoints;
+- (void) smoothRadii:(int)factor lockPoint:(int)point;
+- (void) smoothSpine:(int)factor lockPoint:(int)point;
+- (void) resampleSpine;
 
 @end

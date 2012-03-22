@@ -10,7 +10,7 @@
 #define NO_SELECTION -1
 
 @implementation WorkspaceUIView
-@synthesize drawables;
+@synthesize drawables, shapeWantsTouching;
 
 - (void)initArrays {
   self.drawables = [[NSMutableArray alloc] init];

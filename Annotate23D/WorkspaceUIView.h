@@ -15,9 +15,9 @@
 @interface WorkspaceUIView : UIView <UIActionSheetDelegate> {
   int selectedIndex;
   ShapeTransformer* selectedShape;
-  bool shapeWantsTouching;
 }
 
+@property (assign) bool shapeWantsTouching;
 @property (strong) NSMutableArray *drawables;
 
 /* Returns YES if a shape is currently selected, and false otherwise. */

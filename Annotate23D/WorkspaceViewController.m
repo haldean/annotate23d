@@ -27,18 +27,6 @@
 {
   [super viewDidLoad];
   
-  /*
-  panGestureRecognizer = 
-      [[UIPanGestureRecognizer alloc]
-       initWithTarget:self action:@selector(handlePan:)];
-  [drawView addGestureRecognizer:panGestureRecognizer];
-  
-  pinchGestureRecognizer =
-      [[UIPinchGestureRecognizer alloc]
-       initWithTarget:self action:@selector(handlePinch:)];
-  [drawView addGestureRecognizer:pinchGestureRecognizer];
-   */
-  
   tapGestureRecognizer =
       [[UITapGestureRecognizer alloc]
        initWithTarget:self action:@selector(handleTap:)];
@@ -49,13 +37,6 @@
    initWithTarget:self action:@selector(handleDoubleTap:)];
   [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
   [[self view] addGestureRecognizer:doubleTapGestureRecognizer];
-  
-  /*
-  rotationGestureRecognizer =
-      [[UIRotationGestureRecognizer alloc]
-       initWithTarget:self action:@selector(handleRotate:)];
-  [drawView addGestureRecognizer:rotationGestureRecognizer];
-   */
   
   UILongPressGestureRecognizer* longPressGestureRecognizer =
       [[UILongPressGestureRecognizer alloc]
@@ -79,7 +60,42 @@
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  [workspace touchesMoved:touches withEvent:event];
+  if ([workspace shapeWantsTouching]) {
+    [workspace touchesMoved:touches withEvent:event];
+  } else {
+    if ([touches count] == 1) {
+      UITouch* touch = [[touches objectEnumerator] nextObject];
+      CGPoint start = [touch previousLocationInView:drawView];
+      CGPoint end = [touch locationInView:drawView];
+      
+      float dx = end.x - start.x, dy = end.y - start.y;
+      [drawView setCenter:
+       CGPointMake(drawView.center.x + dx, drawView.center.y + dy)];
+      
+    } else if ([touches count] == 2) {
+      NSEnumerator* touchEnumerator = [touches objectEnumerator];
+      UITouch* touch1 = [touchEnumerator nextObject];
+      UITouch* touch2 = [touchEnumerator nextObject];
+      
+      CGPoint touch1_start = [touch1 previousLocationInView:drawView];
+      CGPoint touch2_start = [touch2 previousLocationInView:drawView];
+      CGPoint touch1_end = [touch1 locationInView:drawView];
+      CGPoint touch2_end = [touch2 locationInView:drawView];
+      
+      
+      double start_length = sqrt(pow(touch1_start.x - touch2_start.x, 2) +
+                                 pow(touch1_start.y - touch2_start.y, 2));
+      double end_length = sqrt(pow(touch1_end.x - touch2_end.x, 2) +
+                               pow(touch1_end.y - touch2_end.y, 2));
+      double scale = end_length / start_length;
+      
+      CGAffineTransform currentTransform = [drawView transform];
+      CGAffineTransform newTransform = CGAffineTransformTranslate(
+        CGAffineTransformScale(currentTransform, scale, scale),
+        touch1_end.x - touch1_start.x, touch1_end.y - touch1_start.y);
+      [drawView setTransform:newTransform];
+    }
+  }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {

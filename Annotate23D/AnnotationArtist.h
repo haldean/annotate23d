@@ -16,4 +16,7 @@
 
 + (void) drawSameScaleAnnotation:(SameScaleAnnotation*)ann
                        onContext:(CGContextRef)context;
+
++ (void) drawSameTiltAnnotation:(SameTiltAnnotation*)ann
+                      onContext:(CGContextRef)context;
 @end

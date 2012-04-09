@@ -14,12 +14,17 @@
 #define NO_TILT (NAN)
 
 @implementation Cylinderoid
-@synthesize spine, radii, com, capRadius1, capRadius2;
-@synthesize lengthConstraint, radiusConstraints, tilt;
+@synthesize spine, radii, com, tilt, capRadius1, capRadius2;
+@synthesize lengthConstraint, radiusConstraints, tiltConstraints;
 
 - (NSMutableArray*) tiltWithConstraints {
-  /* TODO */
-  return tilt;
+  NSMutableArray* newtilt = [[NSMutableArray alloc] initWithArray:tilt copyItems:false];
+  for (SameTiltAnnotation* sta in tiltConstraints) {
+    int handle = [sta first] == self ? [sta firstHandleIndex] : [sta secondHandleIndex];
+    NSNumber* targetTilt = [NSNumber numberWithFloat:[sta targetTilt]];
+    [newtilt replaceObjectAtIndex:handle withObject:targetTilt];
+  }
+  return newtilt;
 }
 
 /* Helper macros for tiltAtIndex */
@@ -42,6 +47,11 @@
   float interp = previous_dist * next_tilt + next_dist * previous_tilt;
   interp /= previous_dist + next_dist;
   return interp;
+}
+
+- (bool) hasTiltAt:(int)i {
+  NSMutableArray* _tilt = tilt;
+  return TILT_DEFINED_AT(i);
 }
 
 - (Vec2) derivativeAtSpineIndex:(int)i {
@@ -520,14 +530,13 @@
   for (int i = 0; i < [[cyl spine] count]; i++) {
     [[cyl tilt] insertObject:[NSNumber numberWithDouble:NO_TILT] atIndex:i];
   }
-  [[cyl tilt] replaceObjectAtIndex:0 withObject:[NSNumber numberWithDouble:M_PI_2 - 0.1]];
-  [[cyl tilt] replaceObjectAtIndex:[[cyl spine] count]-1 withObject:[NSNumber numberWithDouble:0]];
   
   [cyl smoothSpine:SMOOTHING_STEPS lockPoint:-1];
   [cyl calculateSurfacePoints];
   
   [cyl setLengthConstraint:nil];
   [cyl setRadiusConstraints:[[NSMutableArray alloc] initWithCapacity:1]];
+  [cyl setTiltConstraints:[[NSMutableArray alloc] initWithCapacity:1]];
   
   return cyl;
 }

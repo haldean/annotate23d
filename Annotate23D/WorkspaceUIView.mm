@@ -108,8 +108,11 @@
   annotatingRadii = true;
   if (selectedIndex == NO_SELECTION) {
     [self selectAtPoint:loc];
-    if ([self ensureIsCylinderoid] && lastSelectedCyl == nil) {
-      lastSelectedCyl = [(CylinderoidTransformer*) selectedShape cylinderoid];
+    if ([self ensureIsCylinderoid]) {
+      CylinderoidTransformer* cylt = (CylinderoidTransformer*) selectedShape;
+      [cylt setReadOnly:true];
+      if (lastSelectedCyl == nil)
+        lastSelectedCyl = [cylt cylinderoid];
     }
     
   } else if (selectedHandle == NO_SELECTION) {
@@ -131,6 +134,44 @@
       }
     }
   }
+  [self setNeedsDisplay];
+}
+
+- (void) sameTilt:(CGPoint)loc {
+  annotating = true;
+  annotatingRadii = true;
+  if (selectedIndex == NO_SELECTION) {
+    [self selectAtPoint:loc];
+    
+    if ([self ensureIsCylinderoid]) {
+      CylinderoidTransformer* cylt = (CylinderoidTransformer*) selectedShape;
+      [cylt setReadOnly:true];
+      [cylt setShowOnlyTiltHandles:true];
+      if (lastSelectedCyl == nil)
+        lastSelectedCyl = [cylt cylinderoid];
+    }
+    
+  } else if (selectedHandle == NO_SELECTION) {
+    if ([selectedShape tapAt:loc]) {
+      selectedHandle = [(CylinderoidTransformer*) selectedShape selectedSpineHandle];
+      if (selectedHandle != NO_SELECTION) selectedIndex = NO_SELECTION;
+    }
+    
+  } else {
+    if ([selectedShape tapAt:loc]) {
+      int thisHandle = [(CylinderoidTransformer*) selectedShape selectedSpineHandle];
+      if (thisHandle != NO_SELECTION) {
+        Cylinderoid* thisCyl = [(CylinderoidTransformer*) selectedShape cylinderoid];
+        SameTiltAnnotation* sta = [SameTiltAnnotation newWithFirst:lastSelectedCyl handle:selectedHandle second:thisCyl handle:thisHandle];
+        [[thisCyl tiltConstraints] addObject:sta];
+        [[lastSelectedCyl tiltConstraints] addObject:sta];
+        NSLog(@"add STA");
+        [self clearSelection];
+        [self resetAnnotationState];
+      }
+    }
+  }
+  
   [self setNeedsDisplay];
 }
 
@@ -297,6 +338,10 @@
     
     for (SameScaleAnnotation* ssa in [cyl radiusConstraints]) {
       [AnnotationArtist drawSameScaleAnnotation:ssa onContext:context];
+    }
+    
+    for (SameTiltAnnotation* sta in [cyl tiltConstraints]) {
+      [AnnotationArtist drawSameTiltAnnotation:sta onContext:context];
     }
   }
 }

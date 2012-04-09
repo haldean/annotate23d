@@ -157,6 +157,8 @@
     [workspace sameSize:loc];
   } else if (currentTool == SAME_RADIUS) {
     [workspace sameRadius:loc];
+  } else if (currentTool == SAME_TILT) {
+    [workspace sameTilt:loc];
   }
 }
 
@@ -226,6 +228,7 @@
       
     case SAME_SIZE:
     case SAME_RADIUS:
+    case SAME_TILT:
       enableGestures = true;
       [workspace clearSelection];
       [workspace resetAnnotationState];

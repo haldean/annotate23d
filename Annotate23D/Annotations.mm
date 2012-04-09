@@ -38,8 +38,25 @@
   [ssa setFirstHandleIndex:firstHandle];
   [ssa setSecond:second];
   [ssa setSecondHandleIndex:secondHandle];
-  NSLog(@"SSA: %f", [ssa targetRadius]);
   return ssa;
 }
 @end
 
+@implementation SameTiltAnnotation
+@synthesize first, firstHandleIndex, second, secondHandleIndex;
+
+- (float) targetTilt {
+  float sum = [[[first tilt] objectAtIndex:firstHandleIndex] floatValue];
+  sum += [[[second tilt] objectAtIndex:secondHandleIndex] floatValue];
+  return sum / 2.0;
+}
+
++ (SameTiltAnnotation*) newWithFirst:(Cylinderoid*)first handle:(int)firstHandle second:(Cylinderoid*)second handle:(int)secondHandle {
+  SameTiltAnnotation* sta = [[SameTiltAnnotation alloc] init];
+  [sta setFirst:first];
+  [sta setFirstHandleIndex:firstHandle];
+  [sta setSecond:second];
+  [sta setSecondHandleIndex:secondHandle];
+  return sta;
+}
+@end

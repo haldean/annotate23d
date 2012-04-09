@@ -23,6 +23,8 @@ typedef enum {
 }
 
 @property (strong) Cylinderoid* cylinderoid;
+@property bool showOnlyTiltHandles;
+@property bool readOnly;
 
 - (int) selectedSpineHandle;
 - (id) initWithCylinderoid:(Cylinderoid*)shape;

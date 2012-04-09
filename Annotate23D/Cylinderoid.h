@@ -19,12 +19,14 @@
 
 @property (strong) SameLengthAnnotation* lengthConstraint;
 @property (strong) NSMutableArray* radiusConstraints;
+@property (strong) NSMutableArray* tiltConstraints;
 @property (assign) float capRadius1, capRadius2;
 
 - (CGPoint) center;
 - (CGPoint) getEndpoint1;
 - (CGPoint) getEndpoint2;
 - (CGPoint) cgDerivativeAtIndex:(int)i;
+- (bool) hasTiltAt:(int)i;
 - (void) calculateSurfacePoints;
 - (void) smoothRadii:(int)factor lockPoint:(int)point;
 - (void) smoothSpine:(int)factor lockPoint:(int)point;

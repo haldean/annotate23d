@@ -19,15 +19,17 @@
 #define SET_RADIUS(i, r) [[cylinderoid radii] replaceObjectAtIndex:i withObject:[NSNumber numberWithFloat:r]]
 
 @implementation CylinderoidTransformer
-@synthesize cylinderoid;
+@synthesize cylinderoid, showOnlyTiltHandles, readOnly;
 
 - (bool) tapAt:(CGPoint)pt {
   float closest_squared_dist = -1;
   
   int lastSelectedHandle = selectedHandleType == SPINE ? selectedHandle : -1;
   
-  selectedHandleType = SPINE;
+  selectedHandleType = showOnlyTiltHandles ? TILT : SPINE;
   for (ALL_SPINE_POINTS) {
+    if (showOnlyTiltHandles && ![cylinderoid hasTiltAt:i]) continue;
+    
     CGPoint spine_pt = SPINE_POINT(i);
     float sqdist = squareDistance(pt, spine_pt);
     if (closest_squared_dist == -1 || sqdist < closest_squared_dist) {
@@ -195,6 +197,8 @@
 }
 
 - (void) touchesMoved:(NSSet *) touches inView:(UIView*) view {
+  if (readOnly) return;
+  
   if (selectedHandle == NO_SELECTION) {
     if ([touches count] == 1) {
       /* Translate cylinderoid */
@@ -253,11 +257,13 @@
   self = [self init];
   cylinderoid = shape;
   selectedHandle = NO_SELECTION;
+  showOnlyTiltHandles = false;
+  readOnly = false;
   return self;
 }
 
 - (int) selectedSpineHandle {
-  if (selectedHandleType == SPINE) return selectedHandle;
+  if (selectedHandleType == SPINE || selectedHandleType == TILT) return selectedHandle;
   else return NO_SELECTION;
 }
 
@@ -319,10 +325,12 @@
   CGContextDrawPath(context, kCGPathFillStroke);
   
   for (ALL_SPINE_POINTS) {
-    [self handleAt:i ofType:SPINE onContext:context];
+    if (showOnlyTiltHandles) {
+      if ([cylinderoid hasTiltAt:i]) [self handleAt:i ofType:SPINE onContext:context];
+    } else [self handleAt:i ofType:SPINE onContext:context];
   }
   
-  if (selectedHandleType == TILT) {
+  if (selectedHandleType == TILT && selectedHandle != NO_SELECTION) {
     [self handleAt:selectedHandle ofType:TILT onContext:context];
   }
   

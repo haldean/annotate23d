@@ -45,6 +45,7 @@
 @property (strong) Cylinderoid* second;
 @property (assign) int secondHandleIndex;
 - (float) targetTilt;
++ (SameTiltAnnotation*) newWithFirst:(Cylinderoid*)first handle:(int)firstHandle second:(Cylinderoid*)second handle:(int)secondHandle;
 @end
 
 @interface MirrorAnnotation : NSObject

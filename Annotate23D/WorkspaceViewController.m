@@ -150,9 +150,13 @@
 }
 
 - (void)handleTap:(UIGestureRecognizer *)sender {
+  CGPoint loc = [sender locationInView:sender.view];
   if (currentTool == SELECT) {
-    CGPoint loc = [sender locationInView:sender.view];
     shapeIsSelected = [workspace tapAtPoint:loc];
+  } else if (currentTool == SAME_SIZE) {
+    [workspace sameSize:loc];
+  } else if (currentTool == SAME_RADIUS) {
+    [workspace sameRadius:loc];
   }
 }
 
@@ -219,6 +223,12 @@
     case PAN:
       enableGestures = true;
       break;
+      
+    case SAME_SIZE:
+    case SAME_RADIUS:
+      enableGestures = true;
+      [workspace clearSelection];
+      [workspace resetAnnotationState];
       
     case SPLINE:
     case ELLIPSE:

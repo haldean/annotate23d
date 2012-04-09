@@ -12,7 +12,9 @@
 
 typedef enum {
   ENDCAP,
-  SPINE
+  SPINE,
+  COM,
+  TILT
 } CylinderoidHandleType;
 
 @interface CylinderoidTransformer : ShapeTransformer {
@@ -22,6 +24,7 @@ typedef enum {
 
 @property (strong) Cylinderoid* cylinderoid;
 
+- (int) selectedSpineHandle;
 - (id) initWithCylinderoid:(Cylinderoid*)shape;
 - (void) drawShapeWithHandles:(CGContextRef)context;
 

@@ -11,17 +11,45 @@
 #define SEGMENTS_IN_CIRCLE 16
 #define MIN_DISTANCE_BETWEEN_RINGS 30
 #define SMOOTHING_STEPS 100
+#define NO_TILT (NAN)
 
 @implementation Cylinderoid
 @synthesize spine, radii, com, capRadius1, capRadius2;
+@synthesize lengthConstraint, radiusConstraints, tilt;
 
+- (NSMutableArray*) tiltWithConstraints {
+  /* TODO */
+  return tilt;
+}
 
-- (Vector2f) derivativeAtSpineIndex:(int)i {
+/* Helper macros for tiltAtIndex */
+#define TILT_AT(x) ([[_tilt objectAtIndex:(x)] doubleValue])
+#define TILT_DEFINED_AT(x) (!isnan(TILT_AT(x)))
+- (double) tiltAtIndex:(int)i withTilts:(NSMutableArray*)_tilt {  
+  if (TILT_DEFINED_AT(i)) return TILT_AT(i);
+  int previous = i, next = i;
+  while (previous >= 0 && !TILT_DEFINED_AT(previous)) previous--;
+  while (next < [tilt count] && !TILT_DEFINED_AT(next)) next++;
+  
+  bool use_previous = previous >= 0;
+  bool use_next = next < [tilt count];
+  if (!use_previous && !use_next) return 0;
+  if (!use_previous) return TILT_AT(next);
+  if (!use_next) return TILT_AT(previous);
+  
+  float previous_dist = i - previous, next_dist = next - i;
+  float previous_tilt = TILT_AT(previous), next_tilt = TILT_AT(next);
+  float interp = previous_dist * next_tilt + next_dist * previous_tilt;
+  interp /= previous_dist + next_dist;
+  return interp;
+}
+
+- (Vec2) derivativeAtSpineIndex:(int)i {
   if ([spine count] < 2) {
-    return Vector2f(0, 0);
+    return Vec2::Zero();
   }
   
-  Vector2f v0, v1;
+  Vec2 v0, v1;
   if (i > 0 && i < [spine count] - 1) {
     v0 = VectorForPoint([[spine objectAtIndex:i-1] CGPointValue]);
     v1 = VectorForPoint([[spine objectAtIndex:i+1] CGPointValue]);
@@ -33,14 +61,124 @@
     v1 = VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
   }
   
-  Vector2f derivative = v1 - v0;
+  Vec2 derivative = v1 - v0;
   derivative.normalize();
   return derivative;
 }
 
+- (CGPoint) cgDerivativeAtIndex:(int) i {
+  Vec2 d = [self derivativeAtSpineIndex:i];
+  return CGPointMake(d[0], d[1]);
+}
+
+- (Vec3) dSpine:(NSMutableArray*)spinevecs atIndex:(int)i {
+  if ([spinevecs count] < 2) return Vec3::Zero();
+  
+  Vec3 v0, v1;
+  if (i > 0 && i < [spine count] - 1) {
+    v0 = [[spinevecs objectAtIndex:i-1] vec3];
+    v1 = [[spinevecs objectAtIndex:i+1] vec3];
+  } else if (i == 0) {
+    v0 = [[spinevecs objectAtIndex:0] vec3];
+    v1 = [[spinevecs objectAtIndex:1] vec3];
+  } else if (i == [spine count] - 1) {
+    v0 = [[spinevecs objectAtIndex:i-1] vec3];
+    v1 = [[spinevecs objectAtIndex:i] vec3];
+  }
+  
+  Vec3 d = v1 - v0;
+  d.normalize();
+  return d;
+}
+
+- (NSMutableArray*) spineVecsWithTilt {
+  NSMutableArray* newspine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+  NSMutableArray* tilts = [self tiltWithConstraints];
+  
+  Vec3 lastPoint;
+  for (int i = 0; i < [spine count]; i++) {
+    Vec3 spinePoint = Vec3ForPoint([[spine objectAtIndex:i] CGPointValue]);
+    
+    /* First find the naive (without constraints) z-value based on the tilt. 
+     * Constrain the z-value of the first point to be zero. */
+    if (i == 0) spinePoint.z() = 0;
+    else {
+      double tilt_i = [self tiltAtIndex:i withTilts:tilts];
+      Vec3 delta = spinePoint - lastPoint;
+      /* Ensure z is zero for the norm call on the next line. We want the length
+       * of the 2-vector. */
+      delta.z() = 0;
+      spinePoint.z() = lastPoint.z() + delta.norm() * tan(tilt_i);
+    }
+    
+    [newspine addObject:[NSVec3 with:spinePoint]];
+    lastPoint = spinePoint;
+  }
+  return newspine;
+}
+
+- (NSMutableArray*) spineVecsWithConstraints {
+  NSMutableArray* newspine = [self spineVecsWithTilt];
+  
+  /* Determine the general transform that will be applied to all points
+   which reflects the satisfaction of all constraints */
+  Transform<float, 3, Affine> trs;
+  trs.setIdentity();
+  trs.translate(Vec3ForPoint(com));
+  if (lengthConstraint != nil) {
+    float targetLength = [lengthConstraint targetLength];
+    /* TODO this needs to change to use the spine length after applying the
+     previous transformations */
+    float currentLength = [self spineLength];
+    float scale = targetLength / currentLength;
+    trs.scale(scale);
+  }
+  trs.translate(-Vec3ForPoint(com));
+  
+  /* Apply transform to each vector */
+  for (int i = 0; i < [newspine count]; i++) {
+    [newspine replaceObjectAtIndex:i withObject:[NSVec3 with:trs * [[newspine objectAtIndex:i] vec3]]];
+  }
+  
+  return newspine;
+}
+
+- (NSMutableArray*) radiiWithConstraints {
+  NSMutableArray* newradii = [[NSMutableArray alloc] initWithArray:radii copyItems:false];
+  for (SameScaleAnnotation* ssa in radiusConstraints) {
+    int handle = [ssa first] == self ? [ssa firstHandleIndex] : [ssa secondHandleIndex];
+    NSNumber* targetSize = [NSNumber numberWithFloat:[ssa targetRadius]];
+    [newradii replaceObjectAtIndex:handle withObject:targetSize];
+  }
+  return newradii;
+}
+
+- (Vec3) rForD:(Vec3)d lastD:(Vec3)lastD lastR:(Vec3)lastR {
+  return Vec3(-d[1], d[0], 0);
+  
+  /* TODO: fix this to prevent twisting */
+  if (d == lastD) return lastR;
+  
+  Vec3 omega = d.cross(lastD);
+  float theta = acosf(d.dot(lastD));
+  omega.normalize();
+  
+  /* Uses Rodrigues' Rotation Formula to perform Euler Axis rotation to lastR */
+  Vec3 r = lastR * cosf(theta);
+  r += omega.cross(lastR) * sin(theta);
+  r += omega * omega.dot(lastR) * (1 - cosf(theta));
+  
+  r.normalize();
+  NSLog(@"r4d omega %@ theta %f r %@", VecToStr(omega), theta, VecToStr(r));
+  return r;
+}
+
 - (Mesh*)generateMesh {
+  NSMutableArray* spinevecs = [self spineVecsWithConstraints];
+  NSMutableArray* rad = [self radiiWithConstraints];
+  
   int i, j, k;
-  int tubeRingCount = [spine count];
+  int tubeRingCount = [spinevecs count];
   int numRings = tubeRingCount + 2 * RINGS_IN_CAP;
   
   /* Triangles in the cylinder */
@@ -62,45 +200,44 @@
     normals[i] = (Vec3*) malloc((SEGMENTS_IN_CIRCLE) * sizeof(Vec3));
   }
   
+  Vec3 lastR, lastD;
   for (int ringIndex = 0; ringIndex < numRings; ringIndex++) {
     i = ringIndex - RINGS_IN_CAP;
     Vec3 spinePoint, radius, derivative;
     
     if (i < 0 || i >= tubeRingCount) {
-      CGPoint cgSpinePoint;
-      Vec2 d2d;
+      Vec3 spineVec;
       float r_maj, r_min, t;
       
       if (ringIndex < RINGS_IN_CAP) {
-        cgSpinePoint = [[spine objectAtIndex:0] CGPointValue];
-        d2d = [self derivativeAtSpineIndex:0];
-        r_min = [[radii objectAtIndex:0] floatValue];
+        spineVec = [[spinevecs objectAtIndex:0] vec3];
+        derivative = [self dSpine:spinevecs atIndex:0];
+        r_min = [[rad objectAtIndex:0] floatValue];
         r_maj = capRadius1;
         t = (float) -ringIndex / (float) RINGS_IN_CAP;
         
       } else {
-        cgSpinePoint = [[spine objectAtIndex:[spine count]-1] CGPointValue];
-        d2d = [self derivativeAtSpineIndex:[spine count]-1];
-        r_min = [[radii objectAtIndex:[radii count]-1] floatValue];
+        spineVec = [[spinevecs objectAtIndex:[spine count]-1] vec3];
+        derivative = [self dSpine:spinevecs atIndex:[spine count]-1];
+        r_min = [[rad objectAtIndex:[rad count]-1] floatValue];
         r_maj = capRadius2;
         t = (float) (ringIndex - numRings + 1 + RINGS_IN_CAP) / (float) RINGS_IN_CAP;
       }
       
-      Vec3 capOrigin(cgSpinePoint.x, cgSpinePoint.y, 0);
-      derivative = Vec3(d2d.x(), d2d.y(), 0);
-      spinePoint = capOrigin + t * r_maj * derivative;
-      radius = Vec3(-d2d.y(), d2d.x(), 0);
+      spinePoint = spineVec + t * r_maj * derivative;
+      radius = Vec3(-derivative.y(), derivative.x(), 0);
       radius *= sqrt(pow(r_min, 2) * (1 - pow(t, 2)));
       
     } else {
-      CGPoint cgSpinePoint = [[spine objectAtIndex:i] CGPointValue];
-      Vec2 d2d = [self derivativeAtSpineIndex:i];
-      
-      spinePoint = Vec3(cgSpinePoint.x, cgSpinePoint.y, 0);
-      derivative = Vec3(d2d.x(), d2d.y(), 0);
-      radius = Vec3(-d2d.y(), d2d.x(), 0);
-      radius *= [[radii objectAtIndex:i] doubleValue];
+      spinePoint = [[spinevecs objectAtIndex:i] vec3];
+      derivative = [self dSpine:spinevecs atIndex:i];
+      radius = [self rForD:derivative lastD:lastD lastR:lastR];
+      radius *= [[rad objectAtIndex:i] floatValue];
+      //NSLog(@"sp %@ d %@ r %@ |r| %f", VecToStr(spinePoint), VecToStr(derivative), VecToStr(radius), radius.norm());
     }
+    
+    lastD = derivative;
+    lastR = radius;
     
     for (j = 0; j < SEGMENTS_IN_CIRCLE; j++) {
       Vec3 surfacePoint;
@@ -121,7 +258,7 @@
   }
   
   /* Flat end caps. This for loop is a bit hacky -- k will be either 0 or
-   * numRings - 1, and therefore will act on the first and last ring. */
+   * numRings - 1, and therefore will act on the first and last ring.
   for (k = 1; k < numRings; k += numRings - 2) {
     Vec3 *ring = points[k], *norm = normals[k];
     for (int t = 1; t < SEGMENTS_IN_CIRCLE - 1; t++) {
@@ -132,7 +269,7 @@
       for (i = 0; i < 3; i++, dataidx++) [mesh put:ring[t+1][i] at:dataidx];
       for (i = 0; i < 3; i++, dataidx++) [mesh put:norm[t+1][i] at:dataidx];
     }
-  }
+  }*/
   
   /* Generate tube */
   for (i = 0; i < numRings - 1; i++) {
@@ -164,6 +301,10 @@
   }
   free(points); free(normals);
   return mesh;
+}
+
+- (CGPoint) center {
+  return [[spine objectAtIndex:[spine count]/2] CGPointValue];
 }
 
 - (CGPoint)getEndpoint1 {
@@ -349,16 +490,13 @@
   if ([newSpine count] > 2) spine = newSpine;
 }
 
-+ (double)integrateOverSpine:(NSArray*)spine {
-  if ([spine count] == 0) return 0;
-  
-  double sum = 0;
-  CGPoint current, last = [[spine objectAtIndex:0] CGPointValue];
-  for (int i = 1; i < [spine count]; i++) {
-    current = [[spine objectAtIndex:i] CGPointValue];
-    sum += sqrt(pow(current.x - last.x, 2) + pow(current.y - last.y, 2));
+- (double) spineLength {
+  double len = 0;
+  NSMutableArray* _spine = [self spineVecsWithTilt];
+  for (int i = 1; i < [_spine count]; i++) {
+    len += ([[_spine objectAtIndex:i] vec3] - [[_spine objectAtIndex:i-1] vec3]).norm();
   }
-  return sum;
+  return len;
 }
 
 + (Cylinderoid*)withPoints:(NSArray *)points {
@@ -374,11 +512,22 @@
   for (int i = 0; i < [[cyl spine] count]; i++) {
     [[cyl radii] insertObject:[NSNumber numberWithDouble:DEFAULT_RADIUS] atIndex:i];
   }
+  
   [cyl setCapRadius1:DEFAULT_RADIUS];
   [cyl setCapRadius2:DEFAULT_RADIUS];
   
+  [cyl setTilt:[NSMutableArray arrayWithCapacity:[[cyl spine] count]]];
+  for (int i = 0; i < [[cyl spine] count]; i++) {
+    [[cyl tilt] insertObject:[NSNumber numberWithDouble:NO_TILT] atIndex:i];
+  }
+  [[cyl tilt] replaceObjectAtIndex:0 withObject:[NSNumber numberWithDouble:M_PI_2 - 0.1]];
+  [[cyl tilt] replaceObjectAtIndex:[[cyl spine] count]-1 withObject:[NSNumber numberWithDouble:0]];
+  
   [cyl smoothSpine:SMOOTHING_STEPS lockPoint:-1];
   [cyl calculateSurfacePoints];
+  
+  [cyl setLengthConstraint:nil];
+  [cyl setRadiusConstraints:[[NSMutableArray alloc] initWithCapacity:1]];
   
   return cyl;
 }

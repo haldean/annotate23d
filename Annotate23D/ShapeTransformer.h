@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "Drawable.h"
 
+/* Must be odd. Represents number of pixels from center of
+ * handle circle to edge of circle, including central point. */
+#define HANDLE_SIZE 19
+#define HANDLE_RADIUS ((HANDLE_SIZE - 1) / 2)
+
+/* Handles have an effective radius of 30 pixels */
+#define HANDLE_TOUCH_RADIUS_SQUARED 900
+
 @interface ShapeTransformer : NSObject {
   CGAffineTransform currentTransformation;
 }

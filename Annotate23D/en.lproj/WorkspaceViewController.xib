@@ -264,7 +264,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">= Size</string>
+						<string key="IBUINormalTitle">= Length</string>
 						<reference key="IBUIHighlightedTitleColor" ref="799512240"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -395,6 +395,7 @@
 						<string key="NSFrame">{{676, 947}, {72, 37}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:241</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -854,7 +855,6 @@
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="drawPreview">DrawPreviewUIView</string>
 						<string key="drawView">UIView</string>
-						<string key="glkView">GLKView</string>
 						<string key="workspace">WorkspaceUIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -869,10 +869,6 @@
 						<object class="IBToOneOutletInfo" key="drawView">
 							<string key="name">drawView</string>
 							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="glkView">
-							<string key="name">glkView</string>
-							<string key="candidateClassName">GLKView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="workspace">
 							<string key="name">workspace</string>

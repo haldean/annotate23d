@@ -15,6 +15,9 @@
 @interface WorkspaceUIView : UIView <UIActionSheetDelegate> {
   int selectedIndex;
   ShapeTransformer* selectedShape;
+  Cylinderoid* lastSelectedCyl;
+  bool annotating, annotatingRadii;
+  int selectedHandle;
 }
 
 @property (assign) bool shapeWantsTouching;
@@ -23,9 +26,14 @@
 /* Returns YES if a shape is currently selected, and false otherwise. */
 - (bool)tapAtPoint:(CGPoint)point;
 - (void)handleLongPress:(UIGestureRecognizer*)sender;
+- (void)clearSelection;
 
 /* Returns YES if a shape is currently selected, and false otherwise. */
 - (bool)selectAtPoint:(CGPoint)point;
+
+- (void)resetAnnotationState;
+- (void)sameSize:(CGPoint)loc;
+- (void)sameRadius:(CGPoint)loc;
 
 - (void)deleteSelectedShape;
 - (void)addDrawable:(Drawable*)draw;

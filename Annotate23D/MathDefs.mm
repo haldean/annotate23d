@@ -8,8 +8,16 @@
 
 #import "MathDefs.h"
 
+bool isnan(double x) {
+  return x != x;
+}
+
 Vec2 VectorForPoint(CGPoint point) {
   return Vec2(point.x, point.y);
+}
+
+Vec3 Vec3ForPoint(CGPoint point) {
+  return Vec3(point.x, point.y, 0);
 }
 
 NSString* VecToStr(VecX v) {
@@ -25,3 +33,21 @@ NSString* VecToStr(VecX v) {
 float squareDistance(CGPoint p1, CGPoint p2) {
   return pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2);
 }
+
+@implementation NSVec3
+@synthesize vec3;
++ (NSVec3*) with:(Vec3)vec {
+  NSVec3* nsv = [[NSVec3 alloc] init];
+  nsv.vec3 = vec;
+  return nsv;
+}
+@end
+
+@implementation NSVec2
+@synthesize vec2;
++ (NSVec2*) with:(Vec2)vec {
+  NSVec2* nsv = [[NSVec2 alloc] init];
+  nsv.vec2 = vec;
+  return nsv;
+}
+@end

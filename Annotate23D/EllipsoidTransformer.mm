@@ -9,14 +9,6 @@
 #import "EllipsoidTransformer.h"
 #import "MathDefs.h"
 
-/* Must be odd. Represents number of pixels from center of
- * handle circle to edge of circle, including central point. */
-#define HANDLE_SIZE 19
-#define HANDLE_RADIUS ((HANDLE_SIZE - 1) / 2)
-
-/* Handles have an effective radius of 30 pixels */
-#define HANDLE_TOUCH_RADIUS_SQUARED 900
-
 /* Represents no handle selected */
 #define NO_SELECTION -1
 
@@ -191,7 +183,7 @@
 - (void) drawShapeWithHandles:(CGContextRef)context {
   CGContextSetLineWidth(context, 5);
   CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
-  CGContextSetFillColor(context, (CGFloat[]) {0., 0.8, 1., 1.});
+  CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0 green:0.8 blue:1. alpha:1.].CGColor);
   CGContextAddPath(context, [ellipsoid getPath]);
   CGContextDrawPath(context, kCGPathFillStroke);
   

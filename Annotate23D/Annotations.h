@@ -57,5 +57,6 @@
 @interface MirrorAnnotation : NSObject
 @property (strong) Cylinderoid* alignTo;
 @property (strong) Drawable* mirror;
+@property float symmetryTilt;
 - (Mesh*) mirrored;
 @end

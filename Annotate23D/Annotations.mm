@@ -116,7 +116,7 @@
 @end
 
 @implementation MirrorAnnotation
-@synthesize alignTo, mirror;
+@synthesize alignTo, mirror, symmetryTilt;
 
 - (Mesh*) mirrored {
   bool isCyl = [mirror isKindOfClass:[Cylinderoid class]];
@@ -167,6 +167,7 @@
   Vec3 spinePt = [[spinevecs objectAtIndex:nearest_idx] vec3];
   Vec3 tangent = Vec3ForCGVec([alignTo tangentVectorAtIndex:nearest_idx onSpine:spinevecs]);
   Vec3 perp = Vec3ForCGVec([alignTo perpVectorAtIndex:nearest_idx onSpine:spinevecs]);
+  perp = AngleAxisf(symmetryTilt, tangent) * perp;
   
   Vec3 plane_normal = tangent.cross(perp);
   plane_normal.normalize();

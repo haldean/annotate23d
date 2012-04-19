@@ -63,7 +63,7 @@ ReceivesDrawEvents> {
 - (IBAction)centerShapeButton:(id)sender;
 - (IBAction)renderButton:(id)sender;
 
-- (void)buttonClick:(ToolMode)tool;
+- (void)selectTool:(ToolMode)tool;
 - (void)handleTap:(UIGestureRecognizer*)sender;
 
 - (void)newSketch;

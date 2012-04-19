@@ -56,6 +56,6 @@
 
 @interface MirrorAnnotation : NSObject
 @property (strong) Cylinderoid* alignTo;
-@property (strong) Drawable* first;
-@property (strong) Drawable* second;
+@property (strong) Drawable* mirror;
+- (Mesh*) mirrored;
 @end

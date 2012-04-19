@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "Drawable.h"
+#import "CGVec.h"
 #import "Annotations.h"
 
 /* These provided to get around circular dependencies */
 @class SameLengthAnnotation;
 @class ConnectionAnnotation;
+@class MirrorAnnotation;
 
 @interface Cylinderoid : Drawable
 
@@ -20,6 +22,7 @@
 @property (strong) NSMutableArray* radii;
 @property (strong) NSMutableArray* tilt;
 
+@property (strong) MirrorAnnotation* mirrorAnnotation;
 @property (strong) ConnectionAnnotation* connectionConstraint;
 @property (strong) SameLengthAnnotation* lengthConstraint;
 @property (strong) NSMutableArray* radiusConstraints;
@@ -28,10 +31,25 @@
 @property (assign) float capRadius1, capRadius2;
 
 - (Mesh*) generateMeshWithConnectionConstraints:(bool)useConnection;
+- (Mesh*) generateMesh;
+- (Mesh*) generateMeshWithSpine:(NSMutableArray*)spine;
+
 - (CGPoint) center;
 - (CGPoint) getEndpoint1;
 - (CGPoint) getEndpoint2;
+
+/* These calls are expensive! */
+- (NSMutableArray*) spineVecsWithConstraints;
+- (NSMutableArray*) spineVecsWithConnectionConstraints;
+- (CGVec*) tangentVectorAtIndex:(int)i;
+- (CGVec*) perpVectorAtIndex:(int)i;
+- (CGVec*) spineVectorAtIndex:(int)i;
+
+/* These calls are not. */
 - (CGPoint) cgDerivativeAtIndex:(int)i;
+- (CGVec*) tangentVectorAtIndex:(int)i onSpine:(NSMutableArray*)spinevecs;
+- (CGVec*) perpVectorAtIndex:(int)i onSpine:(NSMutableArray*)spinevecs;
+
 - (bool) hasTiltAt:(int)i;
 - (void) calculateSurfacePoints;
 - (void) smoothRadii:(int)factor lockPoint:(int)point;

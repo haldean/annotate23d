@@ -15,7 +15,7 @@
 
 @implementation Cylinderoid
 @synthesize spine, radii, com, tilt, capRadius1, capRadius2;
-@synthesize lengthConstraint, connectionConstraint,
+@synthesize lengthConstraint, connectionConstraint, mirrorAnnotation,
             radiusConstraints, tiltConstraints;
 
 - (NSMutableArray*) tiltWithConstraints {
@@ -202,11 +202,57 @@
   return r;
 }
 
-- (Mesh*) generateMeshWithConnectionConstraints:(bool)useConnection {
-  NSMutableArray* spinevecs = [self spineVecsWithConstraints];
-  if (useConnection) {
-    spinevecs = [self applyConnectionConstraintsTo:spinevecs];
+- (CGVec*) tangentVectorAtIndex:(int)idx {
+  return [self tangentVectorAtIndex:idx
+                            onSpine:[self spineVecsWithConstraints]];
+}
+
+- (CGVec*) tangentVectorAtIndex:(int)idx onSpine:(NSMutableArray*)spinevecs {
+  return CGVecForVec3([self dSpine:spinevecs atIndex:idx]);
+}
+
+- (CGVec*) perpVectorAtIndex:(int)idx {
+  return [self perpVectorAtIndex:idx
+                         onSpine:[self spineVecsWithConstraints]];
+}
+
+- (CGVec*) perpVectorAtIndex:(int)idx onSpine:(NSMutableArray*)spinevecs {
+  Vec3 lastR, lastD, d, r;
+  for (int i = 0; i <= idx; i++) {
+    d = [self dSpine:spinevecs atIndex:i];
+    if (i == 0) {
+      r = Vec3(-d.y(), d.x(), 0);
+    } else {
+      r = [self rForD:d lastD:lastD lastR:lastR];
+    }
+    
+    lastR = r;
+    lastD = d;
   }
+  
+  return CGVecForVec3(r);
+}
+
+- (CGVec*) spineVectorAtIndex:(int)idx {
+  NSMutableArray* spinevecs = [self spineVecsWithConstraints];
+  return CGVecForVec3([[spinevecs objectAtIndex:idx] vec3]);
+}
+
+- (NSMutableArray*) spineVecsWithConnectionConstraints {
+  return [self applyConnectionConstraintsTo:[self spineVecsWithConstraints]];
+}
+
+- (Mesh*) generateMeshWithConnectionConstraints:(bool)useConnection {
+  NSMutableArray* spinevecs;
+  if (useConnection) {
+    spinevecs = [self spineVecsWithConnectionConstraints];
+  } else {
+    spinevecs = [self spineVecsWithConstraints];
+  }
+  return [self generateMeshWithSpine:spinevecs];
+}
+
+- (Mesh*) generateMeshWithSpine:(NSMutableArray*)spinevecs {
   NSMutableArray* rad = [self radiiWithConstraints];
   
   int i, j, k;
@@ -507,19 +553,25 @@
 }
 
 - (void) resampleSpine {
-  NSMutableArray* newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+  float dist = MIN_DISTANCE_BETWEEN_RINGS;
+  NSMutableArray* newSpine;
   
-  Vec2 lastLoc = VectorForPoint([[spine objectAtIndex:0] CGPointValue]);
-  [newSpine addObject:[spine objectAtIndex:0]];
-  
-  for (int i = 1; i < [spine count]; i++) {
-    NSValue* thisPoint = [spine objectAtIndex:i];
-    Vec2 thisLoc = VectorForPoint([thisPoint CGPointValue]);
-    if ((thisLoc - lastLoc).norm() > MIN_DISTANCE_BETWEEN_RINGS) {
-      [newSpine addObject:thisPoint];
-      lastLoc = thisLoc;
+  do {
+    newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+    Vec2 lastLoc = VectorForPoint([[spine objectAtIndex:0] CGPointValue]);
+    [newSpine addObject:[spine objectAtIndex:0]];
+    
+    for (int i = 1; i < [spine count]; i++) {
+      NSValue* thisPoint = [spine objectAtIndex:i];
+      Vec2 thisLoc = VectorForPoint([thisPoint CGPointValue]);
+      if ((thisLoc - lastLoc).norm() > dist) {
+        [newSpine addObject:thisPoint];
+        lastLoc = thisLoc;
+      }
     }
-  }
+    
+    dist /= 2;
+  } while ([newSpine count] <= 2 && dist > 1);
   
   /* If the resampled spine results in a spine of length 2 or less,
    * keep the old spine. It's too short to reasonably resample. */

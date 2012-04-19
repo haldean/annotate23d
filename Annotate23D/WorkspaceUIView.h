@@ -32,10 +32,11 @@
 - (bool)selectAtPoint:(CGPoint)point;
 
 - (void)resetAnnotationState;
-- (void)connection:(CGPoint)loc;
-- (void)sameTilt:(CGPoint)loc;
-- (void)sameSize:(CGPoint)loc;
-- (void)sameRadius:(CGPoint)loc;
+- (bool)connection:(CGPoint)loc;
+- (bool)mirror:(CGPoint)loc;
+- (bool)sameTilt:(CGPoint)loc;
+- (bool)sameSize:(CGPoint)loc;
+- (bool)sameRadius:(CGPoint)loc;
 
 - (void)deleteSelectedShape;
 - (void)addDrawable:(Drawable*)draw;

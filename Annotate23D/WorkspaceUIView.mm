@@ -57,7 +57,33 @@
   return true;
 }
 
-- (void) connection:(CGPoint) loc {
+- (bool) mirror:(CGPoint) loc {
+  [self selectAtPoint:loc];
+  if ([self ensureIsCylinderoid]) {
+    Cylinderoid* cyl = [(CylinderoidTransformer*) selectedShape cylinderoid];
+    if ([cyl connectionConstraint] == nil) {
+      NSLog(@"Mirror must be applied to a connected shape");
+    } else {
+      MirrorAnnotation* ann = [[MirrorAnnotation alloc] init];
+      [ann setMirror:cyl];
+      
+      Cylinderoid* alignTo;
+      ConnectionAnnotation* connect_ann = [cyl connectionConstraint];
+      if (cyl == [connect_ann first]) {
+        alignTo = [connect_ann second];
+      } else {
+        alignTo = [connect_ann first];
+      }
+      [ann setAlignTo:alignTo];
+      [cyl setMirrorAnnotation:ann];
+    }
+  }
+  [self resetAnnotationState];
+  [self clearSelection];
+  return true;
+}
+
+- (bool) connection:(CGPoint) loc {
   annotating = true;
   annotatingRadii = false;
   
@@ -88,11 +114,15 @@
     
     [self resetAnnotationState];
     [self clearSelection];
+    [self setNeedsDisplay];
+    return true;
   }
+  
   [self setNeedsDisplay];
+  return false;
 }
 
-- (void) sameSize:(CGPoint)loc {
+- (bool) sameSize:(CGPoint)loc {
   annotating = true;
   annotatingRadii = false;
   if (selectedIndex == NO_SELECTION) {
@@ -106,7 +136,7 @@
     if (![self selectAtPoint:loc] || ![self ensureIsCylinderoid]) {
       selectedShape = firstShape;
       selectedIndex = firstIndex;
-      return;
+      return true;
     }
     
     int secondIndex = selectedIndex;
@@ -116,12 +146,16 @@
     [[drawables objectAtIndex:secondIndex] setLengthConstraint:annot];
     
     [self resetAnnotationState];
+    [self clearSelection];
+    [self setNeedsDisplay];
+    return true;
   }
   
   [self setNeedsDisplay];
+  return false;
 }
 
-- (void) sameRadius:(CGPoint)loc {
+- (bool) sameRadius:(CGPoint)loc {
   /*
    
    This gets a bit confusing. There are four possible states here, since we
@@ -164,15 +198,19 @@
         SameScaleAnnotation* ssa = [SameScaleAnnotation newWithFirst:lastSelectedCyl handle:selectedHandle second:thisCyl handle:thisHandle];
         [[thisCyl radiusConstraints] addObject:ssa];
         [[lastSelectedCyl radiusConstraints] addObject:ssa];
-        
-        [self resetAnnotationState];
       }
     }
+    
+    [self clearSelection];
+    [self resetAnnotationState];
+    [self setNeedsDisplay];
+    return true;
   }
   [self setNeedsDisplay];
+  return false;
 }
 
-- (void) sameTilt:(CGPoint)loc {
+- (bool) sameTilt:(CGPoint)loc {
   annotating = true;
   annotatingRadii = true;
   if (selectedIndex == NO_SELECTION) {
@@ -199,15 +237,16 @@
         Cylinderoid* thisCyl = [(CylinderoidTransformer*) selectedShape cylinderoid];
         SameTiltAnnotation* sta = [SameTiltAnnotation newWithFirst:lastSelectedCyl handle:selectedHandle second:thisCyl handle:thisHandle];
         [[thisCyl tiltConstraints] addObject:sta];
-        [[lastSelectedCyl tiltConstraints] addObject:sta];
-        NSLog(@"add STA");
+        [[lastSelectedCyl tiltConstraints] addObject:sta];;
         [self clearSelection];
         [self resetAnnotationState];
+        return true;
       }
     }
   }
   
   [self setNeedsDisplay];
+  return false;
 }
 
 #pragma mark User interaction methods

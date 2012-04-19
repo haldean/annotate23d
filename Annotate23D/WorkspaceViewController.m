@@ -151,16 +151,22 @@
 
 - (void)handleTap:(UIGestureRecognizer *)sender {
   CGPoint loc = [sender locationInView:sender.view];
+  bool switchToSelect = false;
   if (currentTool == SELECT) {
     shapeIsSelected = [workspace tapAtPoint:loc];
   } else if (currentTool == SAME_SIZE) {
-    [workspace sameSize:loc];
+    switchToSelect = [workspace sameSize:loc];
   } else if (currentTool == SAME_RADIUS) {
-    [workspace sameRadius:loc];
+    switchToSelect = [workspace sameRadius:loc];
   } else if (currentTool == SAME_TILT) {
-    [workspace sameTilt:loc];
+    switchToSelect = [workspace sameTilt:loc];
   } else if (currentTool == CONNECT) {
-    [workspace connection:loc];
+    switchToSelect = [workspace connection:loc];
+  } else if (currentTool == MIRROR_SHAPE) {
+    switchToSelect = [workspace mirror:loc];
+  }
+  if (switchToSelect) {
+    [self selectTool:SELECT];
   }
 }
 
@@ -216,7 +222,7 @@
   }
 }
 
-- (void)buttonClick:(ToolMode)tool {
+- (void)selectTool:(ToolMode)tool {
   currentTool = tool;
   
   bool enableGestures;
@@ -232,6 +238,7 @@
     case SAME_RADIUS:
     case SAME_TILT:
     case CONNECT:
+    case MIRROR_SHAPE:
       enableGestures = true;
       
     case SPLINE:
@@ -255,47 +262,47 @@
 }
 
 - (IBAction)viewButton:(id)sender {
-  [self buttonClick:PAN];
+  [self selectTool:PAN];
 }
 
 -(IBAction)selectButton:(id)sender {
-  [self buttonClick:SELECT];
+  [self selectTool:SELECT];
 }
 
 -(IBAction)splineButton:(id)sender {
-  [self buttonClick:SPLINE];
+  [self selectTool:SPLINE];
 }
 
 -(IBAction)ellipseButton:(id)sender {
-  [self buttonClick:ELLIPSE];
+  [self selectTool:ELLIPSE];
 }
 
 -(IBAction)connectButton:(id)sender {
-  [self buttonClick:CONNECT];
+  [self selectTool:CONNECT];
 }
 
 -(IBAction)sameTiltButton:(id)sender {
-  [self buttonClick:SAME_TILT];
+  [self selectTool:SAME_TILT];
 }
 
 -(IBAction)sameSizeButton:(id)sender {
-  [self buttonClick:SAME_SIZE];
+  [self selectTool:SAME_SIZE];
 }
 
 -(IBAction)sameRadiusButton:(id)sender {
-  [self buttonClick:SAME_RADIUS];
+  [self selectTool:SAME_RADIUS];
 }
 
 -(IBAction)mirrorShapeButton:(id)sender {
-  [self buttonClick:MIRROR_SHAPE];
+  [self selectTool:MIRROR_SHAPE];
 }
 
 -(IBAction)alignShapeButton:(id)sender {
-  [self buttonClick:ALIGN_SHAPE];
+  [self selectTool:ALIGN_SHAPE];
 }
 
 -(IBAction)centerShapeButton:(id)sender {
-  [self buttonClick:CENTER_SHAPE];
+  [self selectTool:CENTER_SHAPE];
 }
 
 - (IBAction)renderButton:(id)sender {

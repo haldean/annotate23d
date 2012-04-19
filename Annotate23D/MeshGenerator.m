@@ -26,12 +26,19 @@
   NSMutableArray *meshes = [NSMutableArray arrayWithCapacity:N];
   
   for (i = 0; i < N; i++) {
-    [meshes insertObject:[[[workspace drawables] objectAtIndex:i] generateMesh] atIndex:i];
+    Drawable* drawable = [[workspace drawables] objectAtIndex:i];
+    [meshes addObject:[drawable generateMesh]];
+    if ([drawable isKindOfClass:[Cylinderoid class]]) {
+      Cylinderoid* cyl = (Cylinderoid*) drawable;
+      if ([cyl mirrorAnnotation] != nil) {
+        [meshes addObject:[[cyl mirrorAnnotation] mirrored]];
+      }
+    }
   }
   
   NSMutableArray *data = [NSMutableArray arrayWithArray:[[meshes objectAtIndex:0] pointData]];
   
-  for (int i = 0; i < N; i++) {
+  for (int i = 1; i < [meshes count]; i++) {
     [data addObjectsFromArray:[[meshes objectAtIndex:i] pointData]];
   }
   

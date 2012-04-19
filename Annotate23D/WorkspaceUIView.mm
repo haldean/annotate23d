@@ -83,6 +83,33 @@
   return true;
 }
 
+- (bool) alignto:(CGPoint) loc {
+  [self selectAtPoint:loc];
+  if ([self ensureIsCylinderoid]) {
+    Cylinderoid* cyl = [(CylinderoidTransformer*) selectedShape cylinderoid];
+    if ([cyl connectionConstraint] == nil) {
+      NSLog(@"Mirror must be applied to a connected shape");
+    } else {
+      AlignToSheetAnnotation* ann = [[AlignToSheetAnnotation alloc] init];
+      [ann setObject:cyl];
+      
+      Cylinderoid* alignTo;
+      ConnectionAnnotation* connect_ann = [cyl connectionConstraint];
+      if (cyl == [connect_ann first]) {
+        alignTo = [connect_ann second];
+      } else {
+        alignTo = [connect_ann first];
+      }
+      
+      [ann setAlignTo:alignTo];
+      [cyl setAlignmentConstraint:ann];
+    }
+  }
+  [self resetAnnotationState];
+  [self clearSelection];
+  return true;
+}
+
 - (bool) connection:(CGPoint) loc {
   annotating = true;
   annotatingRadii = false;

@@ -34,6 +34,7 @@
 - (void)resetAnnotationState;
 - (bool)connection:(CGPoint)loc;
 - (bool)mirror:(CGPoint)loc;
+- (bool)alignto:(CGPoint)loc;
 - (bool)sameTilt:(CGPoint)loc;
 - (bool)sameSize:(CGPoint)loc;
 - (bool)sameRadius:(CGPoint)loc;

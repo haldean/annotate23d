@@ -53,4 +53,16 @@ struct intersect_struct {
 
 Intersection intersect(Vec3 origin, Vec3 direction, Mesh* mesh);
 
+#pragma mark Symmetry sheet utilities
+
+struct symmetrysheet_struct {
+  Vec3 plane_normal;
+  Vec3 spine_point;
+} typedef symmetrysheet;
+
+@class Cylinderoid;
+@class Drawable;
+symmetrysheet getSymmetrySheet(Cylinderoid* alignTo, Drawable* other, float symmetryTilt);
+Vec3 elevation(symmetrysheet ss, Vec3 point);
+
 #endif

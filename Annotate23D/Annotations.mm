@@ -115,76 +115,53 @@
 
 @end
 
+
+/* Signature repeated to suppress a dumb warning. */
+
+
 @implementation MirrorAnnotation
 @synthesize alignTo, mirror, symmetryTilt;
 
 - (Mesh*) mirrored {
   bool isCyl = [mirror isKindOfClass:[Cylinderoid class]];
   
-  /* First, pick a point on the mirror object to reflect. This will either be
-   * one of the ends or the center -- whichever is closest to its attachment
-   * point. */
-  CGPoint refPoint;
-  if (isCyl) {
-    Cylinderoid* cyl = (Cylinderoid*) mirror;
-    CGPoint connect = [[cyl connectionConstraint] location];
-    float dist_ep1 = squareDistance(connect, [cyl getEndpoint1])
-    , dist_ep2 = squareDistance(connect, [cyl getEndpoint2])
-    , dist_center = squareDistance(connect, [cyl center]);
-    
-    /* Find the reference point. The condition spaghetti is an unrolled linear
-     * min-find. */
-    if (dist_ep1 < dist_ep2) {
-      if (dist_center < dist_ep1) {
-        refPoint = [cyl center];
-      } else {
-        refPoint = [cyl getEndpoint1];
-      }
-    } else {
-      if (dist_center < dist_ep2) {
-        refPoint = [cyl center];
-      } else {
-        refPoint = [cyl getEndpoint2];
-      }
-    }
-  } else {
-    refPoint = [mirror com];
-  }
-  
-  /* Find closest point on mirror-about cylindroid */
-  float nearest_dist = INFINITY;
-  int nearest_idx = -1;
-  for (int i = 0; i < [[alignTo spine] count]; i++) {
-    CGPoint pt = [[[alignTo spine] objectAtIndex:i] CGPointValue];
-    float dist = squareDistance(pt, refPoint);
-    if (dist < nearest_dist) {
-      nearest_dist = dist;
-      nearest_idx = i;
-    }
-  }
-  
-  NSMutableArray* spinevecs = [alignTo spineVecsWithConstraints];
-  Vec3 spinePt = [[spinevecs objectAtIndex:nearest_idx] vec3];
-  Vec3 tangent = Vec3ForCGVec([alignTo tangentVectorAtIndex:nearest_idx onSpine:spinevecs]);
-  Vec3 perp = Vec3ForCGVec([alignTo perpVectorAtIndex:nearest_idx onSpine:spinevecs]);
-  perp = AngleAxisf(symmetryTilt, tangent) * perp;
-  
-  Vec3 plane_normal = tangent.cross(perp);
-  plane_normal.normalize();
-  
+  symmetrysheet sheet = getSymmetrySheet(alignTo, mirror, symmetryTilt);
   if (isCyl) {
     Cylinderoid* cyl = (Cylinderoid*) mirror;
     NSMutableArray* mirror_spine = [cyl spineVecsWithConnectionConstraints];
     for (int i = 0; i < [mirror_spine count]; i++) {
-      Vec3 oldpt = [[mirror_spine objectAtIndex:i] vec3];      
-      Vec3 elevation = (oldpt - spinePt).dot(plane_normal) * plane_normal;
-      Vec3 newpt = oldpt - 2 * elevation;
+      Vec3 oldpt = [[mirror_spine objectAtIndex:i] vec3];
+      Vec3 newpt = oldpt - 2 * elevation(sheet, oldpt);
       [mirror_spine replaceObjectAtIndex:i withObject:[NSVec3 with:newpt]];
     }
     
     return [cyl generateMeshWithSpine:mirror_spine];
   }
   return nil;
+}
+
+@end
+
+@implementation AlignToSheetAnnotation
+@synthesize object, alignTo, symmetryTilt;
+
+- (CGVec*) translationOnSpine:(NSMutableArray*)spine {
+  
+  CGPoint connectPt = [[object connectionConstraint] location];
+  float closest_dist = INFINITY;
+  int closest_idx = -1;
+  for (int i = 0; i < [[object spine] count]; i++) {
+    CGPoint pt = [[[object spine] objectAtIndex:i] CGPointValue];
+    float dist = squareDistance(pt, connectPt);
+    if (dist < closest_dist) {
+      closest_dist = dist;
+      closest_idx = i;
+    }
+  }
+  
+  symmetrysheet sheet = getSymmetrySheet(alignTo, object, symmetryTilt);
+  Vec3 alignpt = [[spine objectAtIndex:closest_idx] vec3];
+  return CGVecForVec3(-elevation(sheet, alignpt));
 }
 
 @end

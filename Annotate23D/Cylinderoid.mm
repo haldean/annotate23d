@@ -16,7 +16,7 @@
 @implementation Cylinderoid
 @synthesize spine, radii, com, tilt, capRadius1, capRadius2;
 @synthesize lengthConstraint, connectionConstraint, mirrorAnnotation,
-            radiusConstraints, tiltConstraints;
+            alignmentConstraint, radiusConstraints, tiltConstraints;
 
 - (NSMutableArray*) tiltWithConstraints {
   NSMutableArray* newtilt = [[NSMutableArray alloc] initWithArray:tilt copyItems:false];
@@ -155,11 +155,20 @@
 }
 
 - (NSMutableArray*) applyConnectionConstraintsTo:(NSMutableArray*)spinevecs {
-  if (connectionConstraint == nil || self == [connectionConstraint first]) {
+  bool useAlignment = alignmentConstraint != nil;
+  bool useConnection = !useAlignment && (connectionConstraint == nil || self == [connectionConstraint first]);
+  if (!useAlignment && !useConnection) {
     return spinevecs;
   }
   
-  Vec3 translate = Vec3ForCGVec([connectionConstraint secondTranslation]);
+  Vec3 translate;
+  if (useConnection) {
+    translate = Vec3ForCGVec([connectionConstraint secondTranslation]);
+  } else {
+    translate = Vec3ForCGVec([alignmentConstraint translationOnSpine:spinevecs]);
+    NSLog(@"translate: %@", VecToStr(translate));
+  }
+  
   for (int i = 0; i < [spinevecs count]; i++) {
     Vec3 old = [[spinevecs objectAtIndex:i] vec3];
     [spinevecs replaceObjectAtIndex:i withObject:[NSVec3 with:old + translate]];

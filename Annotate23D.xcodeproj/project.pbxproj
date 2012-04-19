@@ -25,6 +25,7 @@
 		A9307C1D153FAE8E0096B108 /* CGVec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9307C1C153FAE8E0096B108 /* CGVec.m */; };
 		A9307C20153FB1D00096B108 /* Intersection.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9307C1F153FB1CF0096B108 /* Intersection.mm */; };
 		A9702383151AD54200E9BC72 /* EllipsoidTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */; };
+		A9871CDE153FFA7F00A4149A /* SymmetrySheet.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9871CDD153FFA7E00A4149A /* SymmetrySheet.mm */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
 		A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */; };
@@ -95,6 +96,7 @@
 		A9871CD3153FC62E00A4149A /* Annotate23DTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Annotate23DTests.h; sourceTree = "<group>"; };
 		A9871CD4153FC62E00A4149A /* Annotate23DTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Annotate23DTests.m; sourceTree = "<group>"; };
 		A9871CD6153FC62E00A4149A /* Annotate23DTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Annotate23DTests-Prefix.pch"; sourceTree = "<group>"; };
+		A9871CDD153FFA7E00A4149A /* SymmetrySheet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SymmetrySheet.mm; sourceTree = "<group>"; };
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
 		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
@@ -243,12 +245,12 @@
 				A9AFB919152CCFB5005B3C99 /* Annotations.mm */,
 				A99CBD6814E30B4B00C40DAC /* AppDelegate.h */,
 				A99CBD6914E30B4B00C40DAC /* AppDelegate.m */,
+				A9307C1B153FAE8E0096B108 /* CGVec.h */,
+				A9307C1C153FAE8E0096B108 /* CGVec.m */,
 				A9153FF514F5AAFF001BAFDC /* Cylinderoid.h */,
 				A9153FF614F5AAFF001BAFDC /* Cylinderoid.mm */,
 				A92D380E150FD35D00535CCD /* CylinderoidTransformer.h */,
 				A92D380F150FD35D00535CCD /* CylinderoidTransformer.mm */,
-				A9307C1B153FAE8E0096B108 /* CGVec.h */,
-				A9307C1C153FAE8E0096B108 /* CGVec.m */,
 				A91D695F14FEE325006788CC /* Drawable.h */,
 				A90E498214FEF46F005329D9 /* Drawable.mm */,
 				A9153FF114F57976001BAFDC /* DrawPreviewUIView.h */,
@@ -260,8 +262,8 @@
 				A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */,
 				A9D848171507F289006FEA8B /* GlkRenderViewController.h */,
 				A9D848181507F289006FEA8B /* GlkRenderViewController.m */,
-				A91D695B14FEC955006788CC /* MathDefs.h */,
 				A9307C1F153FB1CF0096B108 /* Intersection.mm */,
+				A91D695B14FEC955006788CC /* MathDefs.h */,
 				A90E498014FEF387005329D9 /* MathDefs.mm */,
 				A9C21F821508AC7B001F1BDB /* Mesh.h */,
 				A9C21F831508AC7B001F1BDB /* Mesh.m */,
@@ -273,6 +275,7 @@
 				A92D3811150FD3B900535CCD /* ShapeTransformer.h */,
 				A92D3812150FD3BA00535CCD /* ShapeTransformer.m */,
 				A99CBD6014E30B4B00C40DAC /* Supporting Files */,
+				A9871CDD153FFA7E00A4149A /* SymmetrySheet.mm */,
 				A9153FF814F5BE23001BAFDC /* WorkspaceUIView.h */,
 				A9153FF914F5BE23001BAFDC /* WorkspaceUIView.mm */,
 				A99CBD6B14E30B4B00C40DAC /* WorkspaceViewController.h */,
@@ -452,6 +455,7 @@
 				A9E37122153115830030E497 /* AnnotationArtist.m in Sources */,
 				A9307C1D153FAE8E0096B108 /* CGVec.m in Sources */,
 				A9307C20153FB1D00096B108 /* Intersection.mm in Sources */,
+				A9871CDE153FFA7F00A4149A /* SymmetrySheet.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

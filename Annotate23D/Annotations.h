@@ -39,7 +39,14 @@
 - (CGVec*) secondTranslation;
 @end
 
-@interface AlignAnnotation : NSObject
+@interface AlignToSheetAnnotation : NSObject
+@property (strong) Cylinderoid* object;
+@property (strong) Cylinderoid* alignTo;
+@property float symmetryTilt;
+- (CGVec*) translationOnSpine:(NSMutableArray*)spine;
+@end
+
+@interface AlignAcrossSheetAnnotation : NSObject
 @property (strong) Cylinderoid* first;
 @property (strong) Cylinderoid* second;
 @property (strong) Cylinderoid* alignTo;

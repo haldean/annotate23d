@@ -164,6 +164,8 @@
     switchToSelect = [workspace connection:loc];
   } else if (currentTool == MIRROR_SHAPE) {
     switchToSelect = [workspace mirror:loc];
+  } else if (currentTool == ALIGN_SHAPE) {
+    switchToSelect = [workspace alignto:loc];
   }
   if (switchToSelect) {
     [self selectTool:SELECT];
@@ -239,6 +241,7 @@
     case SAME_TILT:
     case CONNECT:
     case MIRROR_SHAPE:
+    case ALIGN_SHAPE:
       enableGestures = true;
       
     case SPLINE:

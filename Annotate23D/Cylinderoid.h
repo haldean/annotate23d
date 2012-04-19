@@ -15,6 +15,7 @@
 @class SameLengthAnnotation;
 @class ConnectionAnnotation;
 @class MirrorAnnotation;
+@class AlignToSheetAnnotation;
 
 @interface Cylinderoid : Drawable
 
@@ -23,6 +24,7 @@
 @property (strong) NSMutableArray* tilt;
 
 @property (strong) MirrorAnnotation* mirrorAnnotation;
+@property (strong) AlignToSheetAnnotation* alignmentConstraint;
 @property (strong) ConnectionAnnotation* connectionConstraint;
 @property (strong) SameLengthAnnotation* lengthConstraint;
 @property (strong) NSMutableArray* radiusConstraints;

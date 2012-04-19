@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Annotate23DTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>Annotate23dUnitTests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>A90E498C14FF0128005329D9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A9871CC8153FC62E00A4149A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

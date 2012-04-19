@@ -32,7 +32,10 @@
 }
 
 - (void) put:(float)value at:(uint)index {
-  [_data insertObject:[NSNumber numberWithFloat:value] atIndex:index];
+  while (index >= [_data count]) {
+    [_data addObject:[NSNumber numberWithFloat:0]];
+  }
+  [_data replaceObjectAtIndex:index withObject:[NSNumber numberWithFloat:value]];
 }
 
 - (NSMutableArray*) pointData {

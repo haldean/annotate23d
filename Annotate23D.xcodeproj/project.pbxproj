@@ -22,6 +22,8 @@
 		A91D695E14FEE24B006788CC /* Ellipsoid.mm in Sources */ = {isa = PBXBuildFile; fileRef = A91D695D14FEE24B006788CC /* Ellipsoid.mm */; };
 		A92D3810150FD35D00535CCD /* CylinderoidTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A92D380F150FD35D00535CCD /* CylinderoidTransformer.mm */; };
 		A92D3813150FD3BA00535CCD /* ShapeTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = A92D3812150FD3BA00535CCD /* ShapeTransformer.m */; };
+		A9307C1D153FAE8E0096B108 /* CGVec.m in Sources */ = {isa = PBXBuildFile; fileRef = A9307C1C153FAE8E0096B108 /* CGVec.m */; };
+		A9307C20153FB1D00096B108 /* Intersection.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9307C1F153FB1CF0096B108 /* Intersection.mm */; };
 		A9702383151AD54200E9BC72 /* EllipsoidTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
@@ -46,6 +48,16 @@
 		A9EBB46C14E3A35200F04FB8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EBB46A14E3A34300F04FB8 /* QuartzCore.framework */; };
 		A9EBB46D14E3A35500F04FB8 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9EBB46814E3A33700F04FB8 /* OpenGLES.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A9871CDB153FC6A300A4149A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A99CBD4C14E30B4A00C40DAC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A99CBD5414E30B4A00C40DAC;
+			remoteInfo = Annotate23D;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A90E498014FEF387005329D9 /* MathDefs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MathDefs.mm; sourceTree = "<group>"; };
@@ -73,8 +85,16 @@
 		A92D380F150FD35D00535CCD /* CylinderoidTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CylinderoidTransformer.mm; sourceTree = "<group>"; };
 		A92D3811150FD3B900535CCD /* ShapeTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeTransformer.h; sourceTree = "<group>"; };
 		A92D3812150FD3BA00535CCD /* ShapeTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeTransformer.m; sourceTree = "<group>"; };
+		A9307C1B153FAE8E0096B108 /* CGVec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGVec.h; sourceTree = "<group>"; };
+		A9307C1C153FAE8E0096B108 /* CGVec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGVec.m; sourceTree = "<group>"; };
+		A9307C1F153FB1CF0096B108 /* Intersection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Intersection.mm; sourceTree = "<group>"; };
 		A9702381151AD54100E9BC72 /* EllipsoidTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EllipsoidTransformer.h; sourceTree = "<group>"; };
 		A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EllipsoidTransformer.mm; sourceTree = "<group>"; };
+		A9871CCF153FC62E00A4149A /* Annotate23DTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Annotate23DTests-Info.plist"; sourceTree = "<group>"; };
+		A9871CD1153FC62E00A4149A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A9871CD3153FC62E00A4149A /* Annotate23DTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Annotate23DTests.h; sourceTree = "<group>"; };
+		A9871CD4153FC62E00A4149A /* Annotate23DTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Annotate23DTests.m; sourceTree = "<group>"; };
+		A9871CD6153FC62E00A4149A /* Annotate23DTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Annotate23DTests-Prefix.pch"; sourceTree = "<group>"; };
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
 		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
@@ -158,12 +178,33 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A9871CCD153FC62E00A4149A /* Annotate23DTests */ = {
+			isa = PBXGroup;
+			children = (
+				A9871CD3153FC62E00A4149A /* Annotate23DTests.h */,
+				A9871CD4153FC62E00A4149A /* Annotate23DTests.m */,
+				A9871CCE153FC62E00A4149A /* Supporting Files */,
+			);
+			path = Annotate23DTests;
+			sourceTree = "<group>";
+		};
+		A9871CCE153FC62E00A4149A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A9871CCF153FC62E00A4149A /* Annotate23DTests-Info.plist */,
+				A9871CD0153FC62E00A4149A /* InfoPlist.strings */,
+				A9871CD6153FC62E00A4149A /* Annotate23DTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		A99CBD4A14E30B4A00C40DAC = {
 			isa = PBXGroup;
 			children = (
 				A9D8485F15081955006FEA8B /* Shaders */,
 				A99CBD5F14E30B4A00C40DAC /* Annotate23D */,
 				A90E499214FF0128005329D9 /* Annotate23dUnitTests */,
+				A9871CCD153FC62E00A4149A /* Annotate23DTests */,
 				A99CBD5814E30B4A00C40DAC /* Frameworks */,
 				A99CBD5614E30B4A00C40DAC /* Products */,
 			);
@@ -206,6 +247,8 @@
 				A9153FF614F5AAFF001BAFDC /* Cylinderoid.mm */,
 				A92D380E150FD35D00535CCD /* CylinderoidTransformer.h */,
 				A92D380F150FD35D00535CCD /* CylinderoidTransformer.mm */,
+				A9307C1B153FAE8E0096B108 /* CGVec.h */,
+				A9307C1C153FAE8E0096B108 /* CGVec.m */,
 				A91D695F14FEE325006788CC /* Drawable.h */,
 				A90E498214FEF46F005329D9 /* Drawable.mm */,
 				A9153FF114F57976001BAFDC /* DrawPreviewUIView.h */,
@@ -218,6 +261,7 @@
 				A9D848171507F289006FEA8B /* GlkRenderViewController.h */,
 				A9D848181507F289006FEA8B /* GlkRenderViewController.m */,
 				A91D695B14FEC955006788CC /* MathDefs.h */,
+				A9307C1F153FB1CF0096B108 /* Intersection.mm */,
 				A90E498014FEF387005329D9 /* MathDefs.mm */,
 				A9C21F821508AC7B001F1BDB /* Mesh.h */,
 				A9C21F831508AC7B001F1BDB /* Mesh.m */,
@@ -283,6 +327,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A9871CDC153FC6A300A4149A /* PBXTargetDependency */,
 			);
 			name = Annotate23dUnitTests;
 			productName = Annotate23dUnitTests;
@@ -405,16 +450,34 @@
 				A9702383151AD54200E9BC72 /* EllipsoidTransformer.mm in Sources */,
 				A9AFB91A152CCFB5005B3C99 /* Annotations.mm in Sources */,
 				A9E37122153115830030E497 /* AnnotationArtist.m in Sources */,
+				A9307C1D153FAE8E0096B108 /* CGVec.m in Sources */,
+				A9307C20153FB1D00096B108 /* Intersection.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A9871CDC153FC6A300A4149A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A99CBD5414E30B4A00C40DAC /* Annotate23D */;
+			targetProxy = A9871CDB153FC6A300A4149A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A90E499514FF0128005329D9 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A90E499614FF0128005329D9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A9871CD0153FC62E00A4149A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A9871CD1153FC62E00A4149A /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -546,6 +609,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Annotate23D/Annotate23D-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "Annotate23D/Annotate23D-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4DCB9ADA-2440-443F-85E1-D2FDE567F0BC";

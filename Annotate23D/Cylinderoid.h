@@ -10,18 +10,24 @@
 #import "Drawable.h"
 #import "Annotations.h"
 
+/* These provided to get around circular dependencies */
 @class SameLengthAnnotation;
+@class ConnectionAnnotation;
 
 @interface Cylinderoid : Drawable
+
 @property (strong) NSMutableArray* spine;
 @property (strong) NSMutableArray* radii;
 @property (strong) NSMutableArray* tilt;
 
+@property (strong) ConnectionAnnotation* connectionConstraint;
 @property (strong) SameLengthAnnotation* lengthConstraint;
 @property (strong) NSMutableArray* radiusConstraints;
 @property (strong) NSMutableArray* tiltConstraints;
+
 @property (assign) float capRadius1, capRadius2;
 
+- (Mesh*) generateMeshWithConnectionConstraints:(bool)useConnection;
 - (CGPoint) center;
 - (CGPoint) getEndpoint1;
 - (CGPoint) getEndpoint2;

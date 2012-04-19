@@ -20,6 +20,14 @@ Vec3 Vec3ForPoint(CGPoint point) {
   return Vec3(point.x, point.y, 0);
 }
 
+Vec3 Vec3ForCGVec(CGVec* vec) {
+  return Vec3(vec.x, vec.y, vec.z);
+}
+
+CGVec* CGVecForVec3(Vec3 vec) {
+  return [CGVec x:vec.x() y:vec.y() z:vec.z()];
+}
+
 NSString* VecToStr(VecX v) {
   NSMutableString* str = [[NSMutableString alloc] init];
   [str appendString:@"("];

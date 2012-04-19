@@ -9,6 +9,8 @@
 #ifndef Annotate23D_MathDefs_h
 #define Annotate23D_MathDefs_h 
 
+#import "Mesh.h"
+#import "CGVec.h"
 #import "Eigen/Eigen"
 #import "Eigen/Geometry"
 using namespace Eigen;
@@ -32,11 +34,23 @@ typedef MatrixXf MatX;
 + (NSVec2*) with:(Vec2)vec;
 @end
 
-Vec2 VectorForPoint(CGPoint point);
-Vec3 Vec3ForPoint(CGPoint point);
+#pragma mark Vector type conversions
 
+Vec2 VectorForPoint(CGPoint point);
+Vec3 Vec3ForCGVec(CGVec* vec);
+Vec3 Vec3ForPoint(CGPoint point);
+CGVec* CGVecForVec3(Vec3 vec);
 NSString* VecToStr(VecX vec);
 
+#pragma mark Geometry functions
+
 float squareDistance(CGPoint p1, CGPoint p2);
+
+struct intersect_struct {
+  Vec3 intersection;
+  bool intersects;
+} typedef Intersection;
+
+Intersection intersect(Vec3 origin, Vec3 direction, Mesh* mesh);
 
 #endif

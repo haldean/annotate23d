@@ -7,6 +7,8 @@
 //
 
 #import "Annotations.h"
+#import "MathDefs.h"
+#import "CGVec.h"
 
 @implementation SameLengthAnnotation
 @synthesize first, second;
@@ -59,4 +61,55 @@
   [sta setSecondHandleIndex:secondHandle];
   return sta;
 }
+@end
+
+@implementation ConnectionAnnotation
+@synthesize first, second, location;
+
+- (id) init {
+  self = [super init];
+  if (self != nil) {
+    translate1 = nil; translate2 = nil;
+  }
+  return self;
+}
+
+- (bool) calculateTranslations {
+  translate1 = [CGVec zero];
+  translate2 = [CGVec zero];
+  
+  Mesh* mesh1 = [first generateMeshWithConnectionConstraints:false];
+  Mesh* mesh2 = [second generateMeshWithConnectionConstraints:false];
+  
+  Vec3 origin = Vec3ForPoint(location);
+  /* An arbitrarily large z, since the object is allowed to extend far out
+   * of the image plane, and the intersect method only checks for
+   * intersections that occur at origin + s * dir with positive s. */
+  origin.z() = -9001;
+  Vec3 direction(0, 0, 1);
+  
+  Intersection i1 = intersect(origin, direction, mesh1);
+  Intersection i2 = intersect(origin, direction, mesh2);
+  if (!i1.intersects || !i2.intersects) {
+    return false;
+  }
+  
+  translate2 = CGVecForVec3(i2.intersection - i1.intersection);
+  return true;
+}
+
+- (bool) isValid {
+  return [self calculateTranslations];
+}
+
+- (CGVec*) firstTranslation {
+  [self calculateTranslations];
+  return translate1;
+}
+
+- (CGVec*) secondTranslation {
+  [self calculateTranslations];
+  return translate2;
+}
+
 @end

@@ -15,7 +15,8 @@
 
 @implementation Cylinderoid
 @synthesize spine, radii, com, tilt, capRadius1, capRadius2;
-@synthesize lengthConstraint, radiusConstraints, tiltConstraints;
+@synthesize lengthConstraint, connectionConstraint,
+            radiusConstraints, tiltConstraints;
 
 - (NSMutableArray*) tiltWithConstraints {
   NSMutableArray* newtilt = [[NSMutableArray alloc] initWithArray:tilt copyItems:false];
@@ -153,6 +154,19 @@
   return newspine;
 }
 
+- (NSMutableArray*) applyConnectionConstraintsTo:(NSMutableArray*)spinevecs {
+  if (connectionConstraint == nil || self == [connectionConstraint first]) {
+    return spinevecs;
+  }
+  
+  Vec3 translate = Vec3ForCGVec([connectionConstraint secondTranslation]);
+  for (int i = 0; i < [spinevecs count]; i++) {
+    Vec3 old = [[spinevecs objectAtIndex:i] vec3];
+    [spinevecs replaceObjectAtIndex:i withObject:[NSVec3 with:old + translate]];
+  }
+  return spinevecs;
+}
+
 - (NSMutableArray*) radiiWithConstraints {
   NSMutableArray* newradii = [[NSMutableArray alloc] initWithArray:radii copyItems:false];
   for (SameScaleAnnotation* ssa in radiusConstraints) {
@@ -167,24 +181,32 @@
   return Vec3(-d[1], d[0], 0);
   
   /* TODO: fix this to prevent twisting */
-  if (d == lastD) return lastR;
+  if (d == lastD || d == -lastD) return lastR;
   
-  Vec3 omega = d.cross(lastD);
-  float theta = acosf(d.dot(lastD));
+  Vec3 omega = lastD.cross(d);
   omega.normalize();
   
-  /* Uses Rodrigues' Rotation Formula to perform Euler Axis rotation to lastR */
+  float theta = acosf(std::min(1.f, std::max(-1.f, d.dot(lastD))));
+  
+  AngleAxis<float> rot(theta, omega);
+  Vec3 r = rot * lastR;
+  
+  /* Uses Rodrigues' Rotation Formula to perform Euler Axis rotation to lastR 
   Vec3 r = lastR * cosf(theta);
   r += omega.cross(lastR) * sin(theta);
   r += omega * omega.dot(lastR) * (1 - cosf(theta));
+   */
   
   r.normalize();
   NSLog(@"r4d omega %@ theta %f r %@", VecToStr(omega), theta, VecToStr(r));
   return r;
 }
 
-- (Mesh*)generateMesh {
+- (Mesh*) generateMeshWithConnectionConstraints:(bool)useConnection {
   NSMutableArray* spinevecs = [self spineVecsWithConstraints];
+  if (useConnection) {
+    spinevecs = [self applyConnectionConstraintsTo:spinevecs];
+  }
   NSMutableArray* rad = [self radiiWithConstraints];
   
   int i, j, k;
@@ -311,6 +333,10 @@
   }
   free(points); free(normals);
   return mesh;
+}
+
+- (Mesh*)generateMesh {
+  return [self generateMeshWithConnectionConstraints:true];
 }
 
 - (CGPoint) center {

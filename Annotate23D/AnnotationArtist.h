@@ -19,4 +19,7 @@
 
 + (void) drawSameTiltAnnotation:(SameTiltAnnotation*)ann
                       onContext:(CGContextRef)context;
+
++ (void) drawConnectionAnnotation:(ConnectionAnnotation*)ann
+                        onContext:(CGContextRef)context;
 @end

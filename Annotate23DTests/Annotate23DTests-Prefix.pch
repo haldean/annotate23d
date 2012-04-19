@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'Annotate23DTests' target in the 'Annotate23DTests' project
+//
+
+#ifdef __OBJC__
+  #import <UIKit/UIKit.h>
+  #import <Foundation/Foundation.h>
+#endif

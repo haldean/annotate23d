@@ -23,6 +23,16 @@
   CGContextDrawPath(context, kCGPathStroke);
 }
 
++ (void) drawConnectionAnnotation:(ConnectionAnnotation *)ann onContext:(CGContextRef)context {
+  CGContextAddEllipseInRect(context, CGRectMake([ann location].x - HANDLE_RADIUS,
+                                                [ann location].y - HANDLE_RADIUS,
+                                                HANDLE_SIZE, HANDLE_SIZE));
+  CGContextSetLineWidth(context, 2);
+  CGContextSetFillColorWithColor(context, [UIColor greenColor].CGColor);
+  CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+  CGContextDrawPath(context, kCGPathFillStroke);
+}
+
 + (void) drawSameScaleAnnotation:(SameScaleAnnotation*)ann onContext:(CGContextRef)context {
   CGPoint first = [[[[ann first] spine] objectAtIndex:[ann firstHandleIndex]] CGPointValue];
   CGPoint second = [[[[ann second] spine] objectAtIndex:[ann secondHandleIndex]] CGPointValue];

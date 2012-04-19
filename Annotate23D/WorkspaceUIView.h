@@ -32,6 +32,7 @@
 - (bool)selectAtPoint:(CGPoint)point;
 
 - (void)resetAnnotationState;
+- (void)connection:(CGPoint)loc;
 - (void)sameTilt:(CGPoint)loc;
 - (void)sameSize:(CGPoint)loc;
 - (void)sameRadius:(CGPoint)loc;

@@ -159,6 +159,8 @@
     [workspace sameRadius:loc];
   } else if (currentTool == SAME_TILT) {
     [workspace sameTilt:loc];
+  } else if (currentTool == CONNECT) {
+    [workspace connection:loc];
   }
 }
 
@@ -229,9 +231,8 @@
     case SAME_SIZE:
     case SAME_RADIUS:
     case SAME_TILT:
+    case CONNECT:
       enableGestures = true;
-      [workspace clearSelection];
-      [workspace resetAnnotationState];
       
     case SPLINE:
     case ELLIPSE:
@@ -244,6 +245,8 @@
       break;
   }
   
+  [workspace clearSelection];
+  [workspace resetAnnotationState];
   [drawPreview setCanHandleClicks:!enableGestures];
   
   if (!impl) {

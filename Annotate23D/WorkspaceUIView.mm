@@ -57,6 +57,41 @@
   return true;
 }
 
+- (void) connection:(CGPoint) loc {
+  annotating = true;
+  annotatingRadii = false;
+  
+  if (selectedIndex == NO_SELECTION && lastSelectedCyl == nil) {
+    [self selectAtPoint:loc];
+    if ([self ensureIsCylinderoid]) {
+      CylinderoidTransformer* cylt = (CylinderoidTransformer*) selectedShape;
+      lastSelectedCyl = [cylt cylinderoid];
+    }
+    selectedIndex = NO_SELECTION;
+  } else if (selectedIndex == NO_SELECTION) {
+    [self selectAtPoint:loc];
+    [self ensureIsCylinderoid];
+  } else {
+    CylinderoidTransformer* cylt = (CylinderoidTransformer*) selectedShape;
+    ConnectionAnnotation* ann = [[ConnectionAnnotation alloc] init];
+    
+    [ann setFirst:lastSelectedCyl];
+    [ann setSecond:[cylt cylinderoid]];
+    [ann setLocation:loc];
+    
+    if (![ann isValid]) {
+      NSLog(@"Connection at %f,%f is invalid", loc.x, loc.y);
+    } else {
+      [lastSelectedCyl setConnectionConstraint:ann];
+      [[cylt cylinderoid] setConnectionConstraint:ann];
+    }
+    
+    [self resetAnnotationState];
+    [self clearSelection];
+  }
+  [self setNeedsDisplay];
+}
+
 - (void) sameSize:(CGPoint)loc {
   annotating = true;
   annotatingRadii = false;
@@ -334,6 +369,11 @@
     SameLengthAnnotation* sla = [cyl lengthConstraint];
     if (sla != NULL) {
       [AnnotationArtist drawSameLengthAnnotation:sla onContext:context];
+    }
+  
+    ConnectionAnnotation* ca = [cyl connectionConstraint];
+    if (ca != NULL) {
+      [AnnotationArtist drawConnectionAnnotation:ca onContext:context];
     }
     
     for (SameScaleAnnotation* ssa in [cyl radiusConstraints]) {

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Cylinderoid.h"
+#import "CGVec.h"
 
 @class Cylinderoid;
 
@@ -27,16 +28,21 @@
 + (SameScaleAnnotation*) newWithFirst:(Cylinderoid*)first handle:(int)firstHandle second:(Cylinderoid*)second handle:(int)secondHandle;
 @end
 
+@interface ConnectionAnnotation : NSObject {
+  CGVec *translate1, *translate2;
+}
+@property (strong) Cylinderoid* first;
+@property (strong) Cylinderoid* second;
+@property (assign) CGPoint location;
+- (bool) isValid;
+- (CGVec*) firstTranslation;
+- (CGVec*) secondTranslation;
+@end
+
 @interface AlignAnnotation : NSObject
 @property (strong) Cylinderoid* first;
 @property (strong) Cylinderoid* second;
 @property (strong) Cylinderoid* alignTo;
-@end
-
-@interface ConnectionAnnotation : NSObject
-@property (strong) Cylinderoid* first;
-@property (strong) Cylinderoid* second;
-@property (assign) CGPoint location;
 @end
 
 @interface SameTiltAnnotation : NSObject

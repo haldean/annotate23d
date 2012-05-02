@@ -6,9 +6,23 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-varying lowp vec4 colorVarying;
+varying lowp vec3 normal;
 
-void main()
-{
-    gl_FragColor = colorVarying;
+void main() {
+  highp float intensity;
+  lowp vec4 color;
+  lowp vec3 n = normalize(normal);
+  // TODO Q: Why doesn't this work?  This is what was here by default.
+  // vec3 l = normalize(gl_LightSource[0].position).xyz;
+  // A headlight:
+  lowp vec3 l = vec3( 0,0,1 );
+  
+  // quantize to 5 steps (0, .25, .5, .75 and 1)
+  intensity = (floor(dot(l, n) * 4.0) + 1.0)/4.0;
+  intensity = max( 0., min( 1., intensity ) );
+  
+  // A "bisc" color.
+  color = vec4(intensity*0.95, intensity*0.92, intensity*0.75, 1.0);
+  
+  gl_FragColor = color;
 }

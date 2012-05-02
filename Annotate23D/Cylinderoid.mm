@@ -335,10 +335,20 @@
         surfacePoint = rot * radius;
       }
       points[ringIndex][j] = surfacePoint + spinePoint;
+      
+      /* This is wrong for the endcap. Inverse transpose of scaling on sphere
+       * to scale the normal. Apply inverse of scale to the normal that you would compute
+       * for a sphere based on the axes of the ellipse. */
+      
+      /* Project surface point (= s) to major axis (projection = a), a' = a / (maj / min)^2,
+       * new normal = a' + (s - a) */
       if (surfacePoint.norm() > 0) {
         normals[ringIndex][j] = surfacePoint;
       } else {
-        normals[ringIndex][j] = derivative;
+        if (ringIndex < RINGS_IN_CAP)
+          normals[ringIndex][j] = derivative;
+        else
+          normals[ringIndex][j] = -derivative;
       }
       normals[ringIndex][j].normalize();
     }

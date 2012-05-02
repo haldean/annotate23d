@@ -203,7 +203,7 @@ enum {
   // Bind attribute locations.
   // This needs to be done prior to linking.
   glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
-  glBindAttribLocation(_program, ATTRIB_NORMAL, "normal");
+  glBindAttribLocation(_program, ATTRIB_NORMAL, "innormal");
   
   // Link program.
   if (![self linkProgram:_program]) {

@@ -26,12 +26,35 @@
       [spinex addObject:[NSNumber numberWithFloat:pt.x]];
       [spiney addObject:[NSNumber numberWithFloat:pt.y]];
     }
+    
     [encoding setValue:spinex forKey:@"spinex"];
     [encoding setValue:spiney forKey:@"spiney"];
     [encoding setValue:[cyl radii] forKey:@"radii"];
     [encoding setValue:[cyl tilt] forKey:@"tilt"];
     [encoding setValue:[NSNumber numberWithFloat:[cyl capRadius1]] forKey:@"cap1"];
     [encoding setValue:[NSNumber numberWithFloat:[cyl capRadius2]] forKey:@"cap2"];
+    
+    if ([cyl mirrorAnnotation] != nil && [[cyl mirrorAnnotation] alignTo] != cyl) {
+      [encoding setValue:[NSNumber numberWithInt:[[[cyl mirrorAnnotation] alignTo] ident]] forKey:@"mirror"];
+      [encoding setValue:[NSNumber numberWithFloat:[[cyl mirrorAnnotation] symmetryTilt]] forKey:@"mirror_phi"];
+    }
+  
+    if ([cyl alignmentConstraint] != nil && [[cyl alignmentConstraint] alignTo] != cyl) {
+      [encoding setValue:[NSNumber numberWithInt:[[[cyl alignmentConstraint] alignTo] ident]] forKey:@"align"];
+      [encoding setValue:[NSNumber numberWithFloat:[[cyl alignmentConstraint] symmetryTilt]] forKey:@"align_phi"];
+    }
+    
+    if ([cyl connectionConstraint] != nil && [[cyl connectionConstraint] first] != cyl) {
+      [encoding setValue:[NSNumber numberWithInt:[[[cyl connectionConstraint] first] ident]] forKey:@"connection"];
+      CGPoint connectionPoint = [[cyl connectionConstraint] location];
+      [encoding setValue:[NSNumber numberWithFloat:connectionPoint.x] forKey:@"connection_x"];
+      [encoding setValue:[NSNumber numberWithFloat:connectionPoint.y] forKey:@"connection_y"];
+    }
+    
+    if ([cyl lengthConstraint] != nil && [[cyl lengthConstraint] first] != cyl) {
+      [encoding setValue:[NSNumber numberWithInt:[[[cyl lengthConstraint] first] ident]] forKey:@"length"];
+    }
+    
   } else {
     Ellipsoid* ell = (Ellipsoid*) drawable;
     [encoding setValue:@"ellipsoid" forKey:@"type"];
@@ -40,6 +63,7 @@
     [encoding setValue:[NSNumber numberWithFloat:[ell com].y] forKey:@"comy"];
     [encoding setValue:[NSNumber numberWithFloat:[ell a]] forKey:@"a"];
     [encoding setValue:[NSNumber numberWithFloat:[ell b]] forKey:@"b"];
+    [encoding setValue:[NSNumber numberWithFloat:[ell phi]] forKey:@"phi"];
   }
   
   return encoding;
@@ -73,7 +97,51 @@
     ell.com = CGPointMake([[dict objectForKey:@"comx"] floatValue], [[dict objectForKey:@"comy"] floatValue]);
     ell.a = [[dict objectForKey:@"a"] floatValue];
     ell.b = [[dict objectForKey:@"b"] floatValue];
+    ell.phi = [[dict objectForKey:@"phi"] floatValue];
+    
+    [ell calculatePath];
     return ell;
+  }
+}
+
++ (void) createAnnotations:(Cylinderoid*)cyl forDict:(NSDictionary*)dict withDrawables:(NSDictionary*)drawables {
+  NSNumber *mirrorIdent = [dict objectForKey:@"mirror"];
+  if (mirrorIdent) {
+    MirrorAnnotation *ma = [[MirrorAnnotation alloc] init];
+    [ma setSymmetryTilt:[[dict objectForKey:@"mirror_phi"] floatValue]];
+    [ma setAlignTo:[drawables objectForKey:mirrorIdent]];
+    [ma setMirror:cyl];
+    [cyl setMirrorAnnotation:ma];
+    [[drawables objectForKey:mirrorIdent] setMirrorAnnotation:ma];
+  }
+  
+  NSNumber *alignIdent = [dict objectForKey:@"mirror"];
+  if (alignIdent) {
+    AlignToSheetAnnotation *aa = [[AlignToSheetAnnotation alloc] init];
+    [aa setSymmetryTilt:[[dict objectForKey:@"align_phi"] floatValue]];
+    [aa setAlignTo:[drawables objectForKey:alignIdent]];
+    [aa setObject:cyl];
+    [cyl setAlignmentConstraint:aa];
+    [[drawables objectForKey:alignIdent] setAlignmentConstraint:aa];
+  }
+  
+  NSNumber *connectIdent = [dict objectForKey:@"connection"];
+  if (connectIdent) {
+    ConnectionAnnotation *ca = [[ConnectionAnnotation alloc] init];
+    [ca setLocation:CGPointMake([[dict objectForKey:@"connection_x"] floatValue], [[dict objectForKey:@"connection_y"] floatValue])];
+    [ca setFirst:[drawables objectForKey:connectIdent]];
+    [ca setSecond:cyl];
+    [cyl setConnectionConstraint:ca];
+    [[drawables objectForKey:connectIdent] setConnectionConstraint:ca];
+  }
+  
+  NSNumber *lengthIdent = [dict objectForKey:@"length"];
+  if (lengthIdent) {
+    SameLengthAnnotation *sla = [[SameLengthAnnotation alloc] init];
+    [sla setFirst:[drawables objectForKey:lengthIdent]];
+    [sla setSecond:cyl];
+    [cyl setLengthConstraint:sla];
+    [[drawables objectForKey:lengthIdent] setLengthConstraint:sla];
   }
 }
 
@@ -128,10 +196,25 @@
   }
   
   NSMutableArray* drawables = [[NSMutableArray alloc] init];
+  NSMutableDictionary *identToDrawdata = [[NSMutableDictionary alloc] init];
+  NSMutableDictionary *identToDrawable = [[NSMutableDictionary alloc] init];
   for (NSDictionary* drawdata in plist) {
-    [drawables addObject:[SceneArchiver decodeDrawable:drawdata]];
+    Drawable *draw = [SceneArchiver decodeDrawable:drawdata];
+    [drawables addObject:draw];
+    if ([[drawdata objectForKey:@"type"] isEqualToString:@"cylinderoid"]) {
+      [identToDrawdata setValue:drawdata forKey:[NSString stringWithFormat:@"%d", draw.ident]];
+      [identToDrawable setValue:draw forKey:[NSString stringWithFormat:@"%d", draw.ident]];
+    }
     NSLog(@"load %@ = %@", [drawdata objectForKey:@"type"], [drawables objectAtIndex:[drawables count] - 1]);
   }
+  
+  for (Drawable* dr in drawables) {
+    NSString *ident = [NSString stringWithFormat:@"%d", dr.ident];
+    if ([identToDrawdata objectForKey:ident]) {
+      [SceneArchiver createAnnotations:(Cylinderoid*)dr forDict:[identToDrawdata objectForKey:ident] withDrawables:identToDrawable];
+    }
+  }
+  
   return drawables;
 }
 

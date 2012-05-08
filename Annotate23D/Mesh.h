@@ -16,5 +16,8 @@
 - (id) initWithSize:(uint)size;
 - (void) put:(float)value at:(uint)index;
 - (NSMutableArray*) pointData;
+- (void) union:(Mesh*)other;
+
++ (Mesh*) combine:(NSMutableArray*)meshes;
 
 @end

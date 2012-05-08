@@ -27,6 +27,8 @@
 		A96D1A981551D2C6002D2469 /* SceneArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A96D1A971551D2C6002D2469 /* SceneArchiver.m */; };
 		A9702383151AD54200E9BC72 /* EllipsoidTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9702382151AD54100E9BC72 /* EllipsoidTransformer.mm */; };
 		A9871CDE153FFA7F00A4149A /* SymmetrySheet.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9871CDD153FFA7E00A4149A /* SymmetrySheet.mm */; };
+		A987E7A0155946650065D284 /* ObjExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = A987E79F155946650065D284 /* ObjExporter.m */; };
+		A987E7A3155954AF0065D284 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A987E7A2155954AF0065D284 /* MessageUI.framework */; };
 		A9955ADF14E3209100B87DB9 /* bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = A9955ADE14E3209100B87DB9 /* bunny.png */; };
 		A9955AE414E36CEF00B87DB9 /* PopoverFileMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */; };
 		A9955AE514E36CEF00B87DB9 /* PopoverFileMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9955AE314E36CEF00B87DB9 /* PopoverFileMenu.xib */; };
@@ -100,6 +102,9 @@
 		A9871CD4153FC62E00A4149A /* Annotate23DTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Annotate23DTests.m; sourceTree = "<group>"; };
 		A9871CD6153FC62E00A4149A /* Annotate23DTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Annotate23DTests-Prefix.pch"; sourceTree = "<group>"; };
 		A9871CDD153FFA7E00A4149A /* SymmetrySheet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SymmetrySheet.mm; sourceTree = "<group>"; };
+		A987E79E155946650065D284 /* ObjExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjExporter.h; sourceTree = "<group>"; };
+		A987E79F155946650065D284 /* ObjExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjExporter.m; sourceTree = "<group>"; };
+		A987E7A2155954AF0065D284 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A9955ADE14E3209100B87DB9 /* bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bunny.png; path = resources/bunny.png; sourceTree = SOURCE_ROOT; };
 		A9955AE114E36CEF00B87DB9 /* PopoverFileMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverFileMenu.h; sourceTree = "<group>"; };
 		A9955AE214E36CEF00B87DB9 /* PopoverFileMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverFileMenu.m; sourceTree = "<group>"; };
@@ -150,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A987E7A3155954AF0065D284 /* MessageUI.framework in Frameworks */,
 				A915445F14F5E859001BAFDC /* Accelerate.framework in Frameworks */,
 				A99CBD5A14E30B4A00C40DAC /* UIKit.framework in Frameworks */,
 				A99CBD5C14E30B4A00C40DAC /* Foundation.framework in Frameworks */,
@@ -227,6 +233,7 @@
 		A99CBD5814E30B4A00C40DAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A987E7A2155954AF0065D284 /* MessageUI.framework */,
 				A915445E14F5E859001BAFDC /* Accelerate.framework */,
 				A916CD0214E3BA3500F1D782 /* GLKit.framework */,
 				A9EBB46A14E3A34300F04FB8 /* QuartzCore.framework */,
@@ -242,6 +249,8 @@
 		A99CBD5F14E30B4A00C40DAC /* Annotate23D */ = {
 			isa = PBXGroup;
 			children = (
+				A987E79E155946650065D284 /* ObjExporter.h */,
+				A987E79F155946650065D284 /* ObjExporter.m */,
 				A9E37120153115830030E497 /* AnnotationArtist.h */,
 				A9E37121153115830030E497 /* AnnotationArtist.m */,
 				A9AFB918152CCFB5005B3C99 /* Annotations.h */,
@@ -462,6 +471,7 @@
 				A9307C20153FB1D00096B108 /* Intersection.mm in Sources */,
 				A9871CDE153FFA7F00A4149A /* SymmetrySheet.mm in Sources */,
 				A96D1A981551D2C6002D2469 /* SceneArchiver.m in Sources */,
+				A987E7A0155946650065D284 /* ObjExporter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

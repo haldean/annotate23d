@@ -13,6 +13,7 @@
 -(void)loadNewBackgroundImage;
 -(void)saveSketch:(NSString*)name;
 -(void)loadSketch;
+-(void)exportObj:(NSString*)name;
 @end
 
 @interface PopoverFileMenu : UIViewController
@@ -21,6 +22,7 @@
 - (IBAction)newSketch:(id)sender;
 - (IBAction)saveSketch:(id)sender;
 - (IBAction)loadSketch:(id)sender;
+- (IBAction)exportObj:(id)sender;
 @end
 
 

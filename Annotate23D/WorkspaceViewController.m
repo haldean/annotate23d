@@ -8,6 +8,7 @@
 
 #import "WorkspaceViewController.h"
 #import "SceneArchiver.h"
+#import "ObjExporter.h"
 
 @implementation SavedScenesDataSource
 
@@ -255,7 +256,26 @@
 
 - (void)newSketch {
   [[workspace drawables] removeAllObjects];
+  [popoverController dismissPopoverAnimated:true];
   [workspace setNeedsDisplay];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+  [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)exportObj:(NSString *)name {
+  ObjExporter *objexp = [[ObjExporter alloc] init];
+  NSString *path = [objexp export:[MeshGenerator globalMesh:workspace] asFile:name];
+  [popoverController dismissPopoverAnimated:true];
+  
+  MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+  [picker setSubject:@"Your model from Annotate23D"];
+  [picker addAttachmentData:[NSData dataWithContentsOfFile:path] mimeType:@"text/plain" fileName:@"model.obj"];
+  [picker setToRecipients:[NSArray array]];
+  [picker setMessageBody:@"Your model is attached in Wavefront OBJ format. This format can be opened by most 3D graphics applications. Thanks for using Annotate23D!" isHTML:NO];
+  [picker setMailComposeDelegate:self];
+  [self presentModalViewController:picker animated:YES];
 }
 
 - (void)loadNewBackgroundImage {
@@ -307,6 +327,7 @@
   
   [tableViewController.tableView setDataSource:ssds];
   [tableViewController.tableView setDelegate:self];
+  [tableViewController.tableView reloadData];
   
   [self setModalPresentationStyle:UIModalPresentationFullScreen];
   [self presentViewController:tableNavController animated:TRUE completion:nil];

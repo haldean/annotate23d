@@ -76,4 +76,8 @@
 - (IBAction)loadSketch:(id)sender {
   [self.delegate loadSketch];
 }
+
+- (IBAction)exportObj:(id)sender {
+  [self.delegate exportObj:@"output.obj"];
+}
 @end

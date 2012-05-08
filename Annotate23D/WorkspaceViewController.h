@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
+#import <MessageUI/MessageUI.h>
 #import "PopoverFileMenu.h"
 #import "DrawPreviewUIView.h"
 #import "GlkRenderViewController.h"
@@ -41,6 +42,7 @@ UINavigationControllerDelegate,
 FileMenuDelegate,
 ExplainerDelegate,
 UITableViewDelegate,
+MFMailComposeViewControllerDelegate,
 ReceivesDrawEvents> {
   CGFloat imageScale;
   ToolMode currentTool;
@@ -86,6 +88,7 @@ ReceivesDrawEvents> {
 - (void)resetView;
 - (void)saveSketch:(NSString*)name;
 - (void)loadSketch;
+- (void)exportObj:(NSString*)name;
 - (void)loadNewBackgroundImage;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;

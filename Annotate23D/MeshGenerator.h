@@ -15,6 +15,7 @@
 
 @property (strong) GlkRenderViewController* renderer;
 
++ (Mesh*) globalMesh:(WorkspaceUIView*)workspace;
 - (id) initWithObjects:(WorkspaceUIView*)workspace;
 
 @end

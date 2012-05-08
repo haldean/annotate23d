@@ -42,4 +42,17 @@
   return _data;
 }
 
+- (void) union:(Mesh *)other {
+  [_data addObjectsFromArray:[other pointData]];
+  _size += other->_size;
+}
+
++ (Mesh*) combine:(NSMutableArray *)meshes {
+  Mesh *combined = [[Mesh alloc] init];
+  for (Mesh *m in meshes) {
+    [combined union:m];
+  }
+  return combined;
+}
+
 @end

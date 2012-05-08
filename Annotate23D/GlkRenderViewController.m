@@ -158,7 +158,7 @@ enum {
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-  glClearColor(1., 1., 1., 1.);
+  glClearColor(0., 0., 0., 1.);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   glBindVertexArrayOES(_vertexArray);

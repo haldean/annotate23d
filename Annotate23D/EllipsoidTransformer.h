@@ -16,7 +16,6 @@ typedef enum {
 } EllipsoidHandleType;
 
 @interface EllipsoidTransformer : ShapeTransformer {
-  int selectedHandle;
   EllipsoidHandleType selectedHandleType;
 }
 

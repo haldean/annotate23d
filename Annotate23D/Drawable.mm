@@ -9,7 +9,13 @@
 #import "Drawable.h"
 
 @implementation Drawable
-@synthesize com;
+@synthesize com, ident;
+
+int last_ident = 0;
++ (int) nextIdent {
+  last_ident++;
+  return last_ident;
+}
 
 - (Mesh*)generateMesh {
   [NSException raise:@"Drawable is abstract" format:@"Cannot create mesh for Drawable directly."];

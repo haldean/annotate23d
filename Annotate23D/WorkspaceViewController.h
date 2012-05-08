@@ -28,15 +28,27 @@ typedef enum {
   PAN
 } ToolMode;
 
+@interface SavedScenesDataSource : NSObject<UITableViewDataSource>
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (NSString*)pathAtIndex:(NSIndexPath*)indexPath;
+- (bool)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath;
+@end
+
 @interface WorkspaceViewController : UIViewController <
 UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
 FileMenuDelegate,
+ExplainerDelegate,
+UITableViewDelegate,
 ReceivesDrawEvents> {
   CGFloat imageScale;
   ToolMode currentTool;
   CGRect startView;
   bool shapeIsSelected;
+  SavedScenesDataSource *ssds;
+  UITableViewController *tableViewController;
+  UINavigationController *tableNavController;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *drawView;
@@ -48,6 +60,7 @@ ReceivesDrawEvents> {
 @property (weak, nonatomic) IBOutlet DrawPreviewUIView *drawPreview;
 @property (weak, nonatomic) IBOutlet WorkspaceUIView *workspace;
 @property (strong) MeshGenerator *meshGenerator;
+@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
 
 - (IBAction)viewButton:(id)sender;
 - (IBAction)showFileMenu:(id)sender;
@@ -63,12 +76,19 @@ ReceivesDrawEvents> {
 - (IBAction)centerShapeButton:(id)sender;
 - (IBAction)renderButton:(id)sender;
 
+- (void)nextTapWill:(NSString *)doThis;
+- (void)showToolHelp;
+
 - (void)selectTool:(ToolMode)tool;
 - (void)handleTap:(UIGestureRecognizer*)sender;
 
 - (void)newSketch;
 - (void)resetView;
+- (void)saveSketch:(NSString*)name;
+- (void)loadSketch;
 - (void)loadNewBackgroundImage;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)dismissPopovers;
 
 @end

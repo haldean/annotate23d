@@ -18,8 +18,11 @@
 #define HANDLE_TOUCH_RADIUS_SQUARED 900
 
 @interface ShapeTransformer : NSObject {
+  int selectedHandle;
   CGAffineTransform currentTransformation;
 }
+
+- (int) selectedSpineHandle;
 - (void) drawShapeWithHandles:(CGContextRef)context;
 - (bool) tapAt:(CGPoint) pt;
 - (bool) touchesBegan:(NSSet *) touches inView:(UIView*) view;

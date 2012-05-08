@@ -116,9 +116,6 @@
 @end
 
 
-/* Signature repeated to suppress a dumb warning. */
-
-
 @implementation MirrorAnnotation
 @synthesize alignTo, mirror, symmetryTilt;
 

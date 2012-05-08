@@ -17,7 +17,7 @@
   
   CGContextSetLineCap(context, kCGLineCapRound);
   CGContextSetLineWidth(context, 16);
-  CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+  CGContextSetStrokeColorWithColor(context, [UIColor orangeColor].CGColor);
   CGContextMoveToPoint(context, first.x, first.y);
   CGContextAddLineToPoint(context, second.x, second.y);
   CGContextDrawPath(context, kCGPathStroke);

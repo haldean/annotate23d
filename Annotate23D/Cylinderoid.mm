@@ -156,7 +156,7 @@
 
 - (NSMutableArray*) applyConnectionConstraintsTo:(NSMutableArray*)spinevecs {
   bool useAlignment = alignmentConstraint != nil;
-  bool useConnection = !useAlignment && (connectionConstraint == nil || self == [connectionConstraint first]);
+  bool useConnection = !useAlignment && connectionConstraint != nil && self != [connectionConstraint first];
   if (!useAlignment && !useConnection) {
     return spinevecs;
   }
@@ -171,7 +171,7 @@
   
   for (int i = 0; i < [spinevecs count]; i++) {
     Vec3 old = [[spinevecs objectAtIndex:i] vec3];
-    [spinevecs replaceObjectAtIndex:i withObject:[NSVec3 with:old - translate]];
+    [spinevecs replaceObjectAtIndex:i withObject:[NSVec3 with:old + translate]];
   }
   return spinevecs;
 }

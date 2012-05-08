@@ -46,12 +46,12 @@ Each ellipsoid has a center of mass \verb#com#, a major axis length \verb#a#, a
 minor axis length \verb#b# and an angle between the major axis and the x-axis,
 \verb#phi#. The boundary of the ellipsoid in two dimensions in then defined as
 \begin{equation*}
-b = c + (\cos t) a 
+p = c + (\cos t) a 
 	\left(\begin{smallmatrix}\cos \phi\\ \sin \phi\end{smallmatrix} \right)
 	+ (\sin t) b
 	\left(\begin{smallmatrix}\sin \phi\\ -\cos \phi\end{smallmatrix} \right)
 \end{equation*}
-Where $b$ is a boundary point, $c$ is the center of mass and $t$ varies from 0
+Where $p$ is a boundary point, $c$ is the center of mass and $t$ varies from 0
 to $2\pi$. The mesh of an ellipsoid is constructed using the same method as that
 of the cylinderoids, but the radius of each ring is determined using $a$ and $b$
 instead of the user-provided radii.
@@ -162,7 +162,7 @@ due to its lack of immediate mode. Each mesh object is an array of floats, where
 each vertex is defined as six numbers: the $x,\,y\,z$ of its location, and the
 $x,\,y\,z$ components of the normal for that vertex. Each triangle is a block of
 three of these vertex definitions; each triangle is therefore a block of 18
-floats which map to three verteces as described above.
+floats which map to three vertices as described above.
 
 This mesh is then passed to \verb#GlkRenderViewController#, which creates a
 modal popover containing an OpenGL view, compiles the vertex and fragment
@@ -171,10 +171,10 @@ shaders and draws the mesh to the view.
 Wavefront OBJ file generation is handled by \verb#ObjExporter#, which uses the
 global mesh from \verb#MeshGenerator# to create a file in the iPad's local
 storage that contains an OBJ file. Most of the complexity in this file comes
-from the need to merge coincident verteces; since the mesh data structure
+from the need to merge coincident vertices; since the mesh data structure
 doesn't have any adjacency information, a naively-generated mesh file would be a
 bag of triangles without adjacency. This would be useless for most graphics
-algorithms and would result in significant wasted storage space. Verteces are
+algorithms and would result in significant wasted storage space. Vertices are
 merged using their position to compute adjacency.
 
 \section{Significant completed features}

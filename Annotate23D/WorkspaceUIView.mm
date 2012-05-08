@@ -363,7 +363,10 @@
         CGPathContainsPoint([shape getPath], NULL, point, false)) {
       if (i == selectedIndex) break;
       
-      selectedIndex = i;
+      // Move the selected object to the back of the array, so that it gets drawn on top.
+      [drawables removeObjectAtIndex:i];
+      [drawables addObject:shape];
+      selectedIndex = [drawables count] - 1;
       selected = YES;
       break;
     }

@@ -7,6 +7,45 @@
 //
 
 #import "WorkspaceViewController.h"
+#import "SceneArchiver.h"
+#import "ObjExporter.h"
+
+@implementation SavedScenesDataSource
+
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSArray* files = [SceneArchiver savedScenes];
+  NSString* file = [files objectAtIndex:indexPath.row];
+  UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:file];
+  if (cell == nil) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:file];
+  }
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  cell.textLabel.text = file;
+  return cell;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  int count = [[SceneArchiver savedScenes] count];
+  return count;
+}
+
+- (NSString *) pathAtIndex:(NSIndexPath *)indexPath {
+  return [[SceneArchiver savedScenes] objectAtIndex:indexPath.row];
+}
+
+- (bool)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+  return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSLog(@"delete!");
+  if (editingStyle == UITableViewCellEditingStyleDelete) {
+    [SceneArchiver deleteScene:[self pathAtIndex:indexPath]];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+  }
+}
+
+@end
 
 @implementation WorkspaceViewController
 @synthesize drawPreview;
@@ -14,6 +53,7 @@
 @synthesize drawView, backgroundImageView;
 @synthesize fileMenu, fileButton, popoverController, imagePickerController;
 @synthesize meshGenerator;
+@synthesize instructionLabel;
 
 - (void)didReceiveMemoryWarning
 {
@@ -51,8 +91,22 @@
   
   startView = [drawPreview frame];
   
+  [self nextTapWill:nil];
+  [self.backgroundImageView setImage:nil];
+  
   [drawPreview setDelegate:self];
   [workspace setFrame:drawPreview.frame];
+  [workspace setExplainer:self];
+  
+  ssds = [[SavedScenesDataSource alloc] init];
+  tableViewController = [[UITableViewController alloc] init];
+  tableNavController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
+  tableViewController.navigationItem.leftBarButtonItem = tableViewController.editButtonItem;
+  tableViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPopovers)];
+}
+
+- (void)dismissPopovers {
+  [tableNavController dismissModalViewControllerAnimated:true];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -108,6 +162,7 @@
   [self setBackgroundImageView:nil];
   [self setDrawPreview:nil];
   [self setWorkspace:nil];
+  [self setInstructionLabel:nil];
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
@@ -147,6 +202,14 @@
 
 - (void)handleDoubleTap:(UITapGestureRecognizer*)sender {
   [self resetView];
+}
+
+- (void)nextTapWill:(NSString *)doThis {
+  if (doThis != nil) {
+    [instructionLabel setText:doThis];
+  } else {
+    [self showToolHelp];
+  }
 }
 
 - (void)handleTap:(UIGestureRecognizer *)sender {
@@ -193,7 +256,26 @@
 
 - (void)newSketch {
   [[workspace drawables] removeAllObjects];
+  [popoverController dismissPopoverAnimated:true];
   [workspace setNeedsDisplay];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+  [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)exportObj:(NSString *)name {
+  ObjExporter *objexp = [[ObjExporter alloc] init];
+  NSString *path = [objexp export:[MeshGenerator globalMesh:workspace] asFile:name];
+  [popoverController dismissPopoverAnimated:true];
+  
+  MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+  [picker setSubject:@"Your model from Annotate23D"];
+  [picker addAttachmentData:[NSData dataWithContentsOfFile:path] mimeType:@"text/plain" fileName:@"model.obj"];
+  [picker setToRecipients:[NSArray array]];
+  [picker setMessageBody:@"Your model is attached in Wavefront OBJ format. This format can be opened by most 3D graphics applications. Thanks for using Annotate23D!" isHTML:NO];
+  [picker setMailComposeDelegate:self];
+  [self presentModalViewController:picker animated:YES];
 }
 
 - (void)loadNewBackgroundImage {
@@ -221,6 +303,88 @@
   } else if (currentTool == ELLIPSE) {
     Drawable* el = [Ellipsoid withPoints:points];
     [workspace addDrawable:el];
+  }
+}
+
+- (void)saveSketch:(NSString*)name {
+  [SceneArchiver saveDrawables:[workspace drawables] withName:name];
+}
+
+- (void) loadSketch {
+  [popoverController dismissPopoverAnimated:true];
+  
+  if ([[SceneArchiver savedScenes] count] == 0) {
+    UIAlertView *message =
+    [[UIAlertView alloc]
+     initWithTitle:@"No Saved Scenes"
+     message:@"You haven't saved any scenes yet. You can save a scene by selecting File > Save"
+     delegate:nil
+     cancelButtonTitle:@"Close"
+     otherButtonTitles:nil];
+    [message show];
+    return;
+  }
+  
+  [tableViewController.tableView setDataSource:ssds];
+  [tableViewController.tableView setDelegate:self];
+  [tableViewController.tableView reloadData];
+  
+  [self setModalPresentationStyle:UIModalPresentationFullScreen];
+  [self presentViewController:tableNavController animated:TRUE completion:nil];
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  NSString *name = [ssds pathAtIndex:indexPath];
+  workspace.drawables = [SceneArchiver loadDrawablesWithName:name];
+  [tableNavController dismissModalViewControllerAnimated:true];
+  [workspace setNeedsDisplay];
+}
+
+- (void)showToolHelp {
+  switch (currentTool) {
+    case SELECT:
+      [self nextTapWill:@"Next tap will select a shape"];
+      break;
+      
+    case PAN:
+      [self nextTapWill:@"Swipe to pan view, pinch to zoom view"];
+      break;
+      
+    case SAME_SIZE:
+      [self nextTapWill:@"Select the first shape to make of equal size"];
+      break;
+      
+    case SAME_TILT:
+      [self nextTapWill:@"Select the first shape to make of equal tilt"];
+      break;
+      
+    case SAME_RADIUS:
+      [self nextTapWill:@"Select the first shape to make of equal radius"];
+      break;
+      
+    case CONNECT:
+      [self nextTapWill:@"Select the stationary shape to connect to"];
+      break;
+      
+    case MIRROR_SHAPE:
+      [self nextTapWill:@"Select the shape to reflect"];
+      break;
+      
+    case ALIGN_SHAPE:
+      [self nextTapWill:@"Select the shape to align"];
+      break;
+      
+    case SPLINE:
+      [self nextTapWill:@"Draw the spine of a cylinder"];
+      break;
+      
+    case ELLIPSE:
+      [self nextTapWill:@"Draw the outline of an ellipse"];
+      break;
+      
+    default:
+      break;
   }
 }
 
@@ -258,6 +422,8 @@
   [workspace clearSelection];
   [workspace resetAnnotationState];
   [drawPreview setCanHandleClicks:!enableGestures];
+  
+  [self showToolHelp];
   
   if (!impl) {
     NSLog(@"Selected unimplemented tool %d", currentTool);

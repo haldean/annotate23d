@@ -13,18 +13,14 @@
 @implementation MeshGenerator
 @synthesize renderer;
 
-- (id) initWithObjects:(WorkspaceUIView *)workspace {
-  self = [super init];
-  
-  int i, size = 0;
++ (Mesh*) globalMesh:(WorkspaceUIView *)workspace {
+  int i;
   int N = [[workspace drawables] count];
   if (N == 0) {
-    renderer = [[GlkRenderViewController alloc] initWithMesh:NULL ofSize:0];
-    return self;
+    return [[Mesh alloc] init];
   }
   
   NSMutableArray *meshes = [NSMutableArray arrayWithCapacity:N];
-  
   for (i = 0; i < N; i++) {
     Drawable* drawable = [[workspace drawables] objectAtIndex:i];
     [meshes addObject:[drawable generateMesh]];
@@ -35,12 +31,19 @@
       }
     }
   }
+  return [Mesh combine:meshes];
+}
+
+- (id) initWithObjects:(WorkspaceUIView *)workspace {
+  self = [super init];
   
-  NSMutableArray *data = [NSMutableArray arrayWithArray:[[meshes objectAtIndex:0] pointData]];
-  
-  for (int i = 1; i < [meshes count]; i++) {
-    [data addObjectsFromArray:[[meshes objectAtIndex:i] pointData]];
+  int i, size, N = [[workspace drawables] count];
+  if (N == 0) {
+    renderer = [[GlkRenderViewController alloc] initWithMesh:NULL ofSize:0];
+    return self;
   }
+  
+  NSMutableArray *data = [[MeshGenerator globalMesh:workspace] pointData];
   
   size = [data count];
   float* cdata = malloc(sizeof(GLfloat) * (size + 1));

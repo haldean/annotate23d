@@ -156,7 +156,7 @@
 
 - (NSMutableArray*) applyConnectionConstraintsTo:(NSMutableArray*)spinevecs {
   bool useAlignment = alignmentConstraint != nil;
-  bool useConnection = !useAlignment && (connectionConstraint == nil || self == [connectionConstraint first]);
+  bool useConnection = !useAlignment && connectionConstraint != nil && self != [connectionConstraint first];
   if (!useAlignment && !useConnection) {
     return spinevecs;
   }
@@ -183,6 +183,8 @@
     NSNumber* targetSize = [NSNumber numberWithFloat:[ssa targetRadius]];
     [newradii replaceObjectAtIndex:handle withObject:targetSize];
   }
+  if ([radiusConstraints count] > 0)
+    return [self smoothRadii:newradii withFactor:4 lockPoint:-1];
   return newradii;
 }
 
@@ -335,10 +337,20 @@
         surfacePoint = rot * radius;
       }
       points[ringIndex][j] = surfacePoint + spinePoint;
+      
+      /* This is wrong for the endcap. Inverse transpose of scaling on sphere
+       * to scale the normal. Apply inverse of scale to the normal that you would compute
+       * for a sphere based on the axes of the ellipse. */
+      
+      /* Project surface point (= s) to major axis (projection = a), a' = a / (maj / min)^2,
+       * new normal = a' + (s - a) */
       if (surfacePoint.norm() > 0) {
         normals[ringIndex][j] = surfacePoint;
       } else {
-        normals[ringIndex][j] = derivative;
+        if (ringIndex < RINGS_IN_CAP)
+          normals[ringIndex][j] = derivative;
+        else
+          normals[ringIndex][j] = -derivative;
       }
       normals[ringIndex][j].normalize();
     }
@@ -516,49 +528,68 @@
   com.y /= [spine count];
 }
 
+/* Many thanks to yig for this method */
 - (void)smoothSpine:(int)factor lockPoint:(int)lock {
-  for (int iteration = factor; iteration >= 0; iteration--) {
-    NSMutableArray* newSpine = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+  for (int iter = 0; iter < 20; iter++) {
+    NSMutableArray *grads = [[NSMutableArray alloc] initWithCapacity:[spine count]];
+    for (int i = 0; i < [spine count]; i++) {
+      [grads addObject:[NSVec2 with:Vec2::Zero()]];
+    }
     
-    [newSpine addObject:[spine objectAtIndex:0]];
     for (int i = 1; i < [spine count] - 1; i++) {
-      if (i == lock) {
-        [newSpine addObject:[spine objectAtIndex:i]];
-        continue;
-      }
-      
       Vec2 p = VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
       Vec2 p0 = VectorForPoint([[spine objectAtIndex:i-1] CGPointValue]);
       Vec2 p1 = VectorForPoint([[spine objectAtIndex:i+1] CGPointValue]);
+      Vec2 df_most = 2. * (p1 + p0 - 2 * p);
       
-      p += ((p0 - p) + (p1 - p)) * 1e-2;
-      [newSpine addObject:[NSValue valueWithCGPoint:CGPointMake(p[0], p[1])]];
+      [grads replaceObjectAtIndex:i-1 withObject:[NSVec2 with:[[grads objectAtIndex:i-1] vec2] + df_most]];
+      [grads replaceObjectAtIndex:i withObject:[NSVec2 with:[[grads objectAtIndex:i] vec2] - 2 * df_most]];
+      [grads replaceObjectAtIndex:i+1 withObject:[NSVec2 with:[[grads objectAtIndex:i+1] vec2] + df_most]];
     }
-    [newSpine addObject:[spine objectAtIndex:[spine count]-1]];
     
-    spine = newSpine;
+    float grad_norm = 0;
+    for (NSVec2* vec in grads) {
+      grad_norm += [vec vec2].dot([vec vec2]);
+    }
+    grad_norm = sqrtf(grad_norm);
+    
+    float alpha = 1;
+    if (ABS(grad_norm) > 1e-5) alpha /= grad_norm;
+    
+    for (int i = 1; i < [spine count] - 1; i++) {
+      if (i == lock) continue;
+      
+      Vec2 p = VectorForPoint([[spine objectAtIndex:i] CGPointValue]);
+      p -= alpha * [[grads objectAtIndex:i] vec2];
+      [spine replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:CGPointMake(p[0], p[1])]];
+    }
   }
 }
 
-- (void)smoothRadii:(int)factor lockPoint:(int)lock {
+- (void)smoothRadii:(int)factor lockPoint:(int)point {
+  radii = [self smoothRadii:radii withFactor:factor lockPoint:point];
+}
+
+- (NSMutableArray*)smoothRadii:(NSMutableArray*)rads withFactor:(int)factor lockPoint:(int)lock {
   for (; factor >= 0; factor--) {
-    NSMutableArray* newRadii = [[NSMutableArray alloc] initWithCapacity:[radii count]];
-    for (int i = 0; i < [radii count]; i++) {
+    NSMutableArray* newRadii = [[NSMutableArray alloc] initWithCapacity:[rads count]];
+    for (int i = 0; i < [rads count]; i++) {
       if (i == lock) {
-        [newRadii addObject:[radii objectAtIndex:i]];
+        [newRadii addObject:[rads objectAtIndex:i]];
         continue;
       }
       
-      double r = [[radii objectAtIndex:i] floatValue];
-      double r0 = i > 0 ? [[radii objectAtIndex:i-1] floatValue] : r;
-      double r1 = i < [radii count] - 1 ? [[radii objectAtIndex:i+1] floatValue] : r;
+      double r = [[rads objectAtIndex:i] floatValue];
+      double r0 = i > 0 ? [[rads objectAtIndex:i-1] floatValue] : r;
+      double r1 = i < [rads count] - 1 ? [[rads objectAtIndex:i+1] floatValue] : r;
       
       double scale = pow(10., -pow((lock - i) / 1.5, 2));
       r += ((r0 - r) + (r1 - r)) * scale;
       [newRadii addObject:[NSNumber numberWithDouble:r]];
     }
-    radii = newRadii;
+    rads = newRadii;
   }
+  return rads;
 }
 
 - (void) resampleSpine {
@@ -600,6 +631,7 @@
   if ([points count] <= 2) return nil;
   
   Cylinderoid* cyl = [[Cylinderoid alloc] init];
+  [cyl setIdent:[Drawable nextIdent]];
   
   [cyl setSpine:[NSMutableArray arrayWithArray:points]];
   [cyl resampleSpine];

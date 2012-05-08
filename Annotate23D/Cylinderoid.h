@@ -56,6 +56,7 @@
 - (void) calculateSurfacePoints;
 - (void) smoothRadii:(int)factor lockPoint:(int)point;
 - (void) smoothSpine:(int)factor lockPoint:(int)point;
+- (NSMutableArray*) smoothRadii:(NSMutableArray*)rads withFactor:(int)factor lockPoint:(int)lock;
 - (void) resampleSpine;
 - (double) spineLength;
 

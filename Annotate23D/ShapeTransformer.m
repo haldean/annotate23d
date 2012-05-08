@@ -14,6 +14,10 @@
 
 @implementation ShapeTransformer
 
+- (int) selectedSpineHandle {
+  return selectedHandle;
+}
+
 - (void) drawShapeWithHandles:(CGContextRef)context {
   [NSException raise:@"ShapeTransformer is abstract" format:@""];
 }

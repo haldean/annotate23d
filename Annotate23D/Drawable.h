@@ -14,11 +14,13 @@
   CGMutablePathRef path;
 }
 
+@property int ident;
 @property (assign) CGPoint com;
 
 - (Mesh*)generateMesh;
 - (CGMutablePathRef)getPath;
 
 + (Drawable*)withPoints:(NSArray*)points;
++ (int)nextIdent;
 
 @end

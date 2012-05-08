@@ -12,6 +12,11 @@
 #import "Drawable.h"
 #import "ShapeTransformer.h"
 
+@protocol ExplainerDelegate <NSObject>
+- (void) nextTapWill:(NSString*)doThis;
+- (void) showToolHelp;
+@end
+
 @interface WorkspaceUIView : UIView <UIActionSheetDelegate> {
   int selectedIndex;
   ShapeTransformer* selectedShape;
@@ -22,6 +27,9 @@
 
 @property (assign) bool shapeWantsTouching;
 @property (strong) NSMutableArray *drawables;
+@property (assign) NSObject<ExplainerDelegate> *explainer;
+
+- (void)nextTapWill:(NSString*)doThis;
 
 /* Returns YES if a shape is currently selected, and false otherwise. */
 - (bool)tapAtPoint:(CGPoint)point;

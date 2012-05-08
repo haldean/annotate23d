@@ -232,6 +232,7 @@
     else phi = M_PI / 2 + .5 * atan(2 * b / (a - c));
   
   Ellipsoid* el = [[Ellipsoid alloc] init];
+  [el setIdent:[Drawable nextIdent]];
   el->com = com;
   if (a_len > b_len) {
     el->a = a_len;

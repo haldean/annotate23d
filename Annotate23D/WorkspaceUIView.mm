@@ -13,7 +13,7 @@
 #define NO_SELECTION -1
 
 @implementation WorkspaceUIView
-@synthesize drawables, shapeWantsTouching;
+@synthesize drawables, shapeWantsTouching, explainer;
 
 - (void)initArrays {
   self.drawables = [[NSMutableArray alloc] init];
@@ -37,6 +37,10 @@
     [self setMultipleTouchEnabled:true];
   }
   return self;
+}
+
+- (void) nextTapWill:(NSString *)doThis {
+  [explainer nextTapWill:doThis];
 }
 
 #pragma mark Annotation handling
@@ -77,6 +81,8 @@
       [ann setAlignTo:alignTo];
       [cyl setMirrorAnnotation:ann];
     }
+  } else {
+    NSLog(@"Mirror can only be done to cylinderoids");
   }
   [self resetAnnotationState];
   [self clearSelection];
@@ -121,9 +127,11 @@
       lastSelectedCyl = [cylt cylinderoid];
     }
     selectedIndex = NO_SELECTION;
+    [self nextTapWill:@"Select the shape to move to connect"];
   } else if (selectedIndex == NO_SELECTION) {
     [self selectAtPoint:loc];
     [self ensureIsCylinderoid];
+    [self nextTapWill:@"Tap the point at which the two shapes should meet"];
   } else {
     CylinderoidTransformer* cylt = (CylinderoidTransformer*) selectedShape;
     ConnectionAnnotation* ann = [[ConnectionAnnotation alloc] init];
@@ -143,6 +151,7 @@
     [self clearSelection];
     [self setNeedsDisplay];
     return true;
+    [self nextTapWill:nil];
   }
   
   [self setNeedsDisplay];
@@ -155,6 +164,7 @@
   if (selectedIndex == NO_SELECTION) {
     [self selectAtPoint:loc];
     [self ensureIsCylinderoid];
+    [self nextTapWill:@"Select the second shape to make of equal size"];
     
   } else {
     int firstIndex = selectedIndex;
@@ -209,6 +219,7 @@
       [cylt setReadOnly:true];
       if (lastSelectedCyl == nil)
         lastSelectedCyl = [cylt cylinderoid];
+      [self nextTapWill:@"Select the radius to set equal"];
     }
     
   } else if (selectedHandle == NO_SELECTION) {
@@ -217,6 +228,7 @@
       if (selectedHandle != NO_SELECTION) selectedIndex = NO_SELECTION;
     }
     
+    [self nextTapWill:@"Select the second shape to make of equal radius"];
   } else {
     if ([selectedShape tapAt:loc]) {
       int thisHandle = [(CylinderoidTransformer*) selectedShape selectedSpineHandle];
@@ -231,6 +243,7 @@
     [self clearSelection];
     [self resetAnnotationState];
     [self setNeedsDisplay];
+    [self nextTapWill:nil];
     return true;
   }
   [self setNeedsDisplay];
@@ -249,6 +262,7 @@
       [cylt setShowOnlyTiltHandles:true];
       if (lastSelectedCyl == nil)
         lastSelectedCyl = [cylt cylinderoid];
+      [self nextTapWill:@"Select tilted radius to set equal"];
     }
     
   } else if (selectedHandle == NO_SELECTION) {
@@ -256,6 +270,7 @@
       selectedHandle = [(CylinderoidTransformer*) selectedShape selectedSpineHandle];
       if (selectedHandle != NO_SELECTION) selectedIndex = NO_SELECTION;
     }
+    [self nextTapWill:@"Select next shape to make of equal tilt"];
     
   } else {
     if ([selectedShape tapAt:loc]) {
@@ -264,7 +279,9 @@
         Cylinderoid* thisCyl = [(CylinderoidTransformer*) selectedShape cylinderoid];
         SameTiltAnnotation* sta = [SameTiltAnnotation newWithFirst:lastSelectedCyl handle:selectedHandle second:thisCyl handle:thisHandle];
         [[thisCyl tiltConstraints] addObject:sta];
-        [[lastSelectedCyl tiltConstraints] addObject:sta];;
+        [[lastSelectedCyl tiltConstraints] addObject:sta];
+        
+        [self nextTapWill:nil];
         [self clearSelection];
         [self resetAnnotationState];
         return true;
@@ -287,16 +304,31 @@
 - (bool)tapAtPoint:(CGPoint)point {
   if (selectedIndex == NO_SELECTION) {
     bool selected = [self selectAtPoint:point];
+    if (selected) {
+      [self nextTapWill:@"Swipe to move, pinch to resize, rotate to spin"];
+    }
     [self setNeedsDisplay];
     return selected;
   }
   
   if ([selectedShape tapAt:point]) {
+    if ([selectedShape selectedSpineHandle] != NO_SELECTION) {
+      if ([selectedShape isKindOfClass:[CylinderoidTransformer class]]) {
+        [self nextTapWill:@"Swipe to move, pinch to change radius, tap again to tilt"];
+      } else {
+        [self nextTapWill:@"Swipe to stretch"];
+      }
+    } else {
+      [self nextTapWill:@"Swipe to move, pinch to resize, rotate to spin"];
+    }
+    
     [self setNeedsDisplay];
     return YES;
   }
   
+  
   selectedIndex = NO_SELECTION;
+  [self nextTapWill:nil];
   [self setNeedsDisplay];
   return NO;
 }

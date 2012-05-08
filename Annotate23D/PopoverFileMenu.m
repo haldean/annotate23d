@@ -8,6 +8,8 @@
 
 #import "PopoverFileMenu.h"
 #import "WorkspaceViewController.h"
+#import "SceneArchiver.h"
+
 
 @implementation PopoverFileMenu
 @synthesize delegate;
@@ -56,5 +58,26 @@
 
 - (IBAction)newSketch:(id)sender {
   [self.delegate newSketch];
+}
+
+- (IBAction)saveSketch:(id)sender {
+  UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Save Scene" message:@"Please enter a name to save the scene under" delegate:self cancelButtonTitle:@"Save" otherButtonTitles:nil];
+  alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+  UITextField * alertTextField = [alert textFieldAtIndex:0];
+  alertTextField.placeholder = @"Name for saved scene";
+  [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{ 
+  NSLog(@"Entered: %@",[[alertView textFieldAtIndex:0] text]);
+  [self.delegate saveSketch:[[alertView textFieldAtIndex:0] text]];
+}
+
+- (IBAction)loadSketch:(id)sender {
+  [self.delegate loadSketch];
+}
+
+- (IBAction)exportObj:(id)sender {
+  [self.delegate exportObj:@"output.obj"];
 }
 @end
